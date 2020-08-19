@@ -4,12 +4,12 @@
 
 <div align="center">
 
-![GitHub pull requests](https://img.shields.io/github/issues-pr/Wafelack/wanager?label=Pull%20requests)
-![GitHub issues](https://img.shields.io/github/issues/Wafelack/wanager?color=%23ff5522&label=Issues)
-![GitHub stars](https://img.shields.io/github/stars/Wafelack/wanager?label=Stars)
-![GitHub](https://img.shields.io/github/license/Wafelack/wanager?color=%2300afff&label=License)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/Wafelack/wanager?label=Latest%20release)
-![GitHub All Releases](https://img.shields.io/github/downloads/Wafelack/wanager/total?color=%2300ff00&label=Downloads)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Wmanage/wng?label=Pull%20requests&style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/Wmanage/wng?label=Issues&style=flat-square)
+![GitHub stars](https://img.shields.io/github/stars/Wmanage/wng?color=%23aa1111&label=Stars&style=flat-square)
+![GitHub](https://img.shields.io/github/license/Wmanage/wng?color=%23ffaa00&label=License&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Wmanage/wng?color=%23888800&label=Latest%20release&style=flat-square)
+![Github All Releases](https://img.shields.io/github/downloads/Wmanage/wng/total?color=%2300ff00&label=Downloads&style=flat-square)
 
 </div>
 <br>
@@ -41,38 +41,22 @@
     </thead>
     <tbody>
     <tr>
-    <th align="center" widtg="100">
-    C Version
-</th>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-Not_Working-%23ff0000" align="center">
-    </td>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-Working_but_not_fine_i_advise_you_to_use_Rust_version_instead-%2300ff00">
-    </td>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-Not_Working-%23ff0000">
-    </td>
-    </tr>
-    <tr>
     <th align="center" width="100">
-    Rust Version
+    Current version
     </th>
     <td align="center">
-        <img src="https://img.shields.io/badge/Status-Should_Work-%23aaff00">
+        <img src="https://img.shields.io/badge/Status-Should_Work-%23ffaa00">
     </td>
     <td align="center">
         <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/badge/Status-Should_Work-%23aaff00">
+        <img src="https://img.shields.io/badge/Status-Should_Work-%23ffaa00">
     </td>
     </tr>
     </tbody>
 
 </table>
-
-### If you can test this on Linux & MacOS, please open an issue to tell me what is about it ;)
 
 <br>
 <br>
@@ -88,7 +72,13 @@
 
 ## Setup
 
+### Windows
+
 First download the latest release of wanager, put it in `C:\Program Files` and add `C:\Program Files\` to Path.
+
+### Unix
+
+Download the latest release of wanager and put it in `/bin`
 
 <br>
 
@@ -97,7 +87,7 @@ First download the latest release of wanager, put it in `C:\Program Files` and a
 Open the command prompt and run :
 
 ```
-$ wanager new <project_name>
+$ wng new <project_name>
 $ cd project_name/
 ```
 
@@ -110,13 +100,13 @@ In `src/`, you'll find file `main.c` that contains a basic hello world program.
 ## Compile and Run
 
 ```
-$ wanager build
+$ wng build
 
-$ wanager run <args>
+$ wng run <args>
 Hello World
 ```
 
-NOTE : `wanager build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this build in release mode with : `wanager build --release`
+NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`
 
 <br>
 
@@ -125,7 +115,7 @@ NOTE : `wanager build` will build a debug executable, with flags -W -Wall -Werro
 ### To reinitialize a project
 
 ```
-$ wanager reinit
+$ wng reinit
 Really want to reinit ? Y/N : Y
 Project renitialized !
 ```
@@ -133,7 +123,7 @@ Project renitialized !
 ### To create a header file
 
 ```
-$ wanager header foo
+$ wng header foo
 $ cat foo.h
 #ifndef _FOO_H_
 #define _FOO_H_
@@ -146,14 +136,14 @@ $ cat foo.h
 
 ```
 $ cd yourproject/
-$ wanager install <lib_name>
+$ wng install <lib_name>
 ```
 
-<i>Note: To verify if a library exists, run</i> `wanager query <lib_name>`
+<i>Note: To verify if a library exists, run</i> `wng query <lib_name>`
 
 ## Publish your library
 
-To publish a library send me a mail to `contactme.wafelack@protonmail.ch`.
+To publish a library send me a mail to `wmanager@protonmail.ch`.
 
 The mail has to contain :
 
