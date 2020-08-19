@@ -1,7 +1,7 @@
 <h1 align="center">Wanager</h1>
 <br>
 <br>
-<img align="center" src="assets/wng.png"/>
+<img align="center" width=50 src="assets/wng.png"/>
 
 <div align="center">
 
