@@ -1,8 +1,10 @@
 <h1 align="center">Wanager</h1>
 <br>
 <br>
-<img align="center" width=50 src="assets/wng.png"/>
-
+<div align="center">
+<img width=200 src="assets/wng.png"/>
+</div>
+<br>
 <div align="center">
 
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/Wmanage/wng?label=Pull%20requests&style=flat-square)
