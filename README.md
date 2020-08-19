@@ -1,6 +1,7 @@
 <h1 align="center">Wanager</h1>
 <br>
 <br>
+<img align="center" src="assets/wng.png"/>
 
 <div align="center">
 
@@ -12,8 +13,6 @@
 ![Github All Releases](https://img.shields.io/github/downloads/Wmanage/wng/total?color=%2300ff00&label=Downloads&style=flat-square)
 
 </div>
-<br>
-<br>
 
 ---
 
