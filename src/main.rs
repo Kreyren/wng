@@ -80,7 +80,6 @@ fn main() {
                 Ok(_) => (),
                 Err(_e) => println!("Error while reinitializing directory"),
             }
-            println!("Project reinitialized !");
         } else {
             print!("Really want to reinit ? [y/N] : ");
             io::stdout().flush().unwrap();

@@ -31,5 +31,7 @@ pub fn reinit() -> std::io::Result<()> {
     mf.write_all(b"    puts(\"Hello, World !\");\n")?;
     mf.write_all(b"    return EXIT_SUCCESS;\n")?;
     mf.write_all(b"}")?;
+
+    println!("Project reinitialized successfully !");
     Ok(())
 }

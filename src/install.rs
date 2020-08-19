@@ -19,7 +19,7 @@ pub fn install(lib: &str) -> std::io::Result<()> {
         Err(e) => println!("Library {} is already installed !", lib),
         }
     fs::write("deps.dat", lib.as_bytes())?;
-    println!("Library `{}` was succesfully installed in project !");
+    println!("Library `{}` was succesfully installed in project !", lib);
 
 
     Ok(())
