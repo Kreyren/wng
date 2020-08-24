@@ -5,7 +5,7 @@ fn exists(lib_name: &str) -> bool {
     let output = Command::new("curl")
         .arg("https://wafelack.alwaysdata.net/libs.txt")
         .output()
-        .unwrap();
+        .expect("Failed to run command");
     let out = match str::from_utf8(&output.stdout) {
         Ok(s) => s,
         Err(_e) => return false,

@@ -9,7 +9,7 @@ fn lines_from_file(filename: impl AsRef<Path>) -> std::io::Result<Vec<String>> {
 
 pub fn build() {
 
-    let lines: Vec<String> = lines_from_file("deps.dat").unwrap();
+    let lines: Vec<String> = lines_from_file("deps.dat").expect("Failed to get lines from file");
     let mut files: Vec<String> = Vec::new();
     for i in 0..lines.len() {
         files.push(format!("src\\{}\\*.c", lines[i]));
@@ -29,7 +29,7 @@ pub fn build() {
         .expect("Error while running compilation command.");
 }
 pub fn buildhard() {
-    let lines: Vec<String> = lines_from_file("deps.dat").unwrap();
+    let lines: Vec<String> = lines_from_file("deps.dat").expect("Failed to get lines from file");
     let mut files: Vec<String> = Vec::new();
     for i in 0..lines.len() {
         files.push(format!("src\\{}\\*.c", lines[i]));
