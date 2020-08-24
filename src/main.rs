@@ -44,73 +44,87 @@ fn main() {
     if argc < 2 {
         println!("Usage: wanager <command> [OPTIONS]");
         std::process::exit(1);
-    } else if argv[1] == "--version" {
-        ver.display();
-    } else if argv[1] == "new" && argc == 3 {
-        let ret = create(&argv[2]);
-        match ret {
-            Ok(()) => (),
-            Err(_e) => println!("An error occured. Please retry later"),
-        }
-    } else if argv[1] == "build" {
-        if !Path::new("lock.wmg").exists() {
-            std::process::exit(-1);
-        }
-        if argc == 3 && argv[2] == "--release" {
-            build();
-        } else {
-            buildhard();
-        }
-    } else if argv[1] == "run" {
-        let mut args: Vec<&str> = Vec::new();
-        for i in 2..argc {
-            args.push(&argv[i]);
-        }
-        let ret = run(args);
-        match ret {
-            Ok(_) => (),
-            Err(e) => println!("{}", e),
-        }
-    } else if argv[1] == "reinit" {
-        if !Path::new("lock.wmg").exists() {
-            std::process::exit(-1);
-        }
-        if argc == 3 && argv[2] == "--force" {
-            match reinit() {
-                Ok(_) => (),
-                Err(_e) => println!("Error while reinitializing directory"),
+    }
+    match argv[1].as_str() {
+        "--version" => ver.display(),
+        "new" => {
+            if argc != 3 { return; }
+            match create(&argv[2]) {
+                Ok(()) => (),
+                Err(_e) => println!("An error occured. Please retry later"),
             }
-        } else {
-            print!("Really want to reinit ? [y/N] : ");
-            io::stdout().flush().unwrap();
-            let mut answer = String::new();
-            io::stdin()
-                .read_line(&mut answer)
-                .expect("Error while reading your choice. Please retry later");
-            if answer.trim().to_uppercase() == "Y" {
+        },
+        "build" => {
+            if !Path::new("lock.wmg").exists() {
+                std::process::exit(-1);
+            }
+            if argc == 3 && argv[2].as_str() == "--release" {
+                build();
+            } else {
+                buildhard();
+            }
+        },
+        "run" => {
+            let mut args: Vec<&str> = Vec::new();
+            for i in 2..argc {
+                args.push(&argv[i]);
+            }
+            let ret = run(args);
+            match ret {
+                Ok(_) => (),
+                Err(e) => println!("{}", e),
+            }
+        },
+        "reinit" => {
+            if !Path::new("lock.wmg").exists() {
+                std::process::exit(-1);
+            }
+            if argc == 3 && argv[2].as_str() == "--force" {
                 match reinit() {
                     Ok(_) => (),
-                    Err(e) => println!("Error while reinitializing directory : {}", e),
+                    Err(_e) => println!("Error while reinitializing directory"),
                 }
             } else {
-                println!("Reinitialisation aborted");
+                print!("Really want to reinit ? [y/N] : ");
+                io::stdout().flush().unwrap();
+                let mut answer = String::new();
+                io::stdin()
+                    .read_line(&mut answer)
+                    .expect("Error while reading your choice. Please retry later");
+                if answer.trim().to_uppercase().as_str() == "Y" {
+                    match reinit() {
+                        Ok(_) => (),
+                        Err(e) => println!("Error while reinitializing directory : {}", e),
+                    }
+                } else {
+                    println!("Reinitialisation aborted");
+                }
             }
+        },
+        "header" => {
+            if argc != 3 {
+                return;
+            }
+            match header(&argv[2]) {
+                Ok(_) => (),
+                Err(e) => println!("{}", e),
+            }
+        },
+        "install" => {
+            if argc != 3 {
+                return;
+            }
+            match install(&argv[2]) {
+                Ok(_) => (),
+                Err(e) => println!("{}", e),
+            }
+        },
+        "query" => {
+            if argc != 3 {
+                return;
+            }
+            query(&argv[2]);
         }
-    } else if argv[1] == "header" && argc == 3 {
-        match header(&argv[2]) {
-            Ok(_) => (),
-            Err(e) => println!("{}", e),
-        }
-    } else if argv[1] == "install" && argc == 3 {
-        match install(&argv[2]) {
-            Ok(_) => (),
-            Err(e) => println!("{}", e),
-        }
-    } else if argv[1] == "query" && argc == 3 {
-        query(&argv[2]);
-    }else {
-        println!("Usage: wanager <command> [OPTIONS]");
-        std::process::exit(1);
+        &_ => println!("Usage: wanager <command> [OPTIONS]"),
     }
-    std::process::exit(0);
 }
