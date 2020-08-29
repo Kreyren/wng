@@ -28,7 +28,7 @@
     </th>
     <th>
                 <center><img alt="Linux" src="https://www.screenconnect.com/Images/LogoLinux.png" align="center" height="30" width="30" /></center><br>
-                <center>Linux</center>
+                <center>GNU/Linux</center>
     </th>
     <th>
                 <center><img alt="Windows" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Windows_logo_-_2012_%28dark_blue%2C_lines_thinner%29.svg/414px-Windows_logo_-_2012_%28dark_blue%2C_lines_thinner%29.svg.png" align="center" height="30" width="30" /></center><br>
