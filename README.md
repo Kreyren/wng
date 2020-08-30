@@ -43,7 +43,7 @@
     <tbody>
     <tr>
     <th align="center" width="100">
-    Current version
+    Current version (2.10.2)
     </th>
     <td align="center">
         <img src="https://img.shields.io/badge/Status-Not_Working-%23ff0000">
@@ -52,7 +52,36 @@
         <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
     </td>
     <td align="center">
+        <img src="https://img.shields.io/badge/Status-N/A-%23ffaa00">
+    </td>
+    </tr>
+    <tr>
+    <th align="center" width="100">
+    2.9.2
+    </th>
+    <td align="center">
         <img src="https://img.shields.io/badge/Status-Not_Working-%23ff0000">
+    </td>
+    <td align="center">
+        <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
+    </td>
+    <td align="center">
+        <img src="https://img.shields.io/badge/Status-N/A-%23ffaa00">
+    </td>
+    </td>
+    </tr>
+    <tr>
+    <th align="center" width="100">
+    1.0.1
+    </th>
+    <td align="center">
+        <img src="https://img.shields.io/badge/Status-N/A-%23ffaa00">
+    </td>
+    <td align="center">
+        <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
+    </td>
+    <td align="center">
+        <img src="https://img.shields.io/badge/Status-N/A-%23ffaa00">
     </td>
     </tr>
     </tbody>
@@ -72,6 +101,10 @@
 # How to use
 
 ## Setup
+
+### Prerequisties
+
+Pay attention to have [Git](https://git-scm.com) & [curl](https://curl.haxx.se/) installed on your computer.
 
 ### Windows
 
