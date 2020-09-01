@@ -1,6 +1,6 @@
 [package]
 name = "rust"
-version = "0.1.0"
+version = "2.10.18"
 authors = ["Wafelack <contactme.wafelack@protonmail.com>"]
 edition = "2018"
 
