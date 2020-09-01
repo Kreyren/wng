@@ -36,7 +36,7 @@ fn main() {
     let ver = Version {
         os: String::from("Windows"),
         main: 2,
-        discriminator: 9,
+        discriminator: 10,
         third: 2,
     };
     let argv: Vec<String> = env::args().collect();
