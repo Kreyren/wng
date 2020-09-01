@@ -43,7 +43,7 @@
     <tbody>
     <tr>
     <th align="center" width="100">
-    2.10.18/2
+    Latest Version
     </th>
     <td align="center">
         <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
@@ -53,49 +53,6 @@
     </td>
     <td align="center">
         <img src="https://img.shields.io/badge/Status-Testing-%23ffaa00">
-    </td>
-    </tr>
-    <tr>
-    <th align="center" width="100">
-    2.10.1
-    </th>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-Not_Working-%23ff0000">
-    </td>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
-    </td>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-N/A-%23ffaa00">
-    </td>
-    </tr>
-    <tr>
-    <th align="center" width="100">
-    2.9.2
-    </th>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-Not_Working-%23ff0000">
-    </td>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
-    </td>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-N/A-%23ffaa00">
-    </td>
-    </td>
-    </tr>
-    <tr>
-    <th align="center" width="100">
-    1.0.1
-    </th>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-N/A-%23ffaa00">
-    </td>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
-    </td>
-    <td align="center">
-        <img src="https://img.shields.io/badge/Status-N/A-%23ffaa00">
     </td>
     </tr>
     </tbody>
