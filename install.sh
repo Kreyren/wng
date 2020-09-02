@@ -15,23 +15,24 @@ curl $manLink -o /usr/local/man/man1/wng.1.gz &>/dev/null
 success_bin=false
 success_man=false
 
-if [-z "$(ls /bin/ | grep wng)"]; then
+if [ $(ls /bin/ | grep wng) ]; then
+    echo "Binary was installed succesfully"
+    success_bin=true
+else
+    
     echo "Error while installing binary"
     echo "Installation failed"
-else
-    echo "Binary was installed succesfully"
-    $success_bin=true
 fi
 
-if [-z "$(ls /usr/local/man/man1/ | grep wng.1.gz)"]; then
+if [ $(ls /usr/local/man/man1/ | grep wng.1.gz) ]; then
+    echo "Manual was installed succesfully"
+    success_man=true
+else 
     echo "Error while installing manual"
     echo "Installation failed"
-else
-    echo "Manual was installed succesfully"
-    $success_man=true
 fi
 
-if [$success_man && $success_bin]; then
+if [ $success_man == true ] && [ $success_bin == true ]; then
     echo "wng was installed succesfully"
 else
     echo "Installation failed"
