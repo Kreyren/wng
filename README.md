@@ -85,15 +85,6 @@ First download the latest release of wanager, put it in `C:\Program Files` and a
 
 Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/tree/master/install.sh)
 
-To check if installing was succesfull, run :
-
-```sh
-$ ls /usr/local/man/man1/ | grep wng.1.gz
-$ ls /bin/ | grep wng
-```
-
-If the output was not `wng.1.gz` & `wng`, open [an issue](https://github.com/Wmanage/wng/issues) and i'll help you.
-
 <br>
 
 ## Create a new project
