@@ -1,5 +1,8 @@
-# RUN ME AS SUDO
+#!/usr/bin/env bash
+set -euo pipefail
 
+
+# Installation script for wng, learn more at : https://github.com/Wmanage/wng
 
 binLink="https://github.com/Wmanage/wng/releases/tag/v2.10.18/wng-unix.18"
 manLink="https://github.com/Wmanage/wng/releases/tag/v2.10.18/wng.gz"
@@ -14,6 +17,7 @@ success_man=false
 
 if [-z "$(ls /bin/ | grep wng)"]; then
     echo "Error while installing binary"
+    echo "Installation failed"
 else
     echo "Binary was installed succesfully"
     $success_bin=true
@@ -21,6 +25,7 @@ fi
 
 if [-z "$(ls /usr/local/man/man1/ | grep wng.1.gz)"]; then
     echo "Error while installing manual"
+    echo "Installation failed"
 else
     echo "Manual was installed succesfully"
     $success_man=true
