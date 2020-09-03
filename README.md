@@ -14,21 +14,13 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Wmanage/wng?color=%23888800&label=Latest%20release&style=flat-square)
 ![Github All Releases](https://img.shields.io/github/downloads/Wmanage/wng/total?color=%2300ff00&label=Downloads&style=flat-square)
 
-</div>
-
-<div align="center">
-    
-## Continuous Integration
-    
-![Win](https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Windows%20C.I.&style=flat-square) ![Unix](https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Unix%20C.I.&style=flat-square)
-
-</div>
+</div>    
 
 ---
 
 <br>
 <br>
-
+<h1 align="center">Continuous Integration</h1>
 <table border="1" align="center">
     <thead>
     <tr>
@@ -54,13 +46,13 @@
     Latest Version
     </th>
     <td align="center">
-        <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status%20C.I.">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status%20C.I.">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/badge/Status-Testing-%23ffaa00">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status%20C.I.">
     </td>
     </tr>
     </tbody>
