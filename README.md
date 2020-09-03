@@ -20,9 +20,7 @@
     
 ## Continuous Integration
     
-Windows : ![Win](https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Rust%20C.I.&style=flat-square)
-
-Unix : ![Unix](https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Rust%20C.I.&style=flat-square)
+![Win](https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Windows%20C.I.&style=flat-square) ![Unix](https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Unix%20C.I.&style=flat-square)
 
 </div>
 
