@@ -27,8 +27,8 @@ impl Wanager {
         (header, file)
     }
     pub fn install(&self, lib_name:&str,  link: (String, String)) -> std::io::Result<()> {
-        let full_dir: String = format!("src\\{}", lib_name);
-        match std::fs::create_dir(&full_dir) {
+        let path: String = format!("src\\{}", lib_name);
+        match std::fs::create_dir(&path) {
             Ok(_) => (),
             Err(e) => return Err(e),
         };
