@@ -33,8 +33,8 @@ impl Wanager {
             Err(e) => return Err(e),
         };
 
-        let full_head: String = format!("{}/{}.h", &full_dir, lib_name);
-        let full_file: String = format!("{}/{}.c", &full_dir, lib_name);
+        let full_head: String = format!("{}/{}.h", &path, lib_name);
+        let full_file: String = format!("{}/{}.c", &path, lib_name);
 
         Command::new("curl").arg(link.0).arg("-o").arg(full_head).status().unwrap();
         Command::new("curl").arg(link.1).arg("-o").arg(full_file).status().unwrap();
