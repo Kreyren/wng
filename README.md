@@ -20,7 +20,9 @@
     
 ## Continuous Integration
     
-![Rust](https://github.com/Wmanage/wng/workflows/Rust/badge.svg)
+Windows : ![Rust](https://github.com/Wmanage/wng/workflows/Rust/badge.svg)
+
+Unix : ![RustUnix](https://github.com/Wmanage/wng/workflows/RustUnix/badge.svg)
 
 </div>
 
