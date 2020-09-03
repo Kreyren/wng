@@ -43,7 +43,7 @@
     <tbody>
     <tr>
     <th align="center" width="100">
-    Latest Version
+    Status
     </th>
     <td align="center">
         <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status%20C.I.">
@@ -148,14 +148,4 @@ $ wng install <lib_name>
 
 ## Publish your library
 
-To publish a library send me a mail to `wmanager@protonmail.ch`.
-
-The mail has to contain :
-
-- The library's name
-- The library's description
-- Why it should be published
-
-<br>
-
-WARNING : Library has to be **a single .c file** with **a single .h file**, send them linked to the mail.
+I'm rebuilding package management system, so you cannot publish libraries for now
