@@ -16,7 +16,13 @@
 
 </div>
 
-<h2 align="center">Continuous Integration</h2><img align="center" src="https://github.com/Wmanage/wng/workflows/Rust/badge.svg" />
+<div align="center">
+    
+## Continuous Integration
+    
+![Rust](https://github.com/Wmanage/wng/workflows/Rust/badge.svg)
+
+</div>
 
 ---
 
