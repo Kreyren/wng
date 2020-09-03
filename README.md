@@ -20,9 +20,9 @@
     
 ## Continuous Integration
     
-Windows : ![Rust](https://github.com/Wmanage/wng/workflows/Rust/badge.svg)
+Windows : ![Win](https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Rust%20C.I.&style=flat-square)
 
-Unix : ![RustUnix](https://github.com/Wmanage/wng/workflows/RustUnix/badge.svg)
+Unix : ![Unix](https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Rust%20C.I.&style=flat-square)
 
 </div>
 
