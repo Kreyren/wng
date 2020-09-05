@@ -27,12 +27,11 @@ pub fn install(lib: &str) -> std::io::Result<()> {
         _ => identify(lib),
     };
 
-    match w.install() {
+    match w.install(source) {
         Ok(_) => (),
-        Err(e) => println!("Library {} is already installed !", lib),
+        Err(_e) => println!("Library {} is already installed !", source.unwrap()),
     }
-    fs::write("deps.dat", lib.as_bytes())?;
-    println!("Library `{}` was succesfully installed in project !", lib);
+    println!("Library `{}` was succesfully installed !", source.unwrap());
 
     Ok(())
 }

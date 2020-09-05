@@ -8,10 +8,14 @@ pub enum Source<'a> {
     BitBucket(&'a str),
     Error(&'a str),
 }
+impl<'a> Source<'a> {
+    pub fn unwrap(&self) -> &str {
+        self.unwrap()
+    }
+}
 
 impl Wanager {
-    pub fn install(&self, lib_name: &str, source: Source) -> std::io::Result<()> {
-        let path: String = format!("src\\{}", lib_name);
+    pub fn install(&self, source: Source) -> std::io::Result<()> {
         match std::fs::create_dir(&path) {
             Ok(_) => (),
             Err(e) => return Err(e),
