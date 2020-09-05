@@ -37,7 +37,6 @@ pub fn create(name: &str) -> std::io::Result<()> {
     mkdir(&release, errmess, 4);
     mkdir(&debug, errmess, 5);
 
-
     let mut mf = File::create(main)?;
     mf.write_all(b"#include <stdio.h>\n")?;
     mf.write_all(b"#include <stdlib.h>\n")?;
@@ -67,12 +66,12 @@ pub fn create(name: &str) -> std::io::Result<()> {
     }
     */
     let mut json = File::create("project.json")?;
-    json.write_all(b"{")?;
-    json.write_all(format!("    \"name\" : \"{}\",", name).as_bytes())?;
-    json.write_all(b"    \"version\" : \"0.1.0\",")?;
-    json.write_all(b"    \"standard\" : \"C99\",")?;
-    json.write_all(b"    \"author\" : \"Example <example@example.com>\",")?;
-    json.write_all(b"    \"dependencies\" : [  ]")?;
+    json.write_all(b"{\n")?;
+    json.write_all(format!("    \"name\" : \"{}\",\n", name).as_bytes())?;
+    json.write_all(b"    \"version\" : \"0.1.0\",\n")?;
+    json.write_all(b"    \"standard\" : \"C99\",\n")?;
+    json.write_all(b"    \"author\" : \"Example <example@example.com>\",\n")?;
+    json.write_all(b"    \"dependencies\" : [  ]\n")?;
     json.write_all(b"}")?;
 
     Command::new("git")
