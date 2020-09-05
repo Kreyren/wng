@@ -1,3 +1,4 @@
+use std::io::{Error, ErrorKind};
 use std::process::Command;
 use std::str;
 
@@ -10,16 +11,29 @@ pub enum Source<'a> {
 }
 impl<'a> Source<'a> {
     pub fn unwrap(&self) -> &str {
-        self.unwrap()
+        let val = match self {
+            Source::GitHub(repo) => repo,
+            Source::GitLab(repo) => repo,
+            Source::BitBucket(repo) => repo,
+            _ => "",
+        };
+        val
     }
 }
 
 impl Wanager {
     pub fn install(&self, source: Source) -> std::io::Result<()> {
-        match std::fs::create_dir(&path) {
+        let splited: Vec<&str> = source.unwrap().split('/').collect();
+        if splited.len() != 2 {
+            return Err(Error::new(ErrorKind::Other, "Not a valid repository"));
+        }
+
+        match std::fs::create_dir(splited[1]) {
             Ok(_) => (),
             Err(e) => return Err(e),
         };
+
+        // USE GITHUB API TO CURL REPO AND UNPACK IT WITH 7Z
 
         Ok(())
     }
