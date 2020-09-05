@@ -7,7 +7,7 @@ use wanager::*;
 fn identify(lib: &str) -> Source {
     let splited: Vec<&str> = lib.split(':').collect();
 
-    match source_raw {
+    match splited[0] {
         "github" => return Source::GitHub(splited[1]),
         "gitlab" => return Source::GitLab(splited[1]),
         "bitbucket" => return Source::BitBucket(splited[1]),
