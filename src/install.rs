@@ -27,7 +27,7 @@ pub fn install(lib: &str) -> std::io::Result<()> {
         _ => identify(lib),
     };
 
-    match w.install(source) {
+    match w.install(source.clone()) {
         Ok(_) => (),
         Err(_e) => println!("Library {} is already installed !", source.unwrap()),
     }
