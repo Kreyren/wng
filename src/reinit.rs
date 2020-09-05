@@ -11,7 +11,7 @@ fn mkdir(name: &str, errmess: &str, number: u8) {
 }
 
 pub fn reinit() -> std::io::Result<()> {
-    if !Path::new("lock.wmg").exists() {
+    if !Path::new("project.json").exists() {
         println!("Error !");
         return Err(Error::new(ErrorKind::Other, "Not in a wanager project"));
     }

@@ -27,21 +27,15 @@ pub fn create(name: &str) -> std::io::Result<()> {
 
     let mut debug: String = build.clone();
     debug.push_str("\\debug");
-    let mut deps: String = build.clone();
-    deps.push_str("\\deps");
 
     let mut main: String = src.clone();
     main.push_str("\\main.c");
-    let mut deps: String = name.clone().into();
-    deps.push_str("\\deps.dat");
 
     mkdir(name, errmess, 1);
     mkdir(&src, errmess, 2);
     mkdir(&build, errmess, 3);
     mkdir(&release, errmess, 4);
     mkdir(&debug, errmess, 5);
-
-
 
     let mut mf = File::create(main)?;
     mf.write_all(b"#include <stdio.h>\n")?;
@@ -50,16 +44,9 @@ pub fn create(name: &str) -> std::io::Result<()> {
     mf.write_all(b"    puts(\"Hello, World !\");\n")?;
     mf.write_all(b"    return EXIT_SUCCESS;\n")?;
     mf.write_all(b"}")?;
-    let _mf = File::create(deps)?;
-
-    let mut lock: String = name.clone().into();
-    lock.push_str("\\lock.wmg");
 
     let mut gitignore: String = name.clone().into();
     gitignore.push_str("\\.gitignore");
-
-    let mut locker = File::create(lock)?;
-    locker.write_all(b"DON'T DELETE IMPORTANT FILE")?;
 
     let mut locker = File::create(gitignore)?;
     locker.write_all(b"build/")?;
@@ -69,6 +56,23 @@ pub fn create(name: &str) -> std::io::Result<()> {
         Ok(_) => (),
         Err(_e) => println!("Failed to change directory"),
     }
+    /* JSON content
+    {
+        "name" : $name,
+        "version" : " 0.1.0",
+        "standard" : "C99",
+        "author" : "Example <example@example.com>",
+        "dependencies" : [ ]
+    }
+    */
+    let mut json = File::create("project.json")?;
+    json.write_all(b"{\n")?;
+    json.write_all(format!("    \"name\" : \"{}\",\n", name).as_bytes())?;
+    json.write_all(b"    \"version\" : \"0.1.0\",\n")?;
+    json.write_all(b"    \"standard\" : \"C99\",\n")?;
+    json.write_all(b"    \"author\" : \"Example <example@example.com>\",\n")?;
+    json.write_all(b"    \"dependencies\" : [  ]\n")?;
+    json.write_all(b"}")?;
 
     Command::new("git")
         .arg("init")

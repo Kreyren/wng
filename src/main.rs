@@ -8,17 +8,17 @@ mod build;
 mod create;
 mod header;
 mod install;
+mod query;
 mod reinit;
 mod run;
-mod  query;
 
 use build::{build, buildhard};
 use create::create;
 use header::header;
 use install::install;
+use query::query;
 use reinit::reinit;
 use run::run;
-use query::query;
 
 struct Version {
     os: String,
@@ -32,11 +32,41 @@ impl Version {
     }
 }
 
+#[cfg(test)]
+mod test {
+    use super::*;
+    use lines_from_file::lines_from_file;
+
+    #[test]
+    fn creation_successful() -> std::io::Result<()> {
+        create("project")?;
+
+        let expected =
+            String::from("{\n    \"name\" : \"project\",\n    \"version\" : \"0.1.0\",\n    \"standard\" : \"C99\",\n    \"author\" : \"Example <example@example.com>\",\n    \"dependencies\" : [  ]\n}");
+
+        assert_eq!(
+            Path::new(
+                "C:\\Users\\Wafelack\\Documents\\Développement\\Rust\\wng\\project\\project.json"
+            )
+            .exists(),
+            true
+        );
+        assert_eq!(
+            lines_from_file(
+                "C:\\Users\\Wafelack\\Documents\\Développement\\Rust\\wng\\project\\project.json"
+            )
+            .join("\n"),
+            expected
+        );
+        Ok(())
+    }
+}
+
 fn main() {
     let ver = Version {
         os: String::from("Windows"),
         main: 2,
-        discriminator: 10,
+        discriminator: 11,
         third: 2,
     };
     let argv: Vec<String> = env::args().collect();
@@ -48,14 +78,16 @@ fn main() {
     match argv[1].as_str() {
         "--version" => ver.display(),
         "new" => {
-            if argc != 3 { return; }
+            if argc != 3 {
+                return;
+            }
             match create(&argv[2]) {
                 Ok(()) => (),
                 Err(_e) => println!("An error occured. Please retry later"),
             }
-        },
+        }
         "build" => {
-            if !Path::new("lock.wmg").exists() {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc == 3 && argv[2].as_str() == "--release" {
@@ -63,7 +95,7 @@ fn main() {
             } else {
                 buildhard();
             }
-        },
+        }
         "run" => {
             let mut args: Vec<&str> = Vec::new();
             for i in 2..argc {
@@ -74,9 +106,9 @@ fn main() {
                 Ok(_) => (),
                 Err(e) => println!("{}", e),
             }
-        },
+        }
         "reinit" => {
-            if !Path::new("lock.wmg").exists() {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc == 3 && argv[2].as_str() == "--force" {
@@ -100,7 +132,7 @@ fn main() {
                     println!("Reinitialisation aborted");
                 }
             }
-        },
+        }
         "header" => {
             if argc != 3 {
                 return;
@@ -109,7 +141,7 @@ fn main() {
                 Ok(_) => (),
                 Err(e) => println!("{}", e),
             }
-        },
+        }
         "install" => {
             if argc != 3 {
                 return;
@@ -118,7 +150,7 @@ fn main() {
                 Ok(_) => (),
                 Err(e) => println!("{}", e),
             }
-        },
+        }
         "query" => {
             if argc != 3 {
                 return;
