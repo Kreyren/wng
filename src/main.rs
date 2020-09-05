@@ -32,36 +32,6 @@ impl Version {
     }
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
-    use lines_from_file::lines_from_file;
-
-    #[test]
-    fn creation_successful() -> std::io::Result<()> {
-        create("project")?;
-
-        let expected =
-            String::from("{\n    \"name\" : \"project\",\n    \"version\" : \"0.1.0\",\n    \"standard\" : \"C99\",\n    \"author\" : \"Example <example@example.com>\",\n    \"dependencies\" : [  ]\n}");
-
-        assert_eq!(
-            Path::new(
-                "C:\\Users\\Wafelack\\Documents\\Développement\\Rust\\wng\\project\\project.json"
-            )
-            .exists(),
-            true
-        );
-        assert_eq!(
-            lines_from_file(
-                "C:\\Users\\Wafelack\\Documents\\Développement\\Rust\\wng\\project\\project.json"
-            )
-            .join("\n"),
-            expected
-        );
-        Ok(())
-    }
-}
-
 fn main() {
     let ver = Version {
         os: String::from("Windows"),
