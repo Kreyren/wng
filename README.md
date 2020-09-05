@@ -14,13 +14,13 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Wmanage/wng?color=%23888800&label=Latest%20release&style=flat-square)
 ![Github All Releases](https://img.shields.io/github/downloads/Wmanage/wng/total?color=%2300ff00&label=Downloads&style=flat-square)
 
-</div>
+</div>    
 
 ---
 
 <br>
 <br>
-
+<h1 align="center">Continuous Integration</h1>
 <table border="1" align="center">
     <thead>
     <tr>
@@ -43,16 +43,16 @@
     <tbody>
     <tr>
     <th align="center" width="100">
-    Latest Version
+    Status
     </th>
     <td align="center">
-        <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/badge/Status-Working-%2300ff00">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/badge/Status-Testing-%23ffaa00">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status">
     </td>
     </tr>
     </tbody>
@@ -65,8 +65,8 @@
 
 ---
 
-<br>
-<br>
+**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C programming language written in [Rust](https://rust-lang.org). It allow you to create projects, headers, to install libraries & to compile and run fast and easily. It is different from CMake by its hability to manage libraries, packages and projects. The objective of this tool is to definitely give up Makefiles.
+
 <br>
 
 # How to use
@@ -148,14 +148,4 @@ $ wng install <lib_name>
 
 ## Publish your library
 
-To publish a library send me a mail to `wmanager@protonmail.ch`.
-
-The mail has to contain :
-
-- The library's name
-- The library's description
-- Why it should be published
-
-<br>
-
-WARNING : Library has to be **a single .c file** with **a single .h file**, send them linked to the mail.
+I'm rebuilding package management system, so you cannot publish libraries for now
