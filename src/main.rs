@@ -66,7 +66,7 @@ fn main() {
     let ver = Version {
         os: String::from("Windows"),
         main: 2,
-        discriminator: 10,
+        discriminator: 11,
         third: 2,
     };
     let argv: Vec<String> = env::args().collect();
@@ -87,7 +87,7 @@ fn main() {
             }
         }
         "build" => {
-            if !Path::new("lock.wmg").exists() {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc == 3 && argv[2].as_str() == "--release" {
@@ -108,7 +108,7 @@ fn main() {
             }
         }
         "reinit" => {
-            if !Path::new("lock.wmg").exists() {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc == 3 && argv[2].as_str() == "--force" {
