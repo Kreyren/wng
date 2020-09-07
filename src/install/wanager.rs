@@ -43,6 +43,17 @@ impl Wanager {
 
         // USE GITHUB API TO CURL REPO AND UNPACK IT WITH 7Z
 
+        let curling = Command::new("curl")
+            .arg(&format!(
+                "https://api.github.com/repos/{}/{}/zipball/master",
+                splited[0], splited[1]
+            ))
+            .arg("-o")
+            .arg(splited[1])
+            .output()
+            .expect("Failed to run command");
+        println!("{:?}", &curling.stdout);
+
         Ok(())
     }
 }
