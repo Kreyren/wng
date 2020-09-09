@@ -1,3 +1,5 @@
+use lines_from_file::lines_from_file;
+use serde_json::*;
 use std::io::{Error, ErrorKind};
 use std::process::Command;
 use std::str;
@@ -29,31 +31,57 @@ impl<'a> Source<'a> {
     }
 }
 
+pub enum ErrType {
+    RepoNotFound,
+    FileNotFound,
+    NoFolder,
+    CurlError,
+    NameError,
+    CreationError,
+    ReadingError,
+}
+
+pub enum WngResult<'a> {
+    Ok,
+    Err(ErrType, &'a str),
+}
+
 impl Wanager {
-    pub fn install(&self, source: Source) -> std::io::Result<()> {
+    pub fn install(&self, source: Source) -> WngResult {
         let splited: Vec<&str> = source.unwrap().split('/').collect();
         if splited.len() != 2 {
-            return Err(Error::new(ErrorKind::Other, "Not a valid repository"));
+            return WngResult::Err(ErrType::NameError, "Not a valid repository");
         }
-
-        match std::fs::create_dir(splited[1]) {
-            Ok(_) => (),
-            Err(e) => return Err(e),
-        };
-
         // USE GITHUB API TO CURL REPO AND UNPACK IT WITH 7Z
 
-        let curling = Command::new("curl")
+        Command::new("curl")
             .arg(&format!(
                 "https://api.github.com/repos/{}/{}/zipball/master",
                 splited[0], splited[1]
             ))
             .arg("-o")
-            .arg(splited[1])
+            .arg(&format!("{}.tar", splited[1]))
             .output()
             .expect("Failed to run command");
-        println!("{:?}", &curling.stdout);
 
-        Ok(())
+        let v: Value =
+            match serde_json::from_str(&lines_from_file(&format!("{}.tar", splited[1])).join("\n"))
+            {
+                Ok(()) => serde_json::from_str(
+                    &lines_from_file(&format!("{}.tar", splited[1])).join("\n"),
+                )
+                .unwrap(),
+                Err(_e) => return WngResult::Err(ErrType::ReadingError, "Failed to parse tarball"),
+            };
+
+        if v["message"] != Value::Null && v["message"] == "\"Not Found\"" {
+            return WngResult::Err(ErrType::RepoNotFound, "Repo does not exists");
+        }
+
+        Command::new("tar")
+            .arg("-xvf")
+            .arg(&format!("{}.tar", splited[1]));
+
+        WngResult::Ok
     }
 }

@@ -44,13 +44,13 @@ mod test {
     #[test]
     fn not_found() -> Result<()> {
         let curling = Command::new("curl")
-            .arg("https://api.github.com/repos/wafelack/jexistepas/zipball/master")
+            .arg("https://api.github.com/repos/wafelack/dict/tarball/master")
             .arg("-o")
-            .arg("test.zip")
+            .arg("test.tar")
             .output()
             .expect("Failed to run command");
         println!("{}", str::from_utf8(&curling.stderr).unwrap());
-        let v: Value = serde_json::from_str(&lines_from_file("test.zip").join("\n"))?;
+        let v: Value = serde_json::from_str(&lines_from_file("test.tar").join("\n"))?;
         if v["message"] != Value::Null {
             println!("{}", v["message"]);
         } else {

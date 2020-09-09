@@ -28,8 +28,16 @@ pub fn install(lib: &str) -> std::io::Result<()> {
     };
 
     match w.install(source.clone()) {
-        Ok(_) => (),
-        Err(_e) => println!("Library {} is already installed !", source.unwrap()),
+        WngResult::Ok => (),
+        WngResult::Err(kind, message) => match kind {
+            ErrType::RepoNotFound => {
+                return Err(Error::new(ErrorKind::NotFound, "Repository does not exist"))
+            }
+            ErrType::ReadingError => {
+                return Err(Error::new(ErrorKind::Other, "Failed to check json"))
+            }
+            _ => return Err(Error::new(ErrorKind::Other, "Unclassified error")),
+        },
     }
     println!("Library `{}` was succesfully installed !", source.unwrap());
 
