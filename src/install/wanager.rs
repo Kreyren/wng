@@ -1,6 +1,8 @@
 use lines_from_file::lines_from_file;
 use serde_json::*;
+use std::fs::rename;
 use std::io::{Error, ErrorKind};
+use std::path::Path;
 use std::process::Command;
 use std::str;
 
@@ -39,6 +41,7 @@ pub enum ErrType {
     NameError,
     CreationError,
     ReadingError,
+    RenameError,
 }
 
 pub enum WngResult<'a> {
@@ -81,6 +84,25 @@ impl Wanager {
         Command::new("tar")
             .arg("-xvf")
             .arg(&format!("{}.tar", splited[1]));
+
+        let path = Path::new(".");
+        for entry in path.read_dir().expect("Failed to read dir") {
+            if let Ok(entry) = entry {
+                if entry
+                    .path()
+                    .starts_with(&format!("{}-{}", splited[0], splited[1]))
+                {
+                    match rename(entry.path(), &format!("{}-{}", splited[0], splited[1])) {
+                        Ok(()) => break,
+                        Err(_e) => {
+                            return WngResult::Err(ErrType::RenameError, "Failed to rename folder");
+                        }
+                    }
+                }
+            } else {
+                return WngResult::Err(ErrType::RenameError, "Failed to rename folder");
+            }
+        }
 
         WngResult::Ok
     }
