@@ -167,6 +167,6 @@ fn main() {
             }
             query(&argv[2]);
         }
-        &_ => println!("Usage: wanager <command> [OPTIONS]"),
+        _ => println!("Usage: wanager <command> [OPTIONS]"),
     }
 }
