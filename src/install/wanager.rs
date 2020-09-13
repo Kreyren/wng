@@ -2,9 +2,7 @@ use lines_from_file::lines_from_file;
 use see_directory::see_dir;
 use serde_json::*;
 use std::env;
-use std::fs::rename;
-use std::io::{Error, ErrorKind};
-use std::path::Path;
+use std::fs;
 use std::path::PathBuf;
 use std::process::Command;
 use std::str;
@@ -103,12 +101,75 @@ impl Wanager {
                 };
 
                 let mut list: Vec<PathBuf> = Vec::new();
-                match see_dir(dir, &mut list) {
+                match see_dir(dir, &mut list, true) {
                     Ok(_) => (),
                     Err(_e) => {
                         return WngResult::Err(ErrType::ReadingError, "Failed to read directory")
                     }
                 }
+
+                for element in list {
+                    if element
+                        .to_str()
+                        .unwrap()
+                        .starts_with(&format!("{}-{}", splited[0], splited[1]))
+                    {
+                        if element.is_dir() {
+                            match fs::rename(
+                                element.to_str().unwrap(),
+                                &format!("{}-{}", splited[0], splited[1]),
+                            ) {
+                                Ok(_) => (),
+                                Err(_e) => {
+                                    return WngResult::Err(
+                                        ErrType::RenameError,
+                                        "failed to rename folder",
+                                    )
+                                }
+                            };
+                        }
+                    }
+                }
+
+                let mut inside_dir: PathBuf = match env::current_dir() {
+                    Ok(b) => b,
+                    Err(_e) => {
+                        return WngResult::Err(
+                            ErrType::ReadingError,
+                            "Error while reading current dir",
+                        )
+                    }
+                };
+
+                inside_dir = PathBuf::from(&format!(
+                    "{}\\{}",
+                    inside_dir.to_str().unwrap(),
+                    &format!("{}-{}", splited[0], splited[1])
+                ));
+
+                let mut inside: Vec<PathBuf> = Vec::new();
+                match see_dir(inside_dir, &mut inside, true) {
+                    Ok(_) => (),
+                    Err(_e) => {
+                        return WngResult::Err(ErrType::ReadingError, "Failed to read directory")
+                    }
+                }
+
+                let mut libexists: bool = false;
+
+                for i in inside {
+                    if i.to_str().unwrap() == "lib" && i.is_dir() {
+                        let lib: PathBuf = i;
+                        libexists = true;
+                    }
+                }
+                match libexists {
+                    false => {
+                        return WngResult::Err(ErrType::FileNotFound, "Failed to find lib inside")
+                    }
+                    true => (),
+                }
+
                 // TODO : TRY TO FIND LIB & MOVE IT IN SRC/
 
                 WngResult::Ok
