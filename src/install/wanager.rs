@@ -1,8 +1,11 @@
 use lines_from_file::lines_from_file;
+use see_directory::see_dir;
 use serde_json::*;
+use std::env;
 use std::fs::rename;
 use std::io::{Error, ErrorKind};
 use std::path::Path;
+use std::path::PathBuf;
 use std::process::Command;
 use std::str;
 
@@ -89,29 +92,23 @@ impl Wanager {
                 Command::new("tar")
                     .arg("-xvf")
                     .arg(&format!("{}.tar", splited[1]));
+                let dir: PathBuf = match env::current_dir() {
+                    Ok(b) => b,
+                    Err(_e) => {
+                        return WngResult::Err(
+                            ErrType::ReadingError,
+                            "Error while reading current dir",
+                        )
+                    }
+                };
 
-                let path = Path::new(".");
-                for entry in path.read_dir().expect("Failed to read dir") {
-                    if let Ok(entry) = entry {
-                        if entry
-                            .path()
-                            .starts_with(&format!("{}-{}", splited[0], splited[1]))
-                        {
-                            match rename(entry.path(), &format!("{}-{}", splited[0], splited[1])) {
-                                Ok(()) => break,
-                                Err(_e) => {
-                                    return WngResult::Err(
-                                        ErrType::RenameError,
-                                        "Failed to rename folder",
-                                    );
-                                }
-                            }
-                        }
-                    } else {
-                        return WngResult::Err(ErrType::RenameError, "Failed to rename folder");
+                let mut list: Vec<PathBuf> = Vec::new();
+                match see_dir(dir, &mut list) {
+                    Ok(_) => (),
+                    Err(_e) => {
+                        return WngResult::Err(ErrType::ReadingError, "Failed to read directory")
                     }
                 }
-
                 // TODO : TRY TO FIND LIB & MOVE IT IN SRC/
 
                 WngResult::Ok
