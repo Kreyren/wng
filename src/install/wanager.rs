@@ -170,7 +170,7 @@ impl Wanager {
                     true => (),
                 }
 
-                // TODO : TRY TO FIND LIB & MOVE IT IN SRC/
+                // MOVE LIB/ TO SRC
 
                 WngResult::Ok
             }
