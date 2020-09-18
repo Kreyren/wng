@@ -36,11 +36,9 @@ impl<'a> Source<'a> {
 
 pub enum ErrType {
     RepoNotFound,
-    FileNotFound,
     NoFolder,
-    CurlError,
+    MovingError,
     NameError,
-    CreationError,
     ReadingError,
     RenameError,
     VCSNotFound,
@@ -59,37 +57,42 @@ impl Wanager {
         }
         // USE GITHUB API TO CURL REPO AND UNPACK IT WITH 7Z
 
+        println!("{}/{}", splited[0], splited[1]);
         match source {
             Source::GitHub(_repo) => {
                 Command::new("curl")
                     .arg(&format!(
-                        "https://api.github.com/repos/{}/{}/zipball/master",
+                        "https://api.github.com/repos/{}/{}/tarball/master",
                         splited[0], splited[1]
                     ))
                     .arg("-o")
                     .arg(&format!("{}.tar", splited[1]))
-                    .output()
+                    .status()
                     .expect("Failed to run command");
 
-                let v: Value = match serde_json::from_str(
-                    &lines_from_file(&format!("{}.tar", splited[1])).join("\n"),
-                ) {
-                    Ok(()) => serde_json::from_str(
-                        &lines_from_file(&format!("{}.tar", splited[1])).join("\n"),
-                    )
-                    .unwrap(),
+                let mut parsed: bool = false;
+
+                let v: Value = match serde_json::from_str(&lines_from_file(&format!("{}.tar", splited[1])).join("\n")) {
+                    Ok(()) => {
+                        parsed = true;
+                        serde_json::from_str(&lines_from_file(&format!("{}.tar", splited[1])).join("\n")).unwrap()
+                    },
                     Err(_e) => {
-                        return WngResult::Err(ErrType::ReadingError, "Failed to parse tarball")
+                        parsed = false;
+                        serde_json::from_str("{\"name\":\"did not worked\"}").unwrap()
                     }
                 };
+                println!("{}", parsed); // DEBUGe
 
-                if v["message"] != Value::Null && v["message"] == "\"Not Found\"" {
-                    return WngResult::Err(ErrType::RepoNotFound, "Repo does not exists");
+                if parsed {
+                    if v["message"] != Value::Null && v["message"] == "\"Not Found\"" {
+                        return WngResult::Err(ErrType::RepoNotFound, "Repo does not exists");
+                    }
                 }
 
                 Command::new("tar")
-                    .arg("-xvf")
-                    .arg(&format!("{}.tar", splited[1]));
+                    .arg("-xvf").arg(&format!("{}.tar", splited[1])).status().expect("Failed to unpack");
+
                 let dir: PathBuf = match env::current_dir() {
                     Ok(b) => b,
                     Err(_e) => {
@@ -104,7 +107,7 @@ impl Wanager {
                 match see_dir(dir, &mut list, true) {
                     Ok(_) => (),
                     Err(_e) => {
-                        return WngResult::Err(ErrType::ReadingError, "Failed to read directory")
+                        return WngResult::Err(ErrType::ReadingError, "Failed to read directory l108")
                     }
                 }
 
@@ -150,8 +153,9 @@ impl Wanager {
                 let mut inside: Vec<PathBuf> = Vec::new();
                 match see_dir(inside_dir, &mut inside, true) {
                     Ok(_) => (),
-                    Err(_e) => {
-                        return WngResult::Err(ErrType::ReadingError, "Failed to read directory")
+                    Err(e) => {
+                        println!("{}",e);
+                        return WngResult::Err(ErrType::ReadingError, "Failed to read directory l155");
                     }
                 }
 
@@ -165,12 +169,25 @@ impl Wanager {
                 }
                 match libexists {
                     false => {
-                        return WngResult::Err(ErrType::FileNotFound, "Failed to find lib inside")
+                        return WngResult::Err(
+                            ErrType::NoFolder,
+                            "Failed to find lib/ inside the repo",
+                        )
                     }
                     true => (),
                 }
 
                 // MOVE LIB/ TO SRC
+                match Command::new("mv")
+                    .arg(&format!("{}-{}", splited[0], splited[1]))
+                    .arg(&format!("src/{}-{}", splited[0], splited[1]))
+                    .status()
+                {
+                    Ok(_) => (),
+                    Err(_e) => {
+                        return WngResult::Err(ErrType::MovingError, "Failed to move lib/ to src/")
+                    }
+                };
 
                 WngResult::Ok
             }

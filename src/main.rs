@@ -40,35 +40,13 @@ use serde_json::{Result, Value};
 #[cfg(test)]
 mod test {
     use super::*;
+    use std::fs::File;
 
     #[test]
-    fn not_found() -> Result<()> {
-        let curling = Command::new("curl")
-            .arg("https://api.github.com/repos/wafelack/dict/tarball/master")
-            .arg("-o")
-            .arg("test.tar")
-            .output()
-            .expect("Failed to run command");
-        println!("{}", str::from_utf8(&curling.stderr).unwrap());
-        let v: Value = serde_json::from_str(&lines_from_file("test.tar").join("\n"))?;
-        if v["message"] != Value::Null {
-            println!("{}", v["message"]);
-        } else {
-            println!("It's ok")
-        }
-
+    fn installation() -> std::io::Result<()> {
+        File::create("project.json")?;
+        install("github:wafelack/dict")?;
         Ok(())
-
-        /*
-            {
-                "message": "Not Found",
-                "documentation_url": "https://docs.github.com/rest/reference/repos#download-a-repository-archive"
-            }
-            Vérifier que le .zip n'est pas égal à ça ^ pour voir si le repeo existe puis si il existe, le déziper, renommer le dossier
-        (faut le trouver avec startswith) puis copier le dossier lib (verifier qu'il existe oc) dans src/ et le renommer par le nom
-        du repo
-
-            */
     }
 }
 
