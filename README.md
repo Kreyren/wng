@@ -78,6 +78,7 @@
 - [Features](#features)
   - [Reinitialisation](#to-reinitialize-a-project)
   - [Header](#to-create-a-header-file)
+  - [Tests](#to-run-tests)
 - [Libraries](#libraries)
   - [Install](#to-install-a-library)
   - [Publish](#publish-your-library)
@@ -151,6 +152,14 @@ $ cat foo.h
 
 #endif /*_FOO_H*/
 ```
+
+### To run tests
+
+Tests have to be in tests/tests.c
+
+To use functions that are in src/ files, just include the header with `#include "../src/<header>.h`
+
+Then you can run them with `wng test`
 
 ## Libraries
 
