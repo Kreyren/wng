@@ -1,10 +1,8 @@
-use lines_from_file::lines_from_file;
 use std::env;
-use std::io::{self, Write, stdin};
+use std::io::{self, Write};
 use std::path::Path;
 #[allow(unused_imports)]
 use std::process::exit;
-use std::process::Command;
 use std::str;
 
 mod build;
@@ -36,8 +34,6 @@ impl Version {
         println!("Wanager by Wafelack <contactme.wafelack@protonmail.ch>, Licensed under GPL-v3.0, Version {} - {}.{}.{}", self.os, self.main, self.discriminator, self.third);
     }
 }
-
-use serde_json::{Result, Value};
 
 #[cfg(test)]
 mod test {

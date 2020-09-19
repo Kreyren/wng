@@ -9,7 +9,7 @@ pub fn test<'a>() -> Result<(), &'a str> {
     let mut list: Vec<PathBuf> = Vec::new();
     match see_dir(PathBuf::from("src"), &mut list, true) {
         Ok(_) => (),
-        Err(e) => return Err("Failed to read dir"),
+        Err(_e) => return Err("Failed to read dir"),
     }
     let mut files = String::new();
     for l in list {
