@@ -41,15 +41,7 @@ use serde_json::{Result, Value};
 
 #[cfg(test)]
 mod test {
-    use super::*;
-    use std::fs::File;
 
-    #[test]
-    fn installation() -> std::io::Result<()> {
-        File::create("project.json")?;
-        install("github:wafelack/dict")?;
-        Ok(())
-    }
 }
 
 fn main() {
