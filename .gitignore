@@ -5,3 +5,4 @@ Cargo.lock
 release/
 .idea/
 clean.sh
+tests/
