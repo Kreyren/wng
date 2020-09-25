@@ -108,19 +108,14 @@ impl Wanager {
                 let mut libexists: bool = false;
 
                 for i in inside {
-                    if i.to_str().unwrap() == "lib" && i.is_dir() {
+                    if i.to_str().unwrap() == "lib" && i.is_dir() && !libexists {
                         let lib: PathBuf = i;
                         libexists = true;
                     }
                 }
                 match libexists {
-                    false => {
-                        return WngResult::Err(
-                            ErrType::NoFolder,
-                            "Failed to find lib/ inside the repo",
-                        )
-                    }
-                    true => (),
+                    false => (),
+                    true => Command::new("mv").arg(format!("src/{}/lib/", splited[1])).arg("lib").status().expect("failed to move from src/<libname>/lib to lib/"),
                 }
                 WngResult::Ok
             }
