@@ -3,7 +3,7 @@ use see_directory::see_dir;
 use serde_json::*;
 use std::env;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
 use std::process::Command;
 use std::str;
 
@@ -57,16 +57,18 @@ impl Wanager {
         }
         // USE GITHUB API TO CURL REPO AND UNPACK IT WITH 7Z
 
-        println!("{}/{}", splited[0], splited[1]);
+        println!("'{}'", splited[0]);
+        println!("'{}'", splited[1]);
         match source {
             Source::GitHub(_repo) => {
+
+                let link = format!("https://api.github.com/repos/{}/{}/tarball/master", splited[0], splited[1]);
+                let dict = format!("{}.tar.gz", splited[1]);
+
                 Command::new("curl")
-                    .arg(&format!(
-                        "https://api.github.com/repos/{}/{}/tarball/master",
-                        splited[0], splited[1]
-                    ))
+                    .arg(link)
                     .arg("-o")
-                    .arg(&format!("{}.tar", splited[1]))
+                    .arg(dict.clone())
                     .status()
                     .expect("Failed to run command");
 
@@ -82,7 +84,7 @@ impl Wanager {
                         serde_json::from_str("{\"name\":\"did not worked\"}").unwrap()
                     }
                 };
-                println!("{}", parsed); // DEBUGe
+                println!("{}", parsed); // DEBUG
 
                 if parsed {
                     if v["message"] != Value::Null && v["message"] == "\"Not Found\"" {
@@ -91,67 +93,11 @@ impl Wanager {
                 }
 
                 Command::new("tar")
-                    .arg("-xvf").arg(&format!("{}.tar", splited[1])).status().expect("Failed to unpack");
+                    .arg("-xzf").arg(dict.clone()).arg("-C").arg(format!("src/{}", splited[1])).status().expect("Failed to unpack");
 
-                let dir: PathBuf = match env::current_dir() {
-                    Ok(b) => b,
-                    Err(_e) => {
-                        return WngResult::Err(
-                            ErrType::ReadingError,
-                            "Error while reading current dir",
-                        )
-                    }
-                };
 
-                let mut list: Vec<PathBuf> = Vec::new();
-                match see_dir(dir, &mut list, true) {
-                    Ok(_) => (),
-                    Err(_e) => {
-                        return WngResult::Err(ErrType::ReadingError, "Failed to read directory l108")
-                    }
-                }
-
-                for element in list {
-                    if element
-                        .to_str()
-                        .unwrap()
-                        .starts_with(&format!("{}-{}", splited[0], splited[1]))
-                    {
-                        if element.is_dir() {
-                            match fs::rename(
-                                element.to_str().unwrap(),
-                                &format!("{}-{}", splited[0], splited[1]),
-                            ) {
-                                Ok(_) => (),
-                                Err(_e) => {
-                                    return WngResult::Err(
-                                        ErrType::RenameError,
-                                        "failed to rename folder",
-                                    )
-                                }
-                            };
-                        }
-                    }
-                }
-
-                let mut inside_dir: PathBuf = match env::current_dir() {
-                    Ok(b) => b,
-                    Err(_e) => {
-                        return WngResult::Err(
-                            ErrType::ReadingError,
-                            "Error while reading current dir",
-                        )
-                    }
-                };
-
-                inside_dir = PathBuf::from(&format!(
-                    "{}\\{}",
-                    inside_dir.to_str().unwrap(),
-                    &format!("{}-{}", splited[0], splited[1])
-                ));
-
-                let mut inside: Vec<PathBuf> = Vec::new();
-                match see_dir(inside_dir, &mut inside, true) {
+                let mut inside: Vec<PathBuf> = vec![];
+                match see_dir(PathBuf::from(format!("src/{}", splited[1])), &mut inside, true) {
                     Ok(_) => (),
                     Err(e) => {
                         println!("{}",e);
@@ -176,19 +122,6 @@ impl Wanager {
                     }
                     true => (),
                 }
-
-                // MOVE LIB/ TO SRC
-                match Command::new("mv")
-                    .arg(&format!("{}-{}", splited[0], splited[1]))
-                    .arg(&format!("src/{}-{}", splited[0], splited[1]))
-                    .status()
-                {
-                    Ok(_) => (),
-                    Err(_e) => {
-                        return WngResult::Err(ErrType::MovingError, "Failed to move lib/ to src/")
-                    }
-                };
-
                 WngResult::Ok
             }
             _ => return WngResult::Err(ErrType::VCSNotFound, "Source does not exists"),
