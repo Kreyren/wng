@@ -63,12 +63,12 @@ impl Wanager {
             Source::GitHub(_repo) => {
 
                 let link = format!("https://api.github.com/repos/{}/{}/tarball/master", splited[0], splited[1]);
-                let dict = format!("{}.tar.gz", splited[1]);
+                let archive = format!("{}.tar.gz", splited[1]);
 
                 Command::new("curl")
                     .arg(link)
                     .arg("-o")
-                    .arg(dict.clone())
+                    .arg(archive.clone())
                     .status()
                     .expect("Failed to run command");
 
@@ -93,7 +93,7 @@ impl Wanager {
                 }
 
                 Command::new("tar")
-                    .arg("-xzf").arg(dict.clone()).arg("-C").arg(format!("src/{}", splited[1])).status().expect("Failed to unpack");
+                    .arg("-xzf").arg(archive.clone()).arg("-C").arg(format!("src/{}", splited[1])).status().expect("Failed to unpack");
 
 
                 let mut inside: Vec<PathBuf> = vec![];
@@ -115,7 +115,9 @@ impl Wanager {
                 }
                 match libexists {
                     false => (),
-                    true => Command::new("mv").arg(format!("src/{}/lib/", splited[1])).arg("lib").status().expect("failed to move from src/<libname>/lib to lib/"),
+                    true => {
+                        Command::new("mv").arg(format!("src/{}/lib/", splited[1])).arg("lib").spawn().expect("failed to move from src/<libname>/lib to lib/");
+                    },
                 }
                 WngResult::Ok
             }
