@@ -112,7 +112,7 @@ $ wng new <project_name>
 $ cd project_name/
 ```
 
-Two folders have been created, `src/` and `build/`
+Three folders have been created, `tests/`, `src/` and `build/`
 
 In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
