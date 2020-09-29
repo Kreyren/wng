@@ -3,7 +3,7 @@ use see_directory::see_dir;
 use serde_json::*;
 use std::env;
 use std::fs;
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::str;
 
@@ -62,8 +62,10 @@ impl Wanager {
         println!("'{}'", splited[1]);
         match source {
             Source::GitHub(_repo) => {
-
-                let link = format!("https://api.github.com/repos/{}/{}/tarball/master", splited[0], splited[1]);
+                let link = format!(
+                    "https://api.github.com/repos/{}/{}/tarball/master",
+                    splited[0], splited[1]
+                );
                 let archive = format!("{}.tar.gz", splited[1]);
 
                 Command::new("curl")
@@ -75,11 +77,16 @@ impl Wanager {
 
                 let mut parsed: bool = false;
 
-                let v: Value = match serde_json::from_str(&lines_from_file(&format!("{}.tar", splited[1])).join("\n")) {
+                let v: Value = match serde_json::from_str(
+                    &lines_from_file(&format!("{}.tar", splited[1])).join("\n"),
+                ) {
                     Ok(()) => {
                         parsed = true;
-                        serde_json::from_str(&lines_from_file(&format!("{}.tar", splited[1])).join("\n")).unwrap()
-                    },
+                        serde_json::from_str(
+                            &lines_from_file(&format!("{}.tar", splited[1])).join("\n"),
+                        )
+                        .unwrap()
+                    }
                     Err(_e) => {
                         parsed = false;
                         serde_json::from_str("{\"name\":\"did not worked\"}").unwrap()
@@ -94,36 +101,46 @@ impl Wanager {
                 }
 
                 Command::new("tar")
-                    .arg("-xzf").arg(archive.clone()).arg("-C").arg(format!("src/{}", splited[1])).status().expect("Failed to unpack");
-
+                    .arg("-xzf")
+                    .arg(archive.clone())
+                    .arg("-C")
+                    .arg(format!("src/{}", splited[1]))
+                    .status()
+                    .expect("Failed to unpack");
 
                 let mut inside: Vec<PathBuf> = vec![];
-                match see_dir(PathBuf::from(format!("src/{}", splited[1])), &mut inside, true) {
+                match see_dir(
+                    PathBuf::from(format!("src/{}", splited[1])),
+                    &mut inside,
+                    true,
+                ) {
                     Ok(_) => (),
                     Err(e) => {
-                        println!("{}",e);
-                        return WngResult::Err(ErrType::ReadingError, "Failed to read directory l155");
+                        println!("{}", e);
+                        return WngResult::Err(
+                            ErrType::ReadingError,
+                            "Failed to read directory l155",
+                        );
                     }
                 }
 
                 let mut libexists: bool = false;
 
                 for i in inside {
-<<<<<<< HEAD
                     if i.to_str().unwrap() == "lib" && i.is_dir() && !libexists {
                         let lib: PathBuf = i;
-=======
-                    if i.to_str().unwrap() == "lib" && i.is_dir() {
-                        let _lib: PathBuf = i;
->>>>>>> master
                         libexists = true;
                     }
                 }
                 match libexists {
                     false => (),
                     true => {
-                        Command::new("mv").arg(format!("src/{}/lib/", splited[1])).arg("lib").spawn().expect("failed to move from src/<libname>/lib to lib/");
-                    },
+                        Command::new("mv")
+                            .arg(format!("src/{}/lib/", splited[1]))
+                            .arg("lib")
+                            .spawn()
+                            .expect("failed to move from src/<libname>/lib to lib/");
+                    }
                 }
                 WngResult::Ok
             }
