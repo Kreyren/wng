@@ -1,10 +1,8 @@
-use lines_from_file::lines_from_file;
 use std::env;
 use std::io::{self, Write};
 use std::path::Path;
 #[allow(unused_imports)]
 use std::process::exit;
-use std::process::Command;
 use std::str;
 
 mod build;
@@ -14,6 +12,7 @@ mod install;
 mod query;
 mod reinit;
 mod run;
+mod testing;
 
 use build::{build, buildhard};
 use create::create;
@@ -22,6 +21,7 @@ use install::install;
 use query::query;
 use reinit::reinit;
 use run::run;
+use testing::test;
 
 struct Version {
     os: String,
@@ -35,19 +35,9 @@ impl Version {
     }
 }
 
-use serde_json::{Result, Value};
-
 #[cfg(test)]
 mod test {
-    use super::*;
-    use std::fs::File;
 
-    #[test]
-    fn installation() -> std::io::Result<()> {
-        File::create("project.json")?;
-        install("github:wafelack/dict")?;
-        Ok(())
-    }
 }
 
 fn main() {
@@ -144,6 +134,16 @@ fn main() {
                 return;
             }
             query(&argv[2]);
+        }
+        "test" => {
+            if !Path::new("tests/tests.c").exists() {
+                println!("Create file `tests/tests.c` before testing");
+                std::process::exit(-2);
+            }
+            match test() {
+                Ok(()) => (),
+                Err(s) => println!("{}", s),
+            }
         }
         _ => println!("Usage: wanager <command> [OPTIONS]"),
     }

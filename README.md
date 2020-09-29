@@ -14,7 +14,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Wmanage/wng?color=%23888800&label=Latest%20release&style=flat-square)
 ![Github All Releases](https://img.shields.io/github/downloads/Wmanage/wng/total?color=%2300ff00&label=Downloads&style=flat-square)
 
-</div>    
+</div>
 
 ---
 
@@ -69,13 +69,29 @@
 
 <br>
 
+- [Setup](#setup)
+  - [Prerequisties](#prerequisties)
+  - [Windows](#windows)
+  - [Unix](#unix)
+- [Project creation](#create-a-new-project)
+- [Compile & Run](#compile-and-run)
+- [Features](#features)
+  - [Reinitialisation](#to-reinitialize-a-project)
+  - [Header](#to-create-a-header-file)
+  - [Tests](#to-run-tests)
+- [Libraries](#libraries)
+  - [Install](#to-install-a-library)
+  - [Publish](#publish-your-library)
+
+<br>
+
 # How to use
 
 ## Setup
 
 ### Prerequisties
 
-Make sure to have [Git](https://git-scm.com), [gcc](https://gcc.gnu.org/) & [curl](https://curl.haxx.se/) installed on your computer.
+Make sure to have [Git](https://git-scm.com),[tar](https://www.gnu.org/software/tar/), [gcc](https://gcc.gnu.org/) & [curl](https://curl.haxx.se/) installed on your computer.
 
 ### Windows
 
@@ -137,6 +153,16 @@ $ cat foo.h
 #endif /*_FOO_H*/
 ```
 
+### To run tests
+
+Tests have to be in tests/tests.c
+
+To use functions that are in src/ files, just include the header with `#include "../src/<header>.h`
+
+Then you can run them with `wng test`
+
+## Libraries
+
 ### To install a library
 
 ```
@@ -146,6 +172,6 @@ $ wng install <lib_name>
 
 <i>Note: To verify if a library exists, run</i> `wng query <lib_name>`
 
-## Publish your library
+### Publish your library
 
-I'm rebuilding package management system, so you cannot publish libraries for now
+Not available currently

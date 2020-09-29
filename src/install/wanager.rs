@@ -50,6 +50,7 @@ pub enum WngResult<'a> {
 }
 
 impl Wanager {
+    #[allow(unused_assignments)]
     pub fn install(&self, source: Source) -> WngResult {
         let splited: Vec<&str> = source.unwrap().split('/').collect();
         if splited.len() != 2 {
@@ -108,8 +109,13 @@ impl Wanager {
                 let mut libexists: bool = false;
 
                 for i in inside {
+<<<<<<< HEAD
                     if i.to_str().unwrap() == "lib" && i.is_dir() && !libexists {
                         let lib: PathBuf = i;
+=======
+                    if i.to_str().unwrap() == "lib" && i.is_dir() {
+                        let _lib: PathBuf = i;
+>>>>>>> master
                         libexists = true;
                     }
                 }
