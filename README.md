@@ -87,7 +87,8 @@
 
 # How to use
 
-## Setup
+<details>
+    <summary><h2>Setup</h2></summary>
 
 ### Prerequisties
 
@@ -101,9 +102,13 @@ First download the latest release of wanager, put it in `C:\Program Files` and a
 
 Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/tree/master/install.sh)
 
+</details>
+
 <br>
 
-## Create a new project
+<details>
+    
+<summary><h2>Create a new project</h2></summary>
 
 Open the command prompt and run :
 
@@ -116,9 +121,12 @@ Three folders have been created, `tests/`, `src/` and `build/`
 
 In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
+</details>
+
 <br>
 
-## Compile and Run
+<details>
+<summary><h2>Compile and Run</h2></summary
 
 ```
 $ wng build
@@ -129,9 +137,13 @@ Hello World
 
 NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`
 
+</details>
+
 <br>
 
-## Features
+<details>
+    <summary><h2>Features</h2></summary>
+    
 
 ### To reinitialize a project
 
@@ -161,7 +173,10 @@ To use functions that are in src/ files, just include the header with `#include 
 
 Then you can run them with `wng test`
 
-## Libraries
+</details>
+
+<details>
+    <summary><h2>Libraries</h2></summary>
 
 ### To install a library
 
@@ -175,3 +190,4 @@ $ wng install <lib_name>
 ### Publish your library
 
 Not available currently
+</details>
