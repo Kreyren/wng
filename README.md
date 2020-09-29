@@ -87,9 +87,9 @@
 
 # How to use
 
-<details>
-    <summary><h2>Setup</h2></summary>
 
+<h2>Setup</h2>
+<details>
 ### Prerequisties
 
 Make sure to have [Git](https://git-scm.com),[tar](https://www.gnu.org/software/tar/), [gcc](https://gcc.gnu.org/) & [curl](https://curl.haxx.se/) installed on your computer.
@@ -106,9 +106,11 @@ Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/t
 
 <br>
 
-<details>
+
     
-<summary><h2>Create a new project</h2></summary>
+<h2>Create a new project</h2>
+
+<details>
 
 Open the command prompt and run :
 
@@ -125,8 +127,10 @@ In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
 <br>
 
+
+<h2>Compile and Run</h2>
+
 <details>
-<summary><h2>Compile and Run</h2></summary
 
 ```
 $ wng build
@@ -141,8 +145,10 @@ NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -W
 
 <br>
 
-<details>
-    <summary><h2>Features</h2></summary>
+
+<h2>Features</h2>
+    
+    <details>
     
 
 ### To reinitialize a project
@@ -175,8 +181,10 @@ Then you can run them with `wng test`
 
 </details>
 
+
+<h2>Libraries</h2>
+
 <details>
-    <summary><h2>Libraries</h2></summary>
 
 ### To install a library
 
