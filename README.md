@@ -89,7 +89,7 @@
 
 
 <h2>Setup</h2>
-<details>
+
 ### Prerequisties
 
 Make sure to have [Git](https://git-scm.com),[tar](https://www.gnu.org/software/tar/), [gcc](https://gcc.gnu.org/) & [curl](https://curl.haxx.se/) installed on your computer.
@@ -102,7 +102,7 @@ First download the latest release of wanager, put it in `C:\Program Files` and a
 
 Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/tree/master/install.sh)
 
-</details>
+
 
 <br>
 
@@ -110,7 +110,7 @@ Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/t
     
 <h2>Create a new project</h2>
 
-<details>
+
 
 Open the command prompt and run :
 
@@ -123,14 +123,14 @@ Three folders have been created, `tests/`, `src/` and `build/`
 
 In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
-</details>
+
 
 <br>
 
 
 <h2>Compile and Run</h2>
 
-<details>
+
 
 ```
 $ wng build
@@ -141,14 +141,14 @@ Hello World
 
 NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`
 
-</details>
+
 
 <br>
 
 
 <h2>Features</h2>
     
-    <details>
+
     
 
 ### To reinitialize a project
@@ -179,12 +179,11 @@ To use functions that are in src/ files, just include the header with `#include 
 
 Then you can run them with `wng test`
 
-</details>
 
 
 <h2>Libraries</h2>
 
-<details>
+
 
 ### To install a library
 
@@ -198,4 +197,4 @@ $ wng install <lib_name>
 ### Publish your library
 
 Not available currently
-</details>
+
