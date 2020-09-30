@@ -14,7 +14,7 @@ mod reinit;
 mod run;
 mod testing;
 
-use build::{build, buildhard};
+use build::{build, buildcustom, buildhard};
 use create::create;
 use header::header;
 use install::install;
@@ -36,9 +36,7 @@ impl Version {
 }
 
 #[cfg(test)]
-mod test {
-
-}
+mod test {}
 
 fn main() {
     let ver = Version {
@@ -70,8 +68,10 @@ fn main() {
             }
             if argc == 3 && argv[2].as_str() == "--release" {
                 build();
-            } else {
+            } else if argc == 3 && argv[2].as_str() == "--release" {
                 buildhard();
+            } else if argc == 3 && argv[2].as_str() == "--custom" {
+                buildcustom();
             }
         }
         "run" => {
