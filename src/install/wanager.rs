@@ -3,6 +3,7 @@ use see_directory::see_dir;
 use serde_json::*;
 use std::env;
 use std::fs::File;
+use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::str;
@@ -43,6 +44,7 @@ pub enum ErrType {
     RenameError,
     VCSNotFound,
     NotFound,
+    WritingError,
 }
 
 pub enum WngResult<'a> {
@@ -151,7 +153,12 @@ impl Wanager {
                         return WngResult::Err(ErrType::ReadingError, "Failed to open deps.dat")
                     }
                 };
-                dependencies.write_all(splited[1].as_bytes());
+                match dependencies.write_all(splited[1].as_bytes()) {
+                    Ok(_) => (),
+                    Err(e) => {
+                        return WngResult::Err(ErrType::WritingError, "Failed to write dependency")
+                    }
+                };
                 WngResult::Ok
             }
             _ => return WngResult::Err(ErrType::VCSNotFound, "Source does not exists"),
