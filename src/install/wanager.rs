@@ -1,6 +1,5 @@
 use lines_from_file::lines_from_file;
 use see_directory::see_dir;
-use serde_json::*;
 use std::env;
 use std::fs::File;
 use std::io::Write;
@@ -35,133 +34,28 @@ impl<'a> Source<'a> {
     }
 }
 
-pub enum ErrType {
-    RepoNotFound,
-    NoFolder,
-    MovingError,
-    NameError,
-    ReadingError,
-    RenameError,
-    VCSNotFound,
-    NotFound,
-    WritingError,
-}
-
-pub enum WngResult<'a> {
-    Ok,
-    Err(ErrType, &'a str),
-}
-
 impl Wanager {
-    pub fn install(&self, source: Source) -> WngResult {
+    pub fn install<'a>(&self, source: Source) {
         let splited: Vec<&str> = source.unwrap().split('/').collect();
         if splited.len() != 2 {
-            return WngResult::Err(ErrType::NameError, "Not a valid repository");
+            println!("Not a valid repository");
+            std::process::exit(-1);
         }
-        // USE GITHUB API TO CURL REPO AND UNPACK IT WITH 7Z
-
-        println!("'{}'", splited[0]);
-        println!("'{}'", splited[1]);
         match source {
             Source::GitHub(_repo) => {
-                let link = format!(
-                    "https://api.github.com/repos/{}/{}/tarball/master",
-                    splited[0], splited[1]
-                );
-                let archive = format!("{}.tar.gz", splited[1]);
-
-                Command::new("curl")
+                let link = format!("https://github.com/{}/{}/", splited[0], splited[1]);
+                let cloning = Command::new("git")
+                    .arg("clone")
                     .arg(link)
-                    .arg("-o")
-                    .arg(archive.clone())
-                    .status()
-                    .expect("Failed to run command");
+                    .output()
+                    .expect("Failed to git clone");
 
-                let mut parsed: bool = false;
-
-                let v: Value = match serde_json::from_str(
-                    &lines_from_file(&format!("{}.tar", splited[1])).join("\n"),
-                ) {
-                    Ok(()) => {
-                        parsed = true;
-                        serde_json::from_str(
-                            &lines_from_file(&format!("{}.tar", splited[1])).join("\n"),
-                        )
-                        .unwrap()
-                    }
-                    Err(_e) => {
-                        parsed = false;
-                        serde_json::from_str("{\"name\":\"did not worked\"}").unwrap()
-                    }
-                };
-                println!("{}", parsed); // DEBUG
-
-                if parsed {
-                    if v["message"] != Value::Null && v["message"] == "\"Not Found\"" {
-                        return WngResult::Err(ErrType::RepoNotFound, "Repo does not exists");
-                    }
+                if cloning.status.code() == Some(128) {
+                    println!("Error, repository not found");
+                    std::process::exit(-1);
                 }
-
-                Command::new("tar")
-                    .arg("-xzf")
-                    .arg(archive.clone())
-                    .arg("-C")
-                    .arg(format!("src/{}", splited[1]))
-                    .status()
-                    .expect("Failed to unpack");
-
-                let mut inside: Vec<PathBuf> = vec![];
-                match see_dir(
-                    PathBuf::from(format!("src/{}", splited[1])),
-                    &mut inside,
-                    true,
-                ) {
-                    Ok(_) => (),
-                    Err(e) => {
-                        println!("{}", e);
-                        return WngResult::Err(
-                            ErrType::ReadingError,
-                            "Failed to read directory l155",
-                        );
-                    }
-                }
-
-                let mut libexists: bool = false;
-
-                for i in inside {
-                    if i.to_str().unwrap() == "lib" && i.is_dir() && !libexists {
-                        let lib: PathBuf = i;
-                        libexists = true;
-                    }
-                }
-                match libexists {
-                    false => (),
-                    true => {
-                        Command::new("mv")
-                            .arg(format!("src/{}/lib/", splited[1]))
-                            .arg("lib")
-                            .spawn()
-                            .expect("failed to move from src/<libname>/lib to lib/");
-                    }
-                }
-                if !Path::new("deps.dat").exists() {
-                    return WngResult::Err(ErrType::NotFound, "Source does not exists");
-                }
-                let mut dependencies = match File::open("deps.dat") {
-                    Ok(f) => f,
-                    Err(e) => {
-                        return WngResult::Err(ErrType::ReadingError, "Failed to open deps.dat")
-                    }
-                };
-                match dependencies.write_all(splited[1].as_bytes()) {
-                    Ok(_) => (),
-                    Err(e) => {
-                        return WngResult::Err(ErrType::WritingError, "Failed to write dependency")
-                    }
-                };
-                WngResult::Ok
             }
-            _ => return WngResult::Err(ErrType::VCSNotFound, "Source does not exists"),
+            _ => (),
         }
     }
 }

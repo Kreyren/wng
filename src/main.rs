@@ -35,17 +35,15 @@ impl Version {
     }
 }
 
-use serde_json::{Result, Value};
-
 #[cfg(test)]
 mod test {
     use super::*;
     use std::fs::File;
 
     #[test]
-    fn installation() -> std::io::Result<()> {
+    fn installationfailing() -> std::io::Result<()> {
         File::create("project.json")?;
-        install("github:wafelack/dict")?;
+        install("github:wafe/dict");
         Ok(())
     }
 }
@@ -134,10 +132,7 @@ fn main() {
             if argc != 3 {
                 return;
             }
-            match install(&argv[2]) {
-                Ok(_) => (),
-                Err(e) => println!("{}", e),
-            }
+            install(&argv[2]);
         }
         "query" => {
             if argc != 3 {
