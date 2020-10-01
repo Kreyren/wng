@@ -54,6 +54,10 @@ impl Wanager {
                     println!("Error, repository not found");
                     std::process::exit(-1);
                 }
+                if !Path::new(&format!("{}", splited[1])).exists() {
+                    println!("Error, failed to clone repo into a folder");
+                    std::process::exit(-2);
+                }
             }
             _ => (),
         }
