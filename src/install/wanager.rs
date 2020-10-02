@@ -1,5 +1,7 @@
 use fs_extra;
+use see_directory::see_dir;
 use std::path::Path;
+use std::path::PathBuf;
 use std::process::Command;
 use std::str;
 
@@ -72,6 +74,15 @@ impl Wanager {
                     Ok(_) => (),
                     Err(e) => println!("{}", e),
                 }
+                match std::fs::remove_dir_all(splited[1]) {
+                    Ok(_) => (),
+                    Err(e) => {
+                        println!("{}", e);
+                        std::process::exit(-4);
+                    }
+                }
+
+                /* TODO : AVOID ACCESS DENIED FOR FILE REMOVAL */
             }
             _ => (),
         }
