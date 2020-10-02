@@ -1,6 +1,4 @@
 mod wanager;
-use std::fs;
-use std::io::{Error, ErrorKind};
 use std::path::Path;
 use wanager::*;
 

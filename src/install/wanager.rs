@@ -1,9 +1,4 @@
-use lines_from_file::lines_from_file;
-use see_directory::see_dir;
-use std::env;
-use std::fs::File;
-use std::io::Write;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::Command;
 use std::str;
 
@@ -57,6 +52,10 @@ impl Wanager {
                 if !Path::new(&format!("{}", splited[1])).exists() {
                     println!("Error, failed to clone repo into a folder");
                     std::process::exit(-2);
+                }
+                if !Path::new(&format!("{}/lib", splited[1])).exists() {
+                    println!("Error, please select repo with a valid format (https://github.com/wmanage/wng/blob/master/README.md#to-install-a-library if you don't know)");
+                    std::process::exit(-3);
                 }
             }
             _ => (),

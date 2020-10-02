@@ -1,10 +1,8 @@
-use lines_from_file::lines_from_file;
 use std::env;
 use std::io::{self, Write};
 use std::path::Path;
 #[allow(unused_imports)]
 use std::process::exit;
-use std::process::Command;
 use std::str;
 
 mod build;
@@ -40,6 +38,18 @@ mod test {
     use super::*;
     use std::fs::File;
 
+    #[test]
+    fn installsuccessful() -> std::io::Result<()> {
+        File::create("project.json")?;
+        install("github:wafelack/dict");
+        Ok(())
+    }
+    #[test]
+    fn libnotfound() -> std::io::Result<()> {
+        File::create("project.json")?;
+        install("github:wmanage/wmanage.github.io");
+        Ok(())
+    }
     #[test]
     fn installationfailing() -> std::io::Result<()> {
         File::create("project.json")?;
