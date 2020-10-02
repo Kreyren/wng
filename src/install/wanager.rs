@@ -1,3 +1,4 @@
+use fs_extra;
 use std::path::Path;
 use std::process::Command;
 use std::str;
@@ -56,6 +57,20 @@ impl Wanager {
                 if !Path::new(&format!("{}/lib", splited[1])).exists() {
                     println!("Error, please select repo with a valid format (https://github.com/wmanage/wng/blob/master/README.md#to-install-a-library if you don't know)");
                     std::process::exit(-3);
+                }
+                println!("From : '{}'", &format!("{}/lib", splited[1]));
+                println!("To : '{}'", &format!("src/{}", splited[1]));
+                match fs_extra::dir::move_dir(
+                    &format!("{}/lib/", splited[1]),
+                    "src",
+                    &fs_extra::dir::CopyOptions::new(),
+                ) {
+                    Ok(_) => (),
+                    Err(e) => println!("Failed to move dir : {}", e),
+                }
+                match std::fs::rename(&format!("src/lib"), &format!("src/{}", splited[1])) {
+                    Ok(_) => (),
+                    Err(e) => println!("{}", e),
                 }
             }
             _ => (),
