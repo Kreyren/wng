@@ -87,7 +87,6 @@
 
 # How to use
 
-
 <h2>Setup</h2>
 
 ### Prerequisties
@@ -102,15 +101,9 @@ First download the latest release of wanager, put it in `C:\Program Files` and a
 
 Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/tree/master/install.sh)
 
-
-
 <br>
 
-
-    
 <h2>Create a new project</h2>
-
-
 
 Open the command prompt and run :
 
@@ -123,14 +116,9 @@ Three folders have been created, `tests/`, `src/` and `build/`
 
 In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
-
-
 <br>
 
-
 <h2>Compile and Run</h2>
-
-
 
 ```
 $ wng build
@@ -141,15 +129,9 @@ Hello World
 
 NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`
 
-
-
 <br>
 
-
 <h2>Features</h2>
-    
-
-    
 
 ### To reinitialize a project
 
@@ -179,22 +161,18 @@ To use functions that are in src/ files, just include the header with `#include 
 
 Then you can run them with `wng test`
 
-
-
 <h2>Libraries</h2>
-
-
 
 ### To install a library
 
 ```
 $ cd yourproject/
-$ wng install <lib_name>
+$ wng install <source>:<username>/<repo_name>
 ```
 
-<i>Note: To verify if a library exists, run</i> `wng query <lib_name>`
+<i>Available sources are : `github`,`gitlab` & `bitbucket`</i>
+<i>NOTE : Repository has to have a `lib/` folder inside or wng will refuse to install it</i>
 
 ### Publish your library
 
-Not available currently
-
+Create a github repository in your project, library files have to be in a `lib/` folder
