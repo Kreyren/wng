@@ -86,7 +86,6 @@ pub fn create(name: &str) -> std::io::Result<()> {
     json.write_all(b"    \"version\" : \"0.1.0\",\n")?;
     json.write_all(b"    \"standard\" : \"C99\",\n")?;
     json.write_all(b"    \"author\" : \"Example <example@example.com>\",\n")?;
-    json.write_all(b"    \"dependencies\" : [  ]\n")?;
     json.write_all(b"}")?;
 
     Command::new("git")

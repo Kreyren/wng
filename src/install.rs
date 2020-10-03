@@ -1,25 +1,20 @@
 mod wanager;
-use std::fs;
-use std::io::{Error, ErrorKind};
 use std::path::Path;
 use wanager::Wanager;
 
 #[allow(unused_variables)]
-pub fn install(lib: &str) -> std::io::Result<()> {
+pub fn install(lib: &str) {
     let w = Wanager;
-    if !w.exists(lib) {
-        return Err(Error::new(ErrorKind::NotFound, "Library does not exists !"));
-    }
-    let links = w.get_link(lib);
-    if !Path::new("lock.wmg").exists() && !Path::new("deps.dat").exists() {
-        return Err(Error::new(ErrorKind::Other, "Not in a wanager project"));
-    }
-    match w.install(lib, links) {
-        Ok(_) => (),
-        Err(e) => println!("Library {} is already installed !", lib),
-    }
-    fs::write("deps.dat", lib.as_bytes())?;
-    println!("Library `{}` was succesfully installed in project !", lib);
+    if !Path::new("project.json").exists() {}
 
-    Ok(())
+    let source = match identify(lib) {
+        Source::Error(e) => {
+            println!("{}", e);
+            std::process::exit(-1);
+        }
+        _ => identify(lib),
+    };
+
+    w.install(source.clone());
+    println!("Library `{}` was succesfully installed !", source.unwrap());
 }

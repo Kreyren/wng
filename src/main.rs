@@ -35,11 +35,6 @@ impl Version {
     }
 }
 
-#[cfg(test)]
-mod test {
-
-}
-
 fn main() {
     let ver = Version {
         os: String::from("Windows"),
@@ -124,10 +119,7 @@ fn main() {
             if argc != 3 {
                 return;
             }
-            match install(&argv[2]) {
-                Ok(_) => (),
-                Err(e) => println!("{}", e),
-            }
+            install(&argv[2]);
         }
         "query" => {
             if argc != 3 {

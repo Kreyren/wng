@@ -12,7 +12,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/Wmanage/wng?color=%23aa1111&label=Stars&style=flat-square)
 ![GitHub](https://img.shields.io/github/license/Wmanage/wng?color=%23ffaa00&label=License&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Wmanage/wng?color=%23888800&label=Latest%20release&style=flat-square)
-![Github All Releases](https://img.shields.io/github/downloads/Wmanage/wng/total?color=%2300ff00&label=Downloads&style=flat-square)
+![Github All Releases](https://img.shields.io/github/downloads/Wmanage/wng/total?color=%2300aa00&label=Downloads&style=flat-square)
 
 </div>
 
@@ -87,7 +87,8 @@
 
 # How to use
 
-## Setup
+
+<h2>Setup</h2>
 
 ### Prerequisties
 
@@ -101,9 +102,15 @@ First download the latest release of wanager, put it in `C:\Program Files` and a
 
 Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/tree/master/install.sh)
 
+
+
 <br>
 
-## Create a new project
+
+    
+<h2>Create a new project</h2>
+
+
 
 Open the command prompt and run :
 
@@ -112,13 +119,18 @@ $ wng new <project_name>
 $ cd project_name/
 ```
 
-Two folders have been created, `src/` and `build/`
+Three folders have been created, `tests/`, `src/` and `build/`
 
 In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
+
+
 <br>
 
-## Compile and Run
+
+<h2>Compile and Run</h2>
+
+
 
 ```
 $ wng build
@@ -129,9 +141,15 @@ Hello World
 
 NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`
 
+
+
 <br>
 
-## Features
+
+<h2>Features</h2>
+    
+
+    
 
 ### To reinitialize a project
 
@@ -157,11 +175,15 @@ $ cat foo.h
 
 Tests have to be in tests/tests.c
 
-To use functions that are in src/ files, just include the header with `#include "../src/<header>.h`
+To use functions that are in src/ files, just include the header with `#include "../src/<header>.h`"
 
 Then you can run them with `wng test`
 
-## Libraries
+
+
+<h2>Libraries</h2>
+
+
 
 ### To install a library
 
@@ -175,3 +197,4 @@ $ wng install <lib_name>
 ### Publish your library
 
 Not available currently
+
