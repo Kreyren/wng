@@ -12,6 +12,7 @@ mod install;
 mod query;
 mod reinit;
 mod run;
+mod testing;
 
 use build::{build, buildhard};
 use create::create;
@@ -20,6 +21,7 @@ use install::install;
 use query::query;
 use reinit::reinit;
 use run::run;
+use testing::test;
 
 struct Version {
     os: String,
@@ -30,31 +32,6 @@ struct Version {
 impl Version {
     fn display(&self) {
         println!("Wanager by Wafelack <contactme.wafelack@protonmail.ch>, Licensed under GPL-v3.0, Version {} - {}.{}.{}", self.os, self.main, self.discriminator, self.third);
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-    use std::fs::File;
-
-    #[test]
-    fn installsuccessful() -> std::io::Result<()> {
-        File::create("project.json")?;
-        install("github:wafelack/dict");
-        Ok(())
-    }
-    #[test]
-    fn libnotfound() -> std::io::Result<()> {
-        File::create("project.json")?;
-        install("github:wmanage/wmanage.github.io");
-        Ok(())
-    }
-    #[test]
-    fn installationfailing() -> std::io::Result<()> {
-        File::create("project.json")?;
-        install("github:wafe/dict");
-        Ok(())
     }
 }
 
@@ -149,6 +126,16 @@ fn main() {
                 return;
             }
             query(&argv[2]);
+        }
+        "test" => {
+            if !Path::new("tests/tests.c").exists() {
+                println!("Create file `tests/tests.c` before testing");
+                std::process::exit(-2);
+            }
+            match test() {
+                Ok(()) => (),
+                Err(s) => println!("{}", s),
+            }
         }
         _ => println!("Usage: wanager <command> [OPTIONS]"),
     }

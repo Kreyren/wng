@@ -19,6 +19,9 @@ pub fn create(name: &str) -> std::io::Result<()> {
     let mut src: String = name.into();
     src.push_str("\\src");
 
+    let mut tests: String = name.clone().into();
+    tests.push_str("\\tests");
+
     let mut build: String = name.clone().into();
     build.push_str("\\build");
 
@@ -31,11 +34,15 @@ pub fn create(name: &str) -> std::io::Result<()> {
     let mut main: String = src.clone();
     main.push_str("\\main.c");
 
+    let mut testfile: String = tests.clone();
+    testfile.push_str("\\tests.c");
+
     mkdir(name, errmess, 1);
-    mkdir(&src, errmess, 2);
-    mkdir(&build, errmess, 3);
-    mkdir(&release, errmess, 4);
-    mkdir(&debug, errmess, 5);
+    mkdir(&tests, errmess, 2);
+    mkdir(&src, errmess, 3);
+    mkdir(&build, errmess, 4);
+    mkdir(&release, errmess, 5);
+    mkdir(&debug, errmess, 6);
 
     let mut mf = File::create(main)?;
     mf.write_all(b"#include <stdio.h>\n")?;
@@ -44,6 +51,14 @@ pub fn create(name: &str) -> std::io::Result<()> {
     mf.write_all(b"    puts(\"Hello, World !\");\n")?;
     mf.write_all(b"    return EXIT_SUCCESS;\n")?;
     mf.write_all(b"}")?;
+
+    let mut tf = File::create(testfile)?;
+    tf.write_all(b"#include <stdio.h>\n")?;
+    tf.write_all(b"#include <stdlib.h>\n")?;
+    tf.write_all(b"int main(void) {\n")?;
+    tf.write_all(b"    puts(\"Hello, World !\");\n")?;
+    tf.write_all(b"    return EXIT_SUCCESS;\n")?;
+    tf.write_all(b"}")?;
 
     let mut gitignore: String = name.clone().into();
     gitignore.push_str("\\.gitignore");

@@ -6,3 +6,4 @@ release/
 foo/
 .idea/
 clean.sh
+tests/
