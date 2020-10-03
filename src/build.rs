@@ -1,15 +1,9 @@
+use lines_from_file::lines_from_file;
 use serde_json::*;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
-use std::path::Path;
 use std::process::Command;
 
-fn lines_from_file(filename: impl AsRef<Path>) -> std::io::Result<Vec<String>> {
-    BufReader::new(File::open(filename)?).lines().collect()
-}
-
 pub fn build() {
-    let lines: Vec<String> = lines_from_file("deps.dat").expect("Failed to get lines from file");
+    let lines: Vec<String> = lines_from_file("deps.dat");
     let mut files: Vec<String> = Vec::new();
     for i in 0..lines.len() {
         files.push(format!("src\\{}\\*.c", lines[i]));
@@ -28,7 +22,7 @@ pub fn build() {
         .expect("Error while running compilation command.");
 }
 pub fn buildhard() {
-    let lines: Vec<String> = lines_from_file("deps.dat").expect("Failed to get lines from file");
+    let lines: Vec<String> = lines_from_file("deps.dat");
     let mut files: Vec<String> = Vec::new();
     for i in 0..lines.len() {
         files.push(format!("src\\{}\\*.c", lines[i]));
@@ -43,18 +37,32 @@ pub fn buildhard() {
         .expect("Error while running compilation command.");
 }
 pub fn buildcustom() {
-    let data = match File::open("project.json") {
-        Ok(f) => f,
-        Err(_e) => {
-            eprintln!("Failed to read data in project.json");
-            std::process::exit(-3);
-        }
-    };
-    let dat: Value = match serde_json::from_str(/* ADD A READING OF PROJECT.JSON*/) {
+    let dat: Value = match serde_json::from_str(&lines_from_file("project.json").join("\n")) {
         Ok(v) => v,
         Err(_e) => {
             eprintln!("Failed to parse json");
             std::process::exit(-2);
         }
     };
+    if dat["build"] == Value::Null {
+        eprintln!("No custom build profile found in project.json. Please add the field \"build\" with your build command in project.json");
+        std::process::exit(-3);
+    }
+    let fullcommand: &String = match &dat["build"] {
+        Value::String(s) => s,
+        _ => {
+            eprintln!("Build profile has to be a string !");
+            std::process::exit(2);
+        }
+    };
+    let splitedcommand: Vec<&str> = fullcommand.as_str().split(' ').collect();
+    let program = splitedcommand[0];
+    let mut args: Vec<&str> = vec![];
+    for i in 1..splitedcommand.len() {
+        args.push(splitedcommand[i]);
+    }
+    Command::new(program)
+        .args(&args)
+        .status()
+        .expect("Error while running compilation commands");
 }
