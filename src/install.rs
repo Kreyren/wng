@@ -1,5 +1,4 @@
 mod wanager;
-use std::io::{Error, ErrorKind};
 use std::path::Path;
 use wanager::*;
 
@@ -15,22 +14,18 @@ fn identify(lib: &str) -> Source {
 }
 
 #[allow(unused_variables)]
-pub fn install(lib: &str) -> std::io::Result<()> {
+pub fn install(lib: &str) {
     let w = Wanager;
-    if !Path::new("project.json").exists() {
-        return Err(Error::new(ErrorKind::Other, "Not in a wanager project"));
-    }
+    if !Path::new("project.json").exists() {}
 
     let source = match identify(lib) {
-        Source::Error(e) => return Err(Error::new(ErrorKind::Other, e)),
+        Source::Error(e) => {
+            println!("{}", e);
+            std::process::exit(-1);
+        }
         _ => identify(lib),
     };
 
-    match w.install(source.clone()) {
-        WngResult::Ok => (),
-        WngResult::Err(kind, message) => return Err(Error::new(ErrorKind::Other, message)),
-    }
+    w.install(source.clone());
     println!("Library `{}` was succesfully installed !", source.unwrap());
-
-    Ok(())
 }

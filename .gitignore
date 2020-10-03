@@ -3,6 +3,7 @@ tests/
 target/
 Cargo.lock
 release/
+foo/
 .idea/
 clean.sh
 tests/

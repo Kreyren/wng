@@ -1,9 +1,5 @@
-use lines_from_file::lines_from_file;
-use see_directory::see_dir;
-use serde_json::*;
-use std::env;
-use std::fs;
-use std::path::PathBuf;
+use fs_extra;
+use std::path::Path;
 use std::process::Command;
 use std::str;
 
@@ -34,165 +30,71 @@ impl<'a> Source<'a> {
     }
 }
 
-pub enum ErrType {
-    RepoNotFound,
-    NoFolder,
-    MovingError,
-    NameError,
-    ReadingError,
-    RenameError,
-    VCSNotFound,
-}
+fn dl_n_check(link: String, lib: &str) {
+    let cloning = Command::new("git")
+        .arg("clone")
+        .arg(link)
+        .output()
+        .expect("Failed to git clone");
 
-pub enum WngResult<'a> {
-    Ok,
-    Err(ErrType, &'a str),
+    if cloning.status.code() == Some(128) {
+        println!("Error, repository not found");
+        std::process::exit(-1);
+    }
+    if !Path::new(&format!("{}", lib)).exists() {
+        println!("Error, failed to clone repo into a folder");
+        std::process::exit(-2);
+    }
+    if !Path::new(&format!("{}/lib", lib)).exists() {
+        println!("Error, please select repo with a valid format (https://github.com/wmanage/wng/blob/master/README.md#to-install-a-library if you don't know)");
+        std::process::exit(-3);
+    }
+    match fs_extra::dir::move_dir(
+        &format!("{}/lib/", lib),
+        "src",
+        &fs_extra::dir::CopyOptions::new(),
+    ) {
+        Ok(_) => (),
+        Err(e) => println!("Failed to move dir : {}", e),
+    }
+    match std::fs::rename(&format!("src/lib"), &format!("src/{}", lib)) {
+        Ok(_) => (),
+        Err(e) => println!("{}", e),
+    }
+    match std::fs::remove_dir_all(lib) {
+        Ok(_) => (),
+        Err(e) => {
+            println!("{}", e);
+            std::process::exit(-4);
+        }
+    }
+    /* TODO : AVOID ACCESS DENIED FOR FILE REMOVAL */
 }
 
 impl Wanager {
-    #[allow(unused_assignments)]
-    pub fn install(&self, source: Source) -> WngResult {
+    pub fn install<'a>(&self, source: Source) {
         let splited: Vec<&str> = source.unwrap().split('/').collect();
         if splited.len() != 2 {
-            return WngResult::Err(ErrType::NameError, "Not a valid repository");
+            println!("Not a valid repository");
+            std::process::exit(-1);
         }
-        // USE GITHUB API TO CURL REPO AND UNPACK IT WITH 7Z
-
-        println!("{}/{}", splited[0], splited[1]);
         match source {
             Source::GitHub(_repo) => {
-                Command::new("curl")
-                    .arg(&format!(
-                        "https://api.github.com/repos/{}/{}/tarball/master",
-                        splited[0], splited[1]
-                    ))
-                    .arg("-o")
-                    .arg(&format!("{}.tar", splited[1]))
-                    .status()
-                    .expect("Failed to run command");
+                let link = format!("https://github.com/{}/{}/", splited[0], splited[1]);
 
-                let mut parsed: bool = false;
-
-                let v: Value = match serde_json::from_str(&lines_from_file(&format!("{}.tar", splited[1])).join("\n")) {
-                    Ok(()) => {
-                        parsed = true;
-                        serde_json::from_str(&lines_from_file(&format!("{}.tar", splited[1])).join("\n")).unwrap()
-                    },
-                    Err(_e) => {
-                        parsed = false;
-                        serde_json::from_str("{\"name\":\"did not worked\"}").unwrap()
-                    }
-                };
-                println!("{}", parsed); // DEBUGe
-
-                if parsed {
-                    if v["message"] != Value::Null && v["message"] == "\"Not Found\"" {
-                        return WngResult::Err(ErrType::RepoNotFound, "Repo does not exists");
-                    }
-                }
-
-                Command::new("tar")
-                    .arg("-xvf").arg(&format!("{}.tar", splited[1])).status().expect("Failed to unpack");
-
-                let dir: PathBuf = match env::current_dir() {
-                    Ok(b) => b,
-                    Err(_e) => {
-                        return WngResult::Err(
-                            ErrType::ReadingError,
-                            "Error while reading current dir",
-                        )
-                    }
-                };
-
-                let mut list: Vec<PathBuf> = Vec::new();
-                match see_dir(dir, &mut list, true) {
-                    Ok(_) => (),
-                    Err(_e) => {
-                        return WngResult::Err(ErrType::ReadingError, "Failed to read directory l108")
-                    }
-                }
-
-                for element in list {
-                    if element
-                        .to_str()
-                        .unwrap()
-                        .starts_with(&format!("{}-{}", splited[0], splited[1]))
-                    {
-                        if element.is_dir() {
-                            match fs::rename(
-                                element.to_str().unwrap(),
-                                &format!("{}-{}", splited[0], splited[1]),
-                            ) {
-                                Ok(_) => (),
-                                Err(_e) => {
-                                    return WngResult::Err(
-                                        ErrType::RenameError,
-                                        "failed to rename folder",
-                                    )
-                                }
-                            };
-                        }
-                    }
-                }
-
-                let mut inside_dir: PathBuf = match env::current_dir() {
-                    Ok(b) => b,
-                    Err(_e) => {
-                        return WngResult::Err(
-                            ErrType::ReadingError,
-                            "Error while reading current dir",
-                        )
-                    }
-                };
-
-                inside_dir = PathBuf::from(&format!(
-                    "{}\\{}",
-                    inside_dir.to_str().unwrap(),
-                    &format!("{}-{}", splited[0], splited[1])
-                ));
-
-                let mut inside: Vec<PathBuf> = Vec::new();
-                match see_dir(inside_dir, &mut inside, true) {
-                    Ok(_) => (),
-                    Err(e) => {
-                        println!("{}",e);
-                        return WngResult::Err(ErrType::ReadingError, "Failed to read directory l155");
-                    }
-                }
-
-                let mut libexists: bool = false;
-
-                for i in inside {
-                    if i.to_str().unwrap() == "lib" && i.is_dir() {
-                        let _lib: PathBuf = i;
-                        libexists = true;
-                    }
-                }
-                match libexists {
-                    false => {
-                        return WngResult::Err(
-                            ErrType::NoFolder,
-                            "Failed to find lib/ inside the repo",
-                        )
-                    }
-                    true => (),
-                }
-
-                // MOVE LIB/ TO SRC
-                match Command::new("mv")
-                    .arg(&format!("{}-{}", splited[0], splited[1]))
-                    .arg(&format!("src/{}-{}", splited[0], splited[1]))
-                    .status()
-                {
-                    Ok(_) => (),
-                    Err(_e) => {
-                        return WngResult::Err(ErrType::MovingError, "Failed to move lib/ to src/")
-                    }
-                };
-
-                WngResult::Ok
+                dl_n_check(link, splited[1]);
             }
-            _ => return WngResult::Err(ErrType::VCSNotFound, "Source does not exists"),
+            Source::GitLab(_repo) => {
+                let link = format!("https://gitlab.com/{}/{}/", splited[0], splited[1]);
+
+                dl_n_check(link, splited[1]);
+            }
+            Source::BitBucket(_repo) => {
+                let link = format!("https://bitbucket.org/{}/{}/", splited[0], splited[1]);
+
+                dl_n_check(link, splited[1]);
+            }
+            _ => (),
         }
     }
 }
