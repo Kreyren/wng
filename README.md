@@ -175,4 +175,4 @@ $ wng install <source>:<username>/<repo_name>
 
 ### Publish your library
 
-Create a github repository in your project, library files have to be in a `lib/` folder
+Create a repository on GitHub, BitBucket or GitLab with your project, library files have to be in a `lib/` folder
