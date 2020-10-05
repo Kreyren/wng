@@ -65,7 +65,7 @@
 
 ---
 
-**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C programming language written in [Rust](https://rust-lang.org). It allows you to create projects, headers, to run tests, to install libraries from GitHub, GitLab or BitBucket & to compile and run fast and easily. It is different from CMake by the fact that is actually doesn't use a Makefile or a .txt for its configuration. The objective of this tool is to definitely give up Makefiles.
+**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C programming language written in [Rust](https://rust-lang.org). It allows you to create projects, headers, to run tests, to install libraries from GitHub, GitLab or BitBucket & to compile and run fast and easily. It is different from CMake by the fact that is actually doesn't use a Makefile or a .txt for its configuration and by its hability to install libraries from various code platforms. The objective of this tool is to definitely give up Makefiles.
 
 <br>
 
