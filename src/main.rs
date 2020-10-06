@@ -63,7 +63,7 @@ fn main() {
             }
         }
         "build" => {
-            if !Path::new("project.json").exists() {
+            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
                 std::process::exit(-1);
             }
             if argc == 3 && argv[2].as_str() == "--release" {
@@ -86,7 +86,7 @@ fn main() {
             }
         }
         "reinit" => {
-            if !Path::new("project.json").exists() {
+            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
                 std::process::exit(-1);
             }
             if argc == 3 && argv[2].as_str() == "--force" {
@@ -121,6 +121,9 @@ fn main() {
             }
         }
         "install" => {
+            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
+                std::process::exit(-1);
+            }
             if argc != 3 {
                 return;
             }
