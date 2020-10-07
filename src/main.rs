@@ -36,7 +36,9 @@ impl Version {
 }
 
 #[cfg(test)]
-mod test {}
+mod test {
+    use super::*;
+}
 
 fn main() {
     let ver = Version {
