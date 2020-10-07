@@ -32,6 +32,19 @@ impl Version {
 #[cfg(test)]
 mod test {
     use super::*;
+    #[test]
+    fn creation() {
+        create("test");
+        let dir = &env::current_dir()
+            .unwrap()
+            .into_os_string()
+            .into_string()
+            .unwrap();
+        assert!(Path::new(dir).exists());
+        assert!(Path::new(&format!("{}\\project.json", dir)).exists());
+        assert!(Path::new(&format!("{}\\deps.dat", dir)).exists());
+        assert!(Path::new(&format!("{}\\src\\main.c", dir)).exists());
+    }
 }
 
 fn main() {
@@ -124,12 +137,6 @@ fn main() {
                 return;
             }
             install(&argv[2]);
-        }
-        "query" => {
-            if argc != 3 {
-                return;
-            }
-            query(&argv[2]);
         }
         "test" => {
             if !Path::new("tests/tests.c").exists() {
