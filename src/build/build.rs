@@ -41,6 +41,16 @@ pub fn buildcustom() {
         eprintln!("Build script not found");
         std::process::exit(64);
     }
+    let ver = Command::new("python")
+        .arg("--version")
+        .output()
+        .expect("Failed to get python version");
+    let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+
+    if messagechars[7] < '3' && messagechars[9] < '5' {
+        eprintln!("Python version has to be 3.5 or newer");
+        std::process::exit(65);
+    }
     Command::new("python")
         .arg("build.py")
         .spawn()
