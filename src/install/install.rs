@@ -1,8 +1,7 @@
-mod wanager;
+use crate::install::wanager::*;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
-use wanager::*;
 
 fn identify(lib: &str) -> Source {
     let splited: Vec<&str> = lib.split(':').collect();

@@ -6,22 +6,16 @@ use std::process::exit;
 use std::str;
 
 mod build;
-mod create;
-mod header;
 mod install;
-mod query;
-mod reinit;
-mod run;
-mod testing;
+mod project;
 
-use build::{build, buildcustom, buildhard};
-use create::create;
-use header::header;
-use install::install;
-use query::query;
-use reinit::reinit;
-use run::run;
-use testing::test;
+use build::build::{build, buildcustom, buildhard};
+use build::run::run;
+use install::install::install;
+use project::create::create;
+use project::header::header;
+use project::reinit::reinit;
+use project::testing::test;
 
 struct Version {
     os: String,
