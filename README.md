@@ -129,7 +129,13 @@ Hello World
 
 <i>NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`
 
-ANOTHER NOTE : You can add a custom build profile in `project.json` with this syntax : `"build" : "<command>"` and then run wng build --custom</i>
+<h3>Custom build</h3>
+
+To build with a custom build, you have to create a `build.py` file with your code to build.
+
+If you want to specify a special python interpreter path, add the section `"pyinterpreter" : "path2python"` to your project.json.
+
+Minimal python version required : 3.5
 
 <br>
 
