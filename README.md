@@ -137,6 +137,8 @@ If you want to specify a special python interpreter path, add the section `"pyin
 
 Minimal python version required : 3.5
 
+Then run your script with `wng build --custom`
+
 <br>
 
 <h2>Features</h2>
