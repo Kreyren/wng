@@ -93,13 +93,12 @@
 
 Make sure to have [Git](https://git-scm.com),[tar](https://www.gnu.org/software/tar/), [gcc](https://gcc.gnu.org/) & [curl](https://curl.haxx.se/) installed on your computer.
 
-### Windows
+## Download
 
-First download the latest release of wanager, put it in `C:\Program Files` and add `C:\Program Files\` to Path. [?](https://stackoverflow.com/questions/44272416/how-to-add-a-folder-to-path-environment-variable-in-windows-10-with-screensho)
+You can download it on :
 
-### Unix
-
-Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/tree/master/install.sh)
+- [Wanager's official website](https://wmanage.github.io)
+- [Sourceforge](https://sourceforge.net/projects/wng/)
 
 <br>
 
