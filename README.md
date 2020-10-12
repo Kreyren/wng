@@ -65,7 +65,7 @@
 
 ---
 
-**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C programming language written in [Rust](https://rust-lang.org). It allows you to create projects, headers, to run tests, to install libraries from GitHub, GitLab or BitBucket & to compile and run fast and easily. It is different from CMake by the fact that is actually doesn't use a Makefile or a .txt for its configuration and by its hability to install libraries from various code platforms. The objective of this tool is to definitely give up Makefiles.
+**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C programming language written in [Rust](https://rust-lang.org). It allow you to create projects, headers, to install libraries & to compile and run fast and easily. It is different from CMake by its hability to manage libraries, packages and projects. The objective of this tool is to definitely give up Makefiles.
 
 <br>
 
@@ -75,6 +75,7 @@
   - [Unix](#unix)
 - [Project creation](#create-a-new-project)
 - [Compile & Run](#compile-and-run)
+  - [Wng API](#use-wng-api-!)
 - [Features](#features)
   - [Reinitialisation](#to-reinitialize-a-project)
   - [Header](#to-create-a-header-file)
@@ -93,16 +94,17 @@
 
 Make sure to have [Git](https://git-scm.com),[tar](https://www.gnu.org/software/tar/), [gcc](https://gcc.gnu.org/) & [curl](https://curl.haxx.se/) installed on your computer.
 
-## Download
+### Windows
 
-You can download it on :
+First download the latest release of wanager, put it in `C:\Program Files` and add `C:\Program Files\` to Path. [?](https://stackoverflow.com/questions/44272416/how-to-add-a-folder-to-path-environment-variable-in-windows-10-with-screensho)
 
-- [Wanager's official website](https://wmanage.github.io)
-- [Sourceforge](https://sourceforge.net/projects/wng/)
+### Unix
+
+Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/tree/master/install.sh)
 
 <br>
 
-<h2>Create a new project</h2>
+## Create a new project
 
 Open the command prompt and run :
 
@@ -116,8 +118,7 @@ Three folders have been created, `tests/`, `src/` and `build/`
 In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
 <br>
-
-<h2>Compile and Run</h2>
+## Compile and Run
 
 ```
 $ wng build
@@ -128,7 +129,32 @@ Hello World
 
 <i>NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`
 
-ANOTHER NOTE : You can add a custom build profile in `project.json` with this syntax : `"build" : "<command>"` and then run wng build --custom</i>
+<h3>Custom build</h3>
+
+To build with a custom build, you have to create a `build.py` file with your code to build.
+
+If you want to specify a special python interpreter path, add the section `"pyinterpreter" : "path2python"` to your project.json.
+
+Minimal python version required : 3.5
+
+Then run your script with `wng build --custom`
+
+
+### Use WNG api !
+
+Wng API provides some useful things to compile your project as you want to.
+
+```py
+from wngbuild import * # Import all from wngbuild module
+
+build = BuildProfile(files="src/*.c",output="build/custom/prog.exe" ) # setup a build profile that will compile all files in src/ and place the binary in build/custom/prog.exe
+build.cc = "C:\MinGW\bin\gcc.exe" # Setup the compiler (optional, by default "gcc")
+build.flags = "-W -Wall -Werror -Wextra" # Setup the flags that the command will be run with (optional)
+
+build.run() # Run the compilation command
+build.runOutput() # Run the binary produced by the compilation command (Will raise an error if the compilation command fails)
+```
+
 
 <br>
 
