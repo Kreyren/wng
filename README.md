@@ -88,7 +88,7 @@
 
 # How to use
 
-<h2>Setup</h2>
+## Setup
 
 ### Prerequisties
 
@@ -118,6 +118,7 @@ Three folders have been created, `tests/`, `src/` and `build/`
 In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
 <br>
+
 ## Compile and Run
 
 ```
