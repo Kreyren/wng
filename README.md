@@ -159,7 +159,7 @@ build.runOutput() # Run the binary produced by the compilation command (Will rai
 
 <br>
 
-<h2>Features</h2>
+## Features
 
 ### To reinitialize a project
 
