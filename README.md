@@ -75,7 +75,7 @@
   - [Unix](#unix)
 - [Project creation](#create-a-new-project)
 - [Compile & Run](#compile-and-run)
-  - [Wng API](#use-wng-api-!)
+  - [Wng API](#use-wng-api-)
 - [Features](#features)
   - [Reinitialisation](#to-reinitialize-a-project)
   - [Header](#to-create-a-header-file)
