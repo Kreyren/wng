@@ -128,7 +128,7 @@ $ wng run <args>
 Hello World
 ```
 
-<i>NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`
+<i>NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`</i>
 
 <h3>Custom build</h3>
 
