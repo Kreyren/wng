@@ -46,13 +46,13 @@
     Status
     </th>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status&style=flat-square&color=success">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status&style=flat-square&color=success">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status&style=flat-square&color=success">
     </td>
     </tr>
     </tbody>
