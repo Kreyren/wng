@@ -37,7 +37,7 @@ pub fn install(lib: &str) {
         }
     };
     let splitedsource: Vec<&str> = source.unwrap().split('/').collect();
-    match deps.write(splitedsource[1].as_bytes()) {
+    match deps.write_all(splitedsource[1].as_bytes()) {
         Ok(_) => (),
         Err(_e) => {
             eprintln!("Failed to write in deps.dat");
