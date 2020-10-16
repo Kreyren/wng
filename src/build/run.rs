@@ -1,3 +1,4 @@
+use colored::*;
 use std::fs;
 use std::io::{Error, ErrorKind};
 use std::path::Path;
@@ -8,11 +9,31 @@ pub fn run(args: Vec<&str>) -> std::io::Result<()> {
     let release = ".\\build\\release\\release.exe";
 
     if Path::new(debug).exists() && !Path::new(release).exists() {
-        Command::new(debug).args(args).status().expect("Cannot run binary");
+        let status = Command::new(debug)
+            .args(args)
+            .status()
+            .expect("Cannot run binary");
+        if status.code() != Some(0) {
+            println!(
+                "{}{}",
+                "Process didn't exit successfully, exit code : ".red(),
+                status.code().unwrap_or(0)
+            );
+        }
         fs::remove_file(debug)?;
         Ok(())
     } else if Path::new(release).exists() && !Path::new(debug).exists() {
-        Command::new(release).args(args).status().expect("Cannot read binary");
+        let status = Command::new(release)
+            .args(args)
+            .status()
+            .expect("Cannot read binary");
+        if status.code() != Some(0) {
+            println!(
+                "{}, exit code : {}",
+                "Process didn't exit successfully".red(),
+                status.code().unwrap_or(0)
+            );
+        }
         fs::remove_file(release)?;
         Ok(())
     } else {
