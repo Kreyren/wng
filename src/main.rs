@@ -3,6 +3,7 @@ use std::io::{self, Write};
 use std::path::Path;
 #[allow(unused_imports)]
 use std::process::exit;
+use std::process::Command;
 use std::str;
 
 mod build;
@@ -33,8 +34,8 @@ impl Version {
 mod test {
     use super::*;
     #[test]
-    fn creation() {
-        create("test");
+    fn creation() -> std::io::Result<()> {
+        create("test")?;
         let dir = &env::current_dir()
             .unwrap()
             .into_os_string()
@@ -44,6 +45,21 @@ mod test {
         assert!(Path::new(&format!("{}\\project.json", dir)).exists());
         assert!(Path::new(&format!("{}\\deps.dat", dir)).exists());
         assert!(Path::new(&format!("{}\\src\\main.c", dir)).exists());
+
+        Ok(())
+    }
+    #[test]
+    fn building() -> std::io::Result<()> {
+        env::set_current_dir("test")?;
+        build();
+        assert!(Path::new(".\\build\\debug\\debug.exe").exists());
+        Ok(())
+    }
+    #[test]
+    fn running() -> std::io::Result<()> {
+        env::set_current_dir("test")?;
+        run(vec![])?;
+        Ok(())
     }
 }
 
@@ -75,7 +91,7 @@ fn main() {
             if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
                 std::process::exit(-1);
             }
-            if argc == 3 && argv[2].as_str() == "--release" {
+            if argc == 2 {
                 build();
             } else if argc == 3 && argv[2].as_str() == "--release" {
                 buildhard();

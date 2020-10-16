@@ -4,6 +4,11 @@ use std::path::Path;
 use std::process::Command;
 
 pub fn build() {
+    if !Path::new("deps.dat").exists() {
+        eprintln!("File `deps.dat` not found. Make sure to be in a wanager project");
+        std::process::exit(69);
+    }
+
     let lines: Vec<String> = lines_from_file("deps.dat");
     let mut files: Vec<String> = Vec::new();
     for i in 0..lines.len() {
@@ -14,12 +19,12 @@ pub fn build() {
         .arg("src/*.c")
         .args(files)
         .arg("-o")
-        .arg("build/release/release.exe")
+        .arg("build/debug/debug.exe")
         .arg("-W")
         .arg("-Wall")
         .arg("-Werror")
         .arg("-Wextra")
-        .spawn()
+        .status()
         .expect("Error while running compilation command.");
 }
 pub fn buildhard() {
@@ -34,7 +39,7 @@ pub fn buildhard() {
         .args(files)
         .arg("-o")
         .arg("build/release/release.exe")
-        .spawn()
+        .status()
         .expect("Error while running compilation command.");
 }
 pub fn buildcustom() {
@@ -64,7 +69,7 @@ pub fn buildcustom() {
         }
         Command::new("python")
             .arg("build.py")
-            .spawn()
+            .status()
             .expect("Failed to run build script");
     } else {
         let pypath = match &json["pyinterpreter"] {
@@ -87,7 +92,7 @@ pub fn buildcustom() {
         }
         Command::new(pypath)
             .arg("build.py")
-            .spawn()
+            .status()
             .expect("Failed to run build script");
     }
 }
