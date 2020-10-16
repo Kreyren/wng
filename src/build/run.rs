@@ -17,7 +17,7 @@ pub fn run(args: Vec<&str>) -> std::io::Result<()> {
             println!(
                 "{}{}",
                 "Process didn't exit successfully, exit code : ".red(),
-                status.code().unwrap_or(0)
+                status.code().unwrap_or(32767)
             );
         }
         fs::remove_file(debug)?;
