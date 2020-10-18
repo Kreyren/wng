@@ -6,22 +6,16 @@ use std::process::exit;
 use std::str;
 
 mod build;
-mod create;
-mod header;
 mod install;
-mod query;
-mod reinit;
-mod run;
-mod testing;
+mod project;
 
-use build::{build, buildcustom, buildhard};
-use create::create;
-use header::header;
-use install::install;
-use query::query;
-use reinit::reinit;
-use run::run;
-use testing::test;
+use build::build::{build, buildcustom, buildhard};
+use build::run::run;
+use install::install::install;
+use project::create::create;
+use project::header::header;
+use project::reinit::reinit;
+use project::testing::test;
 
 struct Version {
     os: String,
@@ -36,7 +30,37 @@ impl Version {
 }
 
 #[cfg(test)]
-mod test {}
+mod test {
+    use super::*;
+    #[test]
+    fn creation() -> std::io::Result<()> {
+        create("test")?;
+        let dir = &env::current_dir()
+            .unwrap()
+            .into_os_string()
+            .into_string()
+            .unwrap();
+        assert!(Path::new(dir).exists());
+        assert!(Path::new(&format!("{}\\project.json", dir)).exists());
+        assert!(Path::new(&format!("{}\\deps.dat", dir)).exists());
+        assert!(Path::new(&format!("{}\\src\\main.c", dir)).exists());
+
+        Ok(())
+    }
+    #[test]
+    fn building() -> std::io::Result<()> {
+        env::set_current_dir("test")?;
+        build();
+        assert!(Path::new(".\\build\\debug\\debug.exe").exists());
+        Ok(())
+    }
+    #[test]
+    fn running() -> std::io::Result<()> {
+        env::set_current_dir("test")?;
+        run(vec![])?;
+        Ok(())
+    }
+}
 
 fn main() {
     let ver = Version {
@@ -63,10 +87,10 @@ fn main() {
             }
         }
         "build" => {
-            if !Path::new("project.json").exists() {
+            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
                 std::process::exit(-1);
             }
-            if argc == 3 && argv[2].as_str() == "--release" {
+            if argc == 2 {
                 build();
             } else if argc == 3 && argv[2].as_str() == "--release" {
                 buildhard();
@@ -86,7 +110,7 @@ fn main() {
             }
         }
         "reinit" => {
-            if !Path::new("project.json").exists() {
+            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
                 std::process::exit(-1);
             }
             if argc == 3 && argv[2].as_str() == "--force" {
@@ -121,16 +145,13 @@ fn main() {
             }
         }
         "install" => {
+            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
+                std::process::exit(-1);
+            }
             if argc != 3 {
                 return;
             }
             install(&argv[2]);
-        }
-        "query" => {
-            if argc != 3 {
-                return;
-            }
-            query(&argv[2]);
         }
         "test" => {
             if !Path::new("tests/tests.c").exists() {

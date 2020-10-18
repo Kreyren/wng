@@ -1,6 +1,7 @@
-mod wanager;
+use crate::install::wanager::*;
+use std::fs::File;
+use std::io::prelude::*;
 use std::path::Path;
-use wanager::*;
 
 fn identify(lib: &str) -> Source {
     let splited: Vec<&str> = lib.split(':').collect();
@@ -28,4 +29,19 @@ pub fn install(lib: &str) {
 
     w.install(source.clone());
     println!("Library `{}` was succesfully installed !", source.unwrap());
+    let mut deps = match File::open("deps.dat") {
+        Ok(f) => f,
+        Err(_e) => {
+            eprintln!("Failed to open deps.dat");
+            std::process::exit(-5);
+        }
+    };
+    let splitedsource: Vec<&str> = source.unwrap().split('/').collect();
+    match deps.write_all(splitedsource[1].as_bytes()) {
+        Ok(_) => (),
+        Err(_e) => {
+            eprintln!("Failed to write in deps.dat");
+            std::process::exit(-6);
+        }
+    }
 }

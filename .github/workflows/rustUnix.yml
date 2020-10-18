@@ -2,21 +2,24 @@ name: RustUnix
 
 on:
   push:
-    branches: [ master_unix ]
+    branches: [master_unix, dev_unix]
   pull_request:
-    branches: [ master_unix ]
+    branches: [master_unix]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - uses: actions/checkout@v2
+      - name: Build
+        run: cargo build --verbose
+      - name: Test creation
+        run: cargo test creation
+      - name: Test building
+        run: cargo test building
+      - name: Test running
+        run: cargo test running

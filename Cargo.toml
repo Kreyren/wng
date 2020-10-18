@@ -1,6 +1,6 @@
 [package]
 name = "wng"
-version = "2.12.1"
+version = "3.0.0"
 authors = ["Wafelack <contactme.wafelack@protonmail.com>"]
 edition = "2018"
 
@@ -11,3 +11,4 @@ serde_json = "1.0"
 lines_from_file = "0.1.1"
 see_directory = "0.2.1"
 fs_extra = "1.2.0"
+colored = "2"
