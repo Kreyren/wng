@@ -140,7 +140,6 @@ Minimal python version required : 3.5
 
 Then run your script with `wng build --custom`
 
-
 ### Use WNG api !
 
 Wng API provides some useful things to compile your project as you want to.
@@ -155,19 +154,6 @@ build.flags = "-W -Wall -Werror -Wextra" # Setup the flags that the command will
 build.run() # Run the compilation command
 build.runOutput() # Run the binary produced by the compilation command (Will raise an error if the compilation command fails)
 ```
-
-<<<<<<< HEAD
-=======
-<h3>Custom build</h3>
-
-To build with a custom build, you have to create a `build.py` file with your code to build.
-
-If you want to specify a special python interpreter path, add the section `"pyinterpreter" : "path2python"` to your project.json.
-
-Minimal python version required : 3.5
-
-Then run your script with `wng build --custom`
->>>>>>> dev
 
 <br>
 
