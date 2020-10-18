@@ -1,6 +1,6 @@
 [package]
 name = "wng"
-version = "2.12.1"
+version = "3.0.0"
 authors = ["Wafelack <contactme.wafelack@protonmail.com>"]
 edition = "2018"
 
