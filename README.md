@@ -103,7 +103,7 @@ Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/t
 
 <br>
 
-<h2>Create a new project</h2>
+## Create a new project
 
 Open the command prompt and run :
 
@@ -118,7 +118,7 @@ In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
 <br>
 
-<h2>Compile and Run</h2>
+## Compile and run
 
 ```
 $ wng build
