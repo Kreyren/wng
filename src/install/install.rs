@@ -2,6 +2,7 @@ use crate::install::wanager::*;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
+use std::io::ErrorKind;
 
 fn identify(lib: &str) -> Source {
     let splited: Vec<&str> = lib.split(':').collect();
@@ -39,7 +40,11 @@ pub fn install(lib: &str) {
     let splitedsource: Vec<&str> = source.unwrap().split('/').collect();
     match deps.write_all(splitedsource[1].as_bytes()) {
         Ok(_) => (),
-        Err(_e) => {
+        Err(e) => {
+            if e.kind() == ErrorKind::PermissionDenied {
+                eprintln!("You don't have enough permissions to write in file deps.dat");
+                std::process::exit(96);
+            }
             eprintln!("Failed to write in deps.dat");
             std::process::exit(-6);
         }

@@ -9,7 +9,7 @@ mod build;
 mod install;
 mod project;
 
-use build::build::{build, buildcustom, buildhard};
+use build::build::{build, buildcustom, buildhard, removebinary};
 use build::run::run;
 use install::install::install;
 use project::create::create;
@@ -85,6 +85,13 @@ fn main() {
                 Ok(()) => (),
                 Err(_e) => println!("An error occured. Please retry later"),
             }
+        }
+        "check" => {
+            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
+                std::process::exit(-1);
+            }
+            build();
+            removebinary();
         }
         "build" => {
             if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {

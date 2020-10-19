@@ -2,6 +2,22 @@ use lines_from_file::lines_from_file;
 use serde_json::*;
 use std::path::Path;
 use std::process::Command;
+use std::io::ErrorKind;
+
+pub fn removebinary() {
+    match std::fs::remove_file("build/debug/debug.exe") {
+        Ok(_) => (),
+        Err(e) => {
+
+            // Because if it is equal to NotFound that would tell that the file hasn't been compiled
+            if e.kind() == ErrorKind::NotFound {
+                std::process::exit(-1);
+            }
+            eprintln!("{:?}", e.kind());
+            std::process::exit(58);
+        }
+    };
+}
 
 pub fn build() {
     if !Path::new("deps.dat").exists() {

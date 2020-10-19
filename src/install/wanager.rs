@@ -2,6 +2,7 @@ use fs_extra;
 use std::path::Path;
 use std::process::Command;
 use std::str;
+use std::io::ErrorKind;
 
 pub struct Wanager;
 pub enum Source<'a> {
@@ -64,11 +65,14 @@ fn dl_n_check(link: String, lib: &str) {
     match std::fs::remove_dir_all(lib) {
         Ok(_) => (),
         Err(e) => {
+            if e.kind() == ErrorKind::PermissionDenied {
+                eprintln!("You don't have enough permissions to write in file deps.dat");
+                std::process::exit(96);
+            }
             println!("{}", e);
             std::process::exit(-4);
         }
     }
-    /* TODO : AVOID ACCESS DENIED FOR FILE REMOVAL */
 }
 
 impl Wanager {

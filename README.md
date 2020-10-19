@@ -76,6 +76,7 @@
 - [Project creation](#create-a-new-project)
 - [Compile & Run](#compile-and-run)
   - [Wng API](#use-wng-api-)
+  - [Check](#checking)
 - [Features](#features)
   - [Reinitialisation](#to-reinitialize-a-project)
   - [Header](#to-create-a-header-file)
@@ -119,6 +120,7 @@ In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
 <br>
 
+
 ## Compile and Run
 
 ```
@@ -128,7 +130,8 @@ $ wng run <args>
 Hello World
 ```
 
-<i>NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`</i>
+*NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`*
+
 
 ### Custom build
 
@@ -156,6 +159,11 @@ build.runOutput() # Run the binary produced by the compilation command (Will rai
 ```
 
 <br>
+
+### Checking
+
+You can just check if there is any errors or warnings in your code without producing any binary with `wng check`
+
 
 ## Features
 
@@ -196,8 +204,8 @@ $ cd yourproject/
 $ wng install <source>:<username>/<repo_name>
 ```
 
-<i>Available sources are : `github`,`gitlab` & `bitbucket`</i>
-<i>NOTE : Repository has to have a `lib/` folder inside or wng will refuse to install it</i>
+*Available sources are : `github`,`gitlab` & `bitbucket`*
+*NOTE : Repository has to have a `lib/` folder inside or wng will refuse to install it*
 
 ### Publish your library
 

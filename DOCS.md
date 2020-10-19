@@ -3,6 +3,7 @@
 - [Project creation](#create-a-new-project)
 - [Compile & Run](#compile-and-run)
   - [Wng API](#use-wng-api-)
+  - [Check](#checking)
 - [Features](#features)
   - [Reinitialisation](#to-reinitialize-a-project)
   - [Header](#to-create-a-header-file)
@@ -28,6 +29,7 @@ In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
 <br>
 
+
 ## Compile and Run
 
 ```
@@ -37,9 +39,10 @@ $ wng run <args>
 Hello World
 ```
 
-<i>NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`</i>
+*NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`*
 
-<h3>Custom build</h3>
+
+### Custom build
 
 To build with a custom build, you have to create a `build.py` file with your code to build.
 
@@ -49,7 +52,7 @@ Minimal python version required : 3.5
 
 Then run your script with `wng build --custom`
 
-### WNG api
+### Use WNG api !
 
 Wng API provides some useful things to compile your project as you want to.
 
@@ -65,6 +68,11 @@ build.runOutput() # Run the binary produced by the compilation command (Will rai
 ```
 
 <br>
+
+### Checking
+
+You can just check if there is any errors or warnings in your code without producing any binary with `wng check`
+
 
 ## Features
 
@@ -96,7 +104,7 @@ To use functions that are in src/ files, just include the header with `#include 
 
 Then you can run them with `wng test`
 
-<h2>Libraries</h2>
+## Libraries
 
 ### To install a library
 
@@ -105,8 +113,8 @@ $ cd yourproject/
 $ wng install <source>:<username>/<repo_name>
 ```
 
-<i>Available sources are : `github`,`gitlab` & `bitbucket`</i>
-<i>NOTE : Repository has to have a `lib/` folder inside or wng will refuse to install it</i>
+*Available sources are : `github`,`gitlab` & `bitbucket`*
+*NOTE : Repository has to have a `lib/` folder inside or wng will refuse to install it*
 
 ### Publish your library
 
