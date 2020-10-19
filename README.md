@@ -130,7 +130,7 @@ Hello World
 
 <i>NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`</i>
 
-<h3>Custom build</h3>
+### Custom build
 
 To build with a custom build, you have to create a `build.py` file with your code to build.
 
@@ -187,7 +187,7 @@ To use functions that are in src/ files, just include the header with `#include 
 
 Then you can run them with `wng test`
 
-<h2>Libraries</h2>
+## Libraries
 
 ### To install a library
 
