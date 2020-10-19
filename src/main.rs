@@ -26,7 +26,7 @@ struct Version {
 }
 impl Version {
     fn display(&self) {
-        println!("Wanager by Wafelack <contactme.wafelack@protonmail.ch>, Licensed under GPL-v3.0, Version {} - {}.{}.{}", self.os, self.main, self.discriminator, self.third);
+        println!("Wanager by Wafelack <contactme.wafelack@protonmail.ch>, Licensed under MPL-v2.0, Version {} - {}.{}.{}", self.os, self.main, self.discriminator, self.third);
     }
 }
 
@@ -89,8 +89,30 @@ fn main() {
         println!("Usage: wanager <command> [OPTIONS]");
         std::process::exit(1);
     }
+
+    let displayhelp = || {
+        ver.display();
+        println!("\n--help | -h : displays this message");
+        println!("--version | -v : displays version info");
+        println!("\narchive : creates an archive with you project files");
+        println!("new <name> : creates a new wanager project");
+        println!("reinit [--force | -f] : reinitializes the project");
+        println!("header <name> : creates a header file with basic header stuff");
+        println!("test : runs tests contained in tests/tests.c");
+        println!("\nbuild [--release | --custom] : compiles the project");
+        println!("run : runs the compiled project");
+        println!("\ninstall <source>:<username>/<repo> : installs the content of lib/ folder of the repo");
+    };
+
     match argv[1].as_str() {
         "--version" => ver.display(),
+        "-v" => ver.display(),
+        "--help" => {
+            displayhelp();
+        }
+        "-h" => {
+            displayhelp();
+        }
         "archive" => {
             if !Path::new("src").exists() {
                 std::process::exit(-1);
@@ -140,7 +162,7 @@ fn main() {
             if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
                 std::process::exit(-1);
             }
-            if argc == 3 && argv[2].as_str() == "--force" {
+            if argc == 3 && argv[2].as_str() == "--force" || argc == 3 && argv[2].as_str() == "-f" {
                 match reinit() {
                     Ok(_) => (),
                     Err(_e) => println!("Error while reinitializing directory"),
