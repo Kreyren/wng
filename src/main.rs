@@ -65,9 +65,9 @@ mod test {
 fn main() {
     let ver = Version {
         os: String::from("Windows"),
-        main: 2,
-        discriminator: 11,
-        third: 2,
+        main: 3,
+        discriminator: 0,
+        third: 0,
     };
     let argv: Vec<String> = env::args().collect();
     let argc = argv.len();

@@ -46,13 +46,13 @@
     Status
     </th>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status&style=flat-square&color=success">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status&style=flat-square&color=success">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status&style=flat-square&color=success">
     </td>
     </tr>
     </tbody>
@@ -75,6 +75,7 @@
   - [Unix](#unix)
 - [Project creation](#create-a-new-project)
 - [Compile & Run](#compile-and-run)
+  - [Wng API](#use-wng-api-)
 - [Features](#features)
   - [Reinitialisation](#to-reinitialize-a-project)
   - [Header](#to-create-a-header-file)
@@ -91,7 +92,7 @@
 
 ### Prerequisties
 
-Make sure to have [Git](https://git-scm.com),[tar](https://www.gnu.org/software/tar/), [gcc](https://gcc.gnu.org/) & [curl](https://curl.haxx.se/) installed on your computer.
+Make sure to have [Git](https://git-scm.com) & [gcc](https://gcc.gnu.org/) installed on your computer.
 
 ### Windows
 
@@ -118,7 +119,8 @@ In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
 <br>
 
-## Compile and run
+
+## Compile and Run
 
 ```
 $ wng build
@@ -128,6 +130,7 @@ Hello World
 ```
 
 *NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`*
+
 
 ### Custom build
 
@@ -139,11 +142,27 @@ Minimal python version required : 3.5
 
 Then run your script with `wng build --custom`
 
+### Use WNG api !
+
+Wng API provides some useful things to compile your project as you want to.
+
+```py
+from wngbuild import * # Import all from wngbuild module
+
+build = BuildProfile(files="src/*.c",output="build/custom/prog.exe" ) # setup a build profile that will compile all files in src/ and place the binary in build/custom/prog.exe
+build.cc = "C:\\MinGW\\bin\\gcc.exe" # Setup the compiler (optional, by default "gcc")
+build.flags = "-W -Wall -Werror -Wextra" # Setup the flags that the command will be run with (optional)
+
+build.run() # Run the compilation command
+build.runOutput() # Run the binary produced by the compilation command (Will raise an error if the compilation command fails)
+```
+
 <br>
 
 ### Checking
 
 You can just check if there is any errors or warnings in your code without producing any binary with `wng check`
+
 
 ## Features
 
@@ -190,3 +209,7 @@ $ wng install <source>:<username>/<repo_name>
 ### Publish your library
 
 Create a repository on GitHub, BitBucket or GitLab with your project, library files have to be in a `lib/` folder
+
+## Contributing
+
+See our [contribution guidelines](https://github.com/wmanage/wng/blob/master/CONTRIBUTING.md).
