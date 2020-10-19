@@ -66,7 +66,7 @@ fn dl_n_check(link: String, lib: &str) {
         Ok(_) => (),
         Err(e) => {
             if e.kind() == ErrorKind::PermissionDenied {
-                eprintln!("You don't have enough permissions to write in file deps.dat");
+                eprintln!("You don't have enough permissions to delete folder");
                 std::process::exit(96);
             }
             println!("{}", e);

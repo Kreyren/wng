@@ -23,3 +23,5 @@ jobs:
         run: cargo test building
       - name: Test running
         run: cargo test running
+      - name: Test archiving
+        run: cargo test archiving

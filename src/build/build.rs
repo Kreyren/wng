@@ -3,6 +3,8 @@ use serde_json::*;
 use std::path::Path;
 use std::process::Command;
 use std::io::ErrorKind;
+use colored::*;
+
 
 pub fn removebinary() {
     match std::fs::remove_file("build/debug/debug.exe") {
@@ -31,7 +33,7 @@ pub fn build() {
         files.push(format!("src\\{}\\*.c", lines[i]));
     }
 
-    Command::new("gcc")
+    let status = Command::new("gcc")
         .arg("src/*.c")
         .args(files)
         .arg("-o")
@@ -42,6 +44,10 @@ pub fn build() {
         .arg("-Wextra")
         .status()
         .expect("Error while running compilation command.");
+
+    if status.code() == Some(0) {
+        println!("{}", "Compiled project successfully !".green())
+    }
 }
 pub fn buildhard() {
     let lines: Vec<String> = lines_from_file("deps.dat");
@@ -50,13 +56,17 @@ pub fn buildhard() {
         files.push(format!("src\\{}\\*.c", lines[i]));
     }
 
-    Command::new("gcc")
+    let status = Command::new("gcc")
         .arg("src/*.c")
         .args(files)
         .arg("-o")
         .arg("build/release/release.exe")
         .status()
         .expect("Error while running compilation command.");
+
+    if status.code() == Some(0) {
+        println!("{}", "Compiled project successfully !".green())
+    }
 }
 pub fn buildcustom() {
     if !Path::new("build.py").exists() {
