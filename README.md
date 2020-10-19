@@ -202,3 +202,7 @@ $ wng install <source>:<username>/<repo_name>
 ### Publish your library
 
 Create a repository on GitHub, BitBucket or GitLab with your project, library files have to be in a `lib/` folder
+
+## Contributing
+
+See our [contribution guidelines](https://github.com/wmanage/wng/blob/master/CONTRIBUTING.md).
