@@ -87,7 +87,7 @@
 
 # How to use
 
-<h2>Setup</h2>
+## Setup
 
 ### Prerequisties
 
@@ -127,9 +127,9 @@ $ wng run <args>
 Hello World
 ```
 
-<i>NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`
+*NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`*
 
-<h3>Custom build</h3>
+### Custom build
 
 To build with a custom build, you have to create a `build.py` file with your code to build.
 
@@ -141,7 +141,7 @@ Then run your script with `wng build --custom`
 
 <br>
 
-<h2>Features</h2>
+## Features
 
 ### To reinitialize a project
 
@@ -171,7 +171,7 @@ To use functions that are in src/ files, just include the header with `#include 
 
 Then you can run them with `wng test`
 
-<h2>Libraries</h2>
+## Libraries
 
 ### To install a library
 
@@ -180,8 +180,8 @@ $ cd yourproject/
 $ wng install <source>:<username>/<repo_name>
 ```
 
-<i>Available sources are : `github`,`gitlab` & `bitbucket`</i>
-<i>NOTE : Repository has to have a `lib/` folder inside or wng will refuse to install it</i>
+*Available sources are : `github`,`gitlab` & `bitbucket`*
+*NOTE : Repository has to have a `lib/` folder inside or wng will refuse to install it*
 
 ### Publish your library
 
