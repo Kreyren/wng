@@ -3,8 +3,11 @@
 ## Keywords
 
 `feat` : Feature added
+
 `fix` : Fixed a bug
+
 `docs` : Added docs
+
 `refactor` : Refactored code
 
 ## Style
