@@ -141,6 +141,10 @@ Then run your script with `wng build --custom`
 
 <br>
 
+### Checking
+
+You can just check if there is any errors or warnings in your code without producing any binary with `wng check`
+
 ## Features
 
 ### To reinitialize a project
