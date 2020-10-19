@@ -46,13 +46,13 @@
     Status
     </th>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status&style=flat-square&color=success">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status&style=flat-square&color=success">
     </td>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status">
+        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status&style=flat-square&color=success">
     </td>
     </tr>
     </tbody>
@@ -75,6 +75,7 @@
   - [Unix](#unix)
 - [Project creation](#create-a-new-project)
 - [Compile & Run](#compile-and-run)
+  - [Wng API](#use-wng-api-)
 - [Features](#features)
   - [Reinitialisation](#to-reinitialize-a-project)
   - [Header](#to-create-a-header-file)
@@ -87,11 +88,11 @@
 
 # How to use
 
-<h2>Setup</h2>
+## Setup
 
 ### Prerequisties
 
-Make sure to have [Git](https://git-scm.com),[tar](https://www.gnu.org/software/tar/), [gcc](https://gcc.gnu.org/) & [curl](https://curl.haxx.se/) installed on your computer.
+Make sure to have [Git](https://git-scm.com) & [gcc](https://gcc.gnu.org/) installed on your computer.
 
 ### Windows
 
@@ -103,7 +104,7 @@ Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/t
 
 <br>
 
-<h2>Create a new project</h2>
+## Create a new project
 
 Open the command prompt and run :
 
@@ -118,7 +119,7 @@ In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
 <br>
 
-<h2>Compile and Run</h2>
+## Compile and Run
 
 ```
 $ wng build
@@ -127,9 +128,9 @@ $ wng run <args>
 Hello World
 ```
 
-<i>NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`
+<i>NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`</i>
 
-<h3>Custom build</h3>
+### Custom build
 
 To build with a custom build, you have to create a `build.py` file with your code to build.
 
@@ -139,9 +140,24 @@ Minimal python version required : 3.5
 
 Then run your script with `wng build --custom`
 
+### Use WNG api !
+
+Wng API provides some useful things to compile your project as you want to.
+
+```py
+from wngbuild import * # Import all from wngbuild module
+
+build = BuildProfile(files="src/*.c",output="build/custom/prog.exe" ) # setup a build profile that will compile all files in src/ and place the binary in build/custom/prog.exe
+build.cc = "C:\\MinGW\\bin\\gcc.exe" # Setup the compiler (optional, by default "gcc")
+build.flags = "-W -Wall -Werror -Wextra" # Setup the flags that the command will be run with (optional)
+
+build.run() # Run the compilation command
+build.runOutput() # Run the binary produced by the compilation command (Will raise an error if the compilation command fails)
+```
+
 <br>
 
-<h2>Features</h2>
+## Features
 
 ### To reinitialize a project
 
@@ -171,7 +187,7 @@ To use functions that are in src/ files, just include the header with `#include 
 
 Then you can run them with `wng test`
 
-<h2>Libraries</h2>
+## Libraries
 
 ### To install a library
 
@@ -186,3 +202,7 @@ $ wng install <source>:<username>/<repo_name>
 ### Publish your library
 
 Create a repository on GitHub, BitBucket or GitLab with your project, library files have to be in a `lib/` folder
+
+## Contributing
+
+See our [contribution guidelines](https://github.com/wmanage/wng/blob/master/CONTRIBUTING.md).
