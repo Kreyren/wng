@@ -148,7 +148,7 @@ Wng API provides some useful things to compile your project as you want to.
 from wngbuild import * # Import all from wngbuild module
 
 build = BuildProfile(files="src/*.c",output="build/custom/prog.exe" ) # setup a build profile that will compile all files in src/ and place the binary in build/custom/prog.exe
-build.cc = "C:\MinGW\bin\gcc.exe" # Setup the compiler (optional, by default "gcc")
+build.cc = "C:\\MinGW\\bin\\gcc.exe" # Setup the compiler (optional, by default "gcc")
 build.flags = "-W -Wall -Werror -Wextra" # Setup the flags that the command will be run with (optional)
 
 build.run() # Run the compilation command
