@@ -5,6 +5,7 @@
   - [Wng API](#use-wng-api-)
   - [Check](#checking)
 - [Features](#features)
+  - [Archive](#archive)
   - [Reinitialisation](#to-reinitialize-a-project)
   - [Header](#to-create-a-header-file)
   - [Tests](#to-run-tests)
@@ -75,6 +76,10 @@ You can just check if there is any errors or warnings in your code without produ
 
 
 ## Features
+
+### Archive
+
+To create a gunzip archive of your project files, just run `wng archive` and a file called `project.tar.gz` will be created
 
 ### To reinitialize a project
 
