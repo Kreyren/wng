@@ -76,8 +76,7 @@ pub fn create(name: &str) -> std::io::Result<()> {
         "name" : $name,
         "version" : " 0.1.0",
         "standard" : "C99",
-        "author" : "Example <example@example.com>",
-        "dependencies" : [ ]
+        "author" : "Example <example@example.com>"
     }
     */
     File::create("deps.dat")?;
@@ -88,6 +87,9 @@ pub fn create(name: &str) -> std::io::Result<()> {
     json.write_all(b"    \"standard\" : \"C99\",\n")?;
     json.write_all(b"    \"author\" : \"Example <example@example.com>\"\n")?;
     json.write_all(b"}")?;
+
+    let mut readme = File::create("README.md")?;
+    readme.write_all(format!("## {}", name).as_bytes())?;
 
     Command::new("git")
         .arg("init")
