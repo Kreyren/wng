@@ -13,6 +13,7 @@ use build::build::{build, buildcustom, buildhard, removebinary};
 use build::run::run;
 use install::install::install;
 use project::create::create;
+use project::archive::archive;
 use project::header::header;
 use project::reinit::reinit;
 use project::testing::test;
@@ -60,6 +61,19 @@ mod test {
         run(vec![])?;
         Ok(())
     }
+    #[test]
+    fn archiving() -> std::io::Result<()> {
+        env::set_current_dir("test")?;
+        archive();
+        let dir = &env::current_dir()
+            .unwrap()
+            .into_os_string()
+            .into_string()
+            .unwrap();
+        println!("{}", format!("{}\\project.tar.gz", dir).as_str());
+        assert!(Path::new(format!("{}\\project.tar.gz", dir).as_str()).exists());
+        Ok(())
+    }
 }
 
 fn main() {
@@ -77,6 +91,12 @@ fn main() {
     }
     match argv[1].as_str() {
         "--version" => ver.display(),
+        "archive" => {
+            if !Path::new("src").exists() {
+                std::process::exit(-1);
+            }
+            archive();
+        }
         "new" => {
             if argc != 3 {
                 return;
