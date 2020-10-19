@@ -56,7 +56,7 @@ pub fn buildhard() {
         files.push(format!("src\\{}\\*.c", lines[i]));
     }
 
-    Command::new("gcc")
+    let status = Command::new("gcc")
         .arg("src/*.c")
         .args(files)
         .arg("-o")
