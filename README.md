@@ -76,6 +76,7 @@
 - [Project creation](#create-a-new-project)
 - [Compile & Run](#compile-and-run)
   - [Wng API](#use-wng-api-)
+  - [Check](#checking)
 - [Features](#features)
   - [Reinitialisation](#to-reinitialize-a-project)
   - [Header](#to-create-a-header-file)
