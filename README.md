@@ -94,7 +94,7 @@
 
 ### Prerequisties
 
-Make sure to have [Git](https://git-scm.com) & [gcc](https://gcc.gnu.org/) installed on your computer.
+Make sure to have [Git](https://git-scm.com), [tar](https://www.gnu.org/software/tar/) & [gcc](https://gcc.gnu.org/) installed on your computer.
 
 ### Windows
 
@@ -121,7 +121,6 @@ In `src/`, you'll find file `main.c` that contains a basic hello world program.
 
 <br>
 
-
 ## Compile and Run
 
 ```
@@ -131,8 +130,7 @@ $ wng run <args>
 Hello World
 ```
 
-*NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`*
-
+_NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -Wextra. To disable this, build in release mode with : `wng build --release`_
 
 ### Custom build
 
@@ -164,7 +162,6 @@ build.runOutput() # Run the binary produced by the compilation command (Will rai
 ### Checking
 
 You can just check if there is any errors or warnings in your code without producing any binary with `wng check`
-
 
 ## Features
 
@@ -209,8 +206,8 @@ $ cd yourproject/
 $ wng install <source>:<username>/<repo_name>
 ```
 
-*Available sources are : `github`,`gitlab` & `bitbucket`*
-*NOTE : Repository has to have a `lib/` folder inside or wng will refuse to install it*
+_Available sources are : `github`,`gitlab` & `bitbucket`_
+_NOTE : Repository has to have a `lib/` folder inside or wng will refuse to install it_
 
 ### Publish your library
 
