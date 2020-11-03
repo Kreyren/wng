@@ -26,7 +26,9 @@ fn see_dir(dir: PathBuf) -> Vec<PathBuf> {
             let sub: Vec<PathBuf> = see_dir(entry.path());
             list.extend(sub);
         } else {
-            list.push(entry.path().to_owned());
+            if entry.path().extension().unwrap() == "c" {
+                list.push(entry.path().to_owned());
+            }
         }
     }
     list
@@ -53,10 +55,7 @@ pub fn build() {
     }
     let files: Vec<PathBuf> = see_dir(PathBuf::from("src"));
 
-    println!("{:?}", files);
-
     let status = Command::new("gcc")
-        .arg("src/*.c")
         .args(files)
         .arg("-o")
         .arg("build/debug/debug.exe")
@@ -72,14 +71,13 @@ pub fn build() {
     }
 }
 pub fn buildhard() {
-    let lines: Vec<String> = lines_from_file("deps.dat");
-    let mut files: Vec<String> = Vec::new();
-    for i in 0..lines.len() {
-        files.push(format!("src\\{}\\*.c", lines[i]));
+    if !Path::new("src").exists() {
+        eprintln!("src/ folder not found. Make sure to be in a valid project");
+        std::process::exit(36);
     }
+    let files: Vec<PathBuf> = see_dir(PathBuf::from("src"));
 
     let status = Command::new("gcc")
-        .arg("src/*.c")
         .args(files)
         .arg("-o")
         .arg("build/release/release.exe")
