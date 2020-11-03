@@ -12,8 +12,8 @@ mod project;
 use build::build::{build, buildcustom, buildhard, removebinary};
 use build::run::run;
 use install::install::install;
-use project::create::create;
 use project::archive::archive;
+use project::create::create;
 use project::header::header;
 use project::reinit::reinit;
 use project::testing::test;
@@ -80,7 +80,7 @@ fn main() {
     let ver = Version {
         os: String::from("Windows"),
         main: 3,
-        discriminator: 0,
+        discriminator: 1,
         third: 0,
     };
     let argv: Vec<String> = env::args().collect();
@@ -136,7 +136,7 @@ fn main() {
             removebinary();
         }
         "build" => {
-            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc == 2 {
