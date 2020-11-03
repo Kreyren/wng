@@ -12,8 +12,8 @@ mod project;
 use build::build::{build, buildcustom, buildhard, removebinary};
 use build::run::run;
 use install::install::install;
-use project::create::create;
 use project::archive::archive;
+use project::create::create;
 use project::header::header;
 use project::reinit::reinit;
 use project::testing::test;
@@ -136,7 +136,7 @@ fn main() {
             removebinary();
         }
         "build" => {
-            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc == 2 {

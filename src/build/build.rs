@@ -1,16 +1,41 @@
+use colored::*;
 use lines_from_file::lines_from_file;
 use serde_json::*;
-use std::path::Path;
-use std::process::Command;
 use std::io::ErrorKind;
-use colored::*;
+use std::path::Path;
+use std::path::PathBuf;
+use std::process::Command;
 
+fn see_dir(dir: PathBuf) -> Vec<PathBuf> {
+    let mut list: Vec<PathBuf> = Vec::new();
+    for entry in match std::fs::read_dir(dir.clone()) {
+        Ok(e) => e,
+        Err(_s) => {
+            eprintln!("Failed to read src/");
+            std::process::exit(66);
+        }
+    } {
+        let entry = match entry {
+            Ok(e) => e,
+            Err(_e) => {
+                eprintln!("Failed to read src/");
+                std::process::exit(69);
+            }
+        };
+        if entry.path().is_dir() {
+            let sub: Vec<PathBuf> = see_dir(entry.path());
+            list.extend(sub);
+        } else {
+            list.push(entry.path().to_owned());
+        }
+    }
+    list
+}
 
 pub fn removebinary() {
     match std::fs::remove_file("build/debug/debug.exe") {
         Ok(_) => (),
         Err(e) => {
-
             // Because if it is equal to NotFound that would tell that the file hasn't been compiled
             if e.kind() == ErrorKind::NotFound {
                 std::process::exit(-1);
@@ -22,16 +47,13 @@ pub fn removebinary() {
 }
 
 pub fn build() {
-    if !Path::new("deps.dat").exists() {
-        eprintln!("File `deps.dat` not found. Make sure to be in a wanager project");
-        std::process::exit(69);
+    if !Path::new("src").exists() {
+        eprintln!("src/ folder not found. Make sure to be in a valid project");
+        std::process::exit(36);
     }
+    let files: Vec<PathBuf> = see_dir(PathBuf::from("src"));
 
-    let lines: Vec<String> = lines_from_file("deps.dat");
-    let mut files: Vec<String> = Vec::new();
-    for i in 0..lines.len() {
-        files.push(format!("src\\{}\\*.c", lines[i]));
-    }
+    println!("{:?}", files);
 
     let status = Command::new("gcc")
         .arg("src/*.c")
