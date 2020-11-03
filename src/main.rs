@@ -80,7 +80,7 @@ fn main() {
     let ver = Version {
         os: String::from("Windows"),
         main: 3,
-        discriminator: 0,
+        discriminator: 1,
         third: 0,
     };
     let argv: Vec<String> = env::args().collect();
