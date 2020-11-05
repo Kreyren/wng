@@ -76,9 +76,9 @@ Make sure to have [Git](https://git-scm.com), [tar](https://www.gnu.org/software
 
 First download the latest release of wanager, put it in `C:\Program Files` and add `C:\Program Files\` to Path. [?](https://stackoverflow.com/questions/44272416/how-to-add-a-folder-to-path-environment-variable-in-windows-10-with-screensho)
 
-### Unix
+### GNU/Linux
 
-Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/tree/master/install.sh)
+N/A
 
 <br>
 

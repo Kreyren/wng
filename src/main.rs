@@ -92,8 +92,11 @@ fn main() {
 
     if cfg!(windows) {
         ver.set_os("Windows");
+    } else if cfg!(linux) {
+        ver.set_os("GNU/Linux")
     } else {
-        ver.set_os("*Nix")
+        eprintln!("Unsupported operating system.");
+        std::process::exit(-255);
     }
 
     let argv: Vec<String> = env::args().collect();

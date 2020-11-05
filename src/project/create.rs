@@ -17,25 +17,35 @@ pub fn create(name: &str) -> std::io::Result<()> {
     let errmess: &str = "Error in process. Please retry later";
 
     let mut src: String = name.into();
-    src.push_str("\\src");
-
     let mut tests: String = name.clone().into();
-    tests.push_str("\\tests");
-
     let mut build: String = name.clone().into();
-    build.push_str("\\build");
-
     let mut release: String = build.clone();
-    release.push_str("\\release");
-
     let mut debug: String = build.clone();
-    debug.push_str("\\debug");
-
     let mut main: String = src.clone();
-    main.push_str("\\main.c");
-
     let mut testfile: String = tests.clone();
-    testfile.push_str("\\tests.c");
+
+    if cfg!(windows) {
+        src.push_str("\\src");
+
+        tests.push_str("\\tests");
+
+        build.push_str("\\build");
+
+        release.push_str("\\release");
+
+        debug.push_str("\\debug");
+
+        main.push_str("\\main.c");
+
+        testfile.push_str("\\tests.c");
+    } else if cfg!(linux) {
+        src.push_str("/src");
+        tests.push_str("/tests");
+        build.push_str("/build");
+        release.push_str("/release");
+        debug.push_str("/debug");
+        main.push_str("/main.c");
+    }
 
     mkdir(name, errmess, 1);
     mkdir(&tests, errmess, 2);
@@ -61,7 +71,11 @@ pub fn create(name: &str) -> std::io::Result<()> {
     tf.write_all(b"}")?;
 
     let mut gitignore: String = name.clone().into();
-    gitignore.push_str("\\.gitignore");
+    if cfg!(windows) {
+        gitignore.push_str("\\.gitignore");
+    } else if cfg!(linux) {
+        gitignore.push_str("/.gitignore");
+    }
 
     let mut locker = File::create(gitignore)?;
     locker.write_all(b"build/")?;
