@@ -28,6 +28,17 @@ impl Version {
     fn display(&self) {
         println!("Wanager by Wafelack <contactme.wafelack@protonmail.ch>, Licensed under MPL-v2.0, Version {} - {}.{}.{}", self.os, self.main, self.discriminator, self.third);
     }
+    fn new(main: u8, discriminator: u8, third: u8) -> Version {
+        Version {
+            os: "Linux".to_string(),
+            main,
+            discriminator,
+            third,
+        }
+    }
+    fn set_os(&mut self, os: &str) {
+        self.os = os.to_string();
+    }
 }
 
 #[cfg(test)]
@@ -77,12 +88,14 @@ mod test {
 }
 
 fn main() {
-    let ver = Version {
-        os: String::from("Windows"),
-        main: 3,
-        discriminator: 1,
-        third: 0,
-    };
+    let mut ver = Version::new(3, 1, 0);
+
+    if cfg!(windows) {
+        ver.set_os("Windows");
+    } else {
+        ver.set_os("*Nix")
+    }
+
     let argv: Vec<String> = env::args().collect();
     let argc = argv.len();
     if argc < 2 {
