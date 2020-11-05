@@ -225,6 +225,6 @@ fn main() {
                 Err(s) => println!("{}", s),
             }
         }
-        _ => println!("Usage: wanager <command> [OPTIONS]"),
+        _ => println!("Usage: wng <command> [OPTIONS]"),
     }
 }
