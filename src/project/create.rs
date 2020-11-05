@@ -15,36 +15,45 @@ fn mkdir(name: &str, errmess: &str, number: u8) {
 
 pub fn create(name: &str) -> std::io::Result<()> {
     let errmess: &str = "Error in process. Please retry later";
-
-    let mut src: String = name.into();
-    let mut tests: String = name.clone().into();
-    let mut build: String = name.clone().into();
-    let mut release: String = build.clone();
-    let mut debug: String = build.clone();
-    let mut main: String = src.clone();
-    let mut testfile: String = tests.clone();
+    let mut src = String::new();
+    let mut tests = String::new();
+    let mut build = String::new();
+    let mut release = String::new();
+    let mut debug = String::new();
+    let mut main = String::new();
+    let mut testfile = String::new();
 
     if cfg!(windows) {
+        src = name.into();
         src.push_str("\\src");
-
+        tests = name.clone().into();
         tests.push_str("\\tests");
-
+        build = name.clone().into();
         build.push_str("\\build");
-
+        release = build.clone();
         release.push_str("\\release");
-
+        debug = build.clone();
         debug.push_str("\\debug");
-
+        main = src.clone();
         main.push_str("\\main.c");
+        testfile = tests.clone();
 
         testfile.push_str("\\tests.c");
     } else if cfg!(linux) {
+        src = name.into();
         src.push_str("/src");
+        tests = name.clone().into();
         tests.push_str("/tests");
+        build = name.clone().into();
         build.push_str("/build");
+        release = build.clone();
         release.push_str("/release");
+        debug = build.clone();
         debug.push_str("/debug");
+        main = src.clone();
         main.push_str("/main.c");
+        testfile = tests.clone();
+        testfile.push_str("/tests.c");
     }
 
     mkdir(name, errmess, 1);
