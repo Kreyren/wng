@@ -5,8 +5,16 @@ use std::path::Path;
 use std::process::Command;
 
 pub fn run(args: Vec<&str>) -> std::io::Result<()> {
-    let debug = ".\\build\\debug\\debug.exe";
-    let release = ".\\build\\release\\release.exe";
+    let mut debug = "";
+    let mut release = "";
+
+    if cfg!(windows) {
+        debug = ".\\build\\debug\\debug.exe";
+        release = ".\\build\\release\\release.exe";
+    } else {
+        debug = "./build/debug/debug.exe";
+        release = "./build/release/release.exe";
+    }
 
     if Path::new(debug).exists() && !Path::new(release).exists() {
         let status = Command::new(debug)

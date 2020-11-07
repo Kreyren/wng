@@ -4,8 +4,14 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 pub fn test<'a>() -> Result<(), &'a str> {
-    if !Path::new("tests\\tests.c").exists() {
-        return Err("tests/tests.c not found");
+    if cfg!(windows) {
+        if !Path::new("tests\\tests.c").exists() {
+            return Err("tests/tests.c not found");
+        }
+    } else {
+        if !Path::new("tests/tests.c").exists() {
+            return Err("tests/tests.c not found");
+        }
     }
     let mut list: Vec<PathBuf> = Vec::new();
     match see_dir(PathBuf::from("src"), &mut list, true) {
@@ -22,32 +28,58 @@ pub fn test<'a>() -> Result<(), &'a str> {
         }
     }
 
+    let mut status = Command::new("echo")
+        .arg("Started testing ...")
+        .status()
+        .unwrap();
+
     if files != String::new() {
         files.pop();
-        Command::new("gcc")
-            .arg("tests/tests.c")
-            .args(files.replace("\\", "/").split(' '))
-            .arg("-o")
-            .arg("tests/tests.exe")
-            .status()
-            .expect("Failed to call gcc");
+        if cfg!(windows) {
+            status = Command::new("gcc")
+                .arg("tests/tests.c")
+                .args(files.replace("\\", "/").split(' '))
+                .arg("-o")
+                .arg("tests/tests.exe")
+                .status()
+                .expect("Failed to call gcc");
+        } else {
+            status = Command::new("gcc")
+                .arg("tests/tests.c")
+                .args(files.split(' '))
+                .arg("-o")
+                .arg("tests/tests.exe")
+                .status()
+                .expect("Failed to call gcc");
+        }
     } else {
-        Command::new("gcc")
+        status = Command::new("gcc")
             .arg("tests/tests.c")
             .arg("-o")
             .arg("tests/tests.exe")
             .status()
             .expect("Failed to call gcc");
     }
-    if !Path::new("tests\\tests.exe").exists() {
+    if status.code() != Some(0) {
         return Err("Compilation failed");
     }
-    Command::new(".\\tests\\tests.exe")
-        .status()
-        .expect("Failed to run program");
-    Command::new("rm")
-        .arg(".\\tests\\tests.exe")
-        .spawn()
-        .expect("Failed to delete program");
+
+    if cfg!(windows) {
+        Command::new(".\\tests\\tests.exe")
+            .status()
+            .expect("Failed to run program");
+        Command::new("rm")
+            .arg(".\\tests\\tests.exe")
+            .spawn()
+            .expect("Failed to delete program");
+    } else {
+        Command::new("./tests/tests.exe")
+            .status()
+            .expect("Failed to run program");
+        Command::new("rm")
+            .arg("./tests/tests.exe")
+            .spawn()
+            .expect("Failed to delete program");
+    }
     Ok(())
 }

@@ -11,7 +11,6 @@ fn identify(lib: &str) -> Source {
     }
 }
 
-#[allow(unused_variables)]
 pub fn install(lib: &str) {
     let w = Wanager;
 

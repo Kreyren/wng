@@ -22,37 +22,13 @@
 <br>
 <h1 align="center">Continuous Integration</h1>
 <table border="1" align="center">
-    <thead>
-    <tr>
-    <th>
-    </th>
-    <th>
-                <center><img alt="Linux" src="https://www.screenconnect.com/Images/LogoLinux.png" align="center" height="30" width="30" /></center><br>
-                <center>GNU/Linux</center>
-    </th>
-    <th>
-                <center><img alt="Windows" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Windows_logo_-_2012_%28dark_blue%2C_lines_thinner%29.svg/414px-Windows_logo_-_2012_%28dark_blue%2C_lines_thinner%29.svg.png" align="center" height="30" width="30" /></center><br>
-                <center>Windows</center>
-    </th>
-    <th>
-                <center><img alt="MacOS" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/245px-Apple_logo_black.svg.png" align="center" height="30"width="25" /></center><br>
-                 <center>MacOS</center>
-    </th>
-    </tr>
-    </thead>
     <tbody>
     <tr>
     <th align="center" width="100">
-    Status
+    Build & Test
     </th>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status&style=flat-square&color=success">
-    </td>
-    <td align="center">
         <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status&style=flat-square&color=success">
-    </td>
-    <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/RustUnix?label=Status&style=flat-square&color=success">
     </td>
     </tr>
     </tbody>
@@ -100,10 +76,9 @@ Make sure to have [Git](https://git-scm.com), [tar](https://www.gnu.org/software
 
 First download the latest release of wanager, put it in `C:\Program Files` and add `C:\Program Files\` to Path. [?](https://stackoverflow.com/questions/44272416/how-to-add-a-folder-to-path-environment-variable-in-windows-10-with-screensho)
 
-### Unix
+### GNU/Linux
 
-Download and run **as super user** [install.sh](https://github.com/Wmanage/wng/tree/master/install.sh)
-
+Download and run as super user [install.sh](https://github.com/Wmanage/wng/blob/master/install.sh).
 <br>
 
 ## Create a new project
