@@ -43,7 +43,7 @@ pub fn test<'a>() -> Result<(), &'a str> {
                 .arg("tests/tests.exe")
                 .status()
                 .expect("Failed to call gcc");
-        } else if cfg!(linux) {
+        } else {
             status = Command::new("gcc")
                 .arg("tests/tests.c")
                 .args(files.split(' '))
@@ -72,7 +72,7 @@ pub fn test<'a>() -> Result<(), &'a str> {
             .arg(".\\tests\\tests.exe")
             .spawn()
             .expect("Failed to delete program");
-    } else if cfg!(linux) {
+    } else {
         Command::new("./tests/tests.exe")
             .status()
             .expect("Failed to run program");

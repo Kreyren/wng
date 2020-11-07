@@ -39,7 +39,7 @@ pub fn create(name: &str) -> std::io::Result<()> {
         testfile = tests.clone();
 
         testfile.push_str("\\tests.c");
-    } else if cfg!(linux) {
+    } else {
         src = name.into();
         src.push_str("/src");
         tests = name.clone().into();
@@ -82,7 +82,7 @@ pub fn create(name: &str) -> std::io::Result<()> {
     let mut gitignore: String = name.clone().into();
     if cfg!(windows) {
         gitignore.push_str("\\.gitignore");
-    } else if cfg!(linux) {
+    } else {
         gitignore.push_str("/.gitignore");
     }
 

@@ -11,7 +11,7 @@ pub fn run(args: Vec<&str>) -> std::io::Result<()> {
     if cfg!(windows) {
         debug = ".\\build\\debug\\debug.exe";
         release = ".\\build\\release\\release.exe";
-    } else if cfg!(linux) {
+    } else {
         debug = "./build/debug/debug.exe";
         release = "./build/release/release.exe";
     }
