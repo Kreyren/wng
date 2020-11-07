@@ -78,8 +78,7 @@ First download the latest release of wanager, put it in `C:\Program Files` and a
 
 ### GNU/Linux
 
-N/A
-
+Download and run as super user [install.sh](https://github.com/Wmanage/wng/blob/master/install.sh).
 <br>
 
 ## Create a new project
