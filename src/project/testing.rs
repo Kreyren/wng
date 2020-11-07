@@ -8,7 +8,7 @@ pub fn test<'a>() -> Result<(), &'a str> {
         if !Path::new("tests\\tests.c").exists() {
             return Err("tests/tests.c not found");
         }
-    } else if cfg!(linux) {
+    } else {
         if !Path::new("tests/tests.c").exists() {
             return Err("tests/tests.c not found");
         }
@@ -29,7 +29,7 @@ pub fn test<'a>() -> Result<(), &'a str> {
     }
 
     let mut status = Command::new("echo")
-        .arg("\"Starting compiling ...\"")
+        .arg("Started testing ...")
         .status()
         .unwrap();
 
