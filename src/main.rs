@@ -65,7 +65,11 @@ mod test {
 }
 
 fn main() {
-    let ver = &format!("Wanager by Wafelack <wafelack@protonmail.com>, Licensed under Mozilla Public License (MPL), Version {}", env!("CARGO_PKG_VERSION"));
+    let ver = &format!(
+        "Wanager by {}, Licensed under Mozilla Public License (MPL), Version {}",
+        env!("CARGO_PKG_AUTHORS"),
+        env!("CARGO_PKG_VERSION")
+    );
 
     let argv: Vec<String> = env::args().collect();
     let argc = argv.len();
