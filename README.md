@@ -72,14 +72,13 @@
 
 Make sure to have [Git](https://git-scm.com), [tar](https://www.gnu.org/software/tar/) & [gcc](https://gcc.gnu.org/) installed on your computer.
 
-### Windows
+### Installation
 
-First download the latest release of wanager, put it in `C:\Program Files` and add `C:\Program Files\` to Path. [?](https://stackoverflow.com/questions/44272416/how-to-add-a-folder-to-path-environment-variable-in-windows-10-with-screensho)
-
-### GNU/Linux
-
-Download and run as super user [install.sh](https://github.com/Wmanage/wng/blob/master/install.sh).
-<br>
+To install wng you can either :
+- Download the latest binary in the releases
+- Run `cargo install`
+	- In /bin/ if you are on *nix
+	- In C:\Program Files\ if you are on Windows
 
 ## Create a new project
 
