@@ -77,7 +77,7 @@ Make sure to have [Git](https://git-scm.com), [tar](https://www.gnu.org/software
 To install wng you can either :
 - Download the latest binary in the releases
 - Download updater.sh (*Nix only and needs cargo)
-	- *Note : you can setup a cron to keep a up to date wng version 😉*
+	- *Note : you can setup a cron to keep an up to date wng version 😉*
 - Run `cargo install wng`
 	- In /bin/ if you are on *nix
 	- In C:\Program Files\ if you are on Windows
