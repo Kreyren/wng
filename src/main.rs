@@ -74,7 +74,7 @@ fn main() {
     let argv: Vec<String> = env::args().collect();
     let argc = argv.len();
     if argc < 2 {
-        println!("Usage: wanager <command> [OPTIONS]");
+        println!("Usage: wng <command> [OPTIONS]");
         std::process::exit(1);
     }
 
