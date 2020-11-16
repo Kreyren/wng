@@ -18,29 +18,6 @@ use project::header::header;
 use project::reinit::reinit;
 use project::testing::test;
 
-struct Version {
-    os: String,
-    main: u8,
-    discriminator: u8,
-    third: u8,
-}
-impl Version {
-    fn display(&self) {
-        println!("Wanager by Wafelack <contactme.wafelack@protonmail.ch>, Licensed under MPL-v2.0, Version {} - {}.{}.{}", self.os, self.main, self.discriminator, self.third);
-    }
-    fn new(main: u8, discriminator: u8, third: u8) -> Version {
-        Version {
-            os: "Linux".to_string(),
-            main,
-            discriminator,
-            third,
-        }
-    }
-    fn set_os(&mut self, os: &str) {
-        self.os = os.to_string();
-    }
-}
-
 #[cfg(test)]
 mod test {
     use super::*;
@@ -88,23 +65,17 @@ mod test {
 }
 
 fn main() {
-    let mut ver = Version::new(3, 1, 0);
-
-    if cfg!(windows) {
-        ver.set_os("Windows");
-    } else {
-        ver.set_os("Unix")
-    }
+    let ver = env!("CARGO_PKG_VERSION");
 
     let argv: Vec<String> = env::args().collect();
     let argc = argv.len();
     if argc < 2 {
-        println!("Usage: wanager <command> [OPTIONS]");
+        println!("Usage: wng <command> [OPTIONS]");
         std::process::exit(1);
     }
 
     let displayhelp = || {
-        ver.display();
+        println!("{}", ver);
         println!("\n--help | -h : displays this message");
         println!("--version | -v : displays version info");
         println!("\narchive : creates an archive with you project files");
@@ -118,8 +89,8 @@ fn main() {
     };
 
     match argv[1].as_str() {
-        "--version" => ver.display(),
-        "-v" => ver.display(),
+        "--version" => println!("{}", ver),
+        "-v" => println!("{}", ver),
         "--help" => {
             displayhelp();
         }

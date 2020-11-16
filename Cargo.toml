@@ -1,8 +1,16 @@
 [package]
 name = "wng"
-version = "3.2.0"
-authors = ["Wafelack <contactme.wafelack@protonmail.com>"]
+version = "3.2.4"
+authors = ["Wafelack <wafelack@protonmail.com>"]
 edition = "2018"
+description = "wng is a package manager and project manager for the C programming language"
+documentation = "https://github.com/Wmanage/wng/blob/dev/DOCS.md"
+readme = "README.md"
+license = "MPL-2.0"
+homepage = "https://wmanage.github.io"
+repository = "https://github.com/Wmanage/wng"
+keywords = ["c", "build", "packages", "projects", "header"]
+categories = ["command-line-utilities", "development-tools"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
