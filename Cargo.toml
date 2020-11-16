@@ -1,6 +1,6 @@
 [package]
 name = "wng"
-version = "3.2.2"
+version = "3.2.3"
 authors = ["Wafelack <wafelack@protonmail.com>"]
 edition = "2018"
 description = "wng is a package manager and project manager for the C programming language"
