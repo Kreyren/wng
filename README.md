@@ -28,7 +28,7 @@
     Build & Test
     </th>
     <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status&style=flat-square&color=success">
+        <img src="https://github.com/Wmanage/wng/workflows/Rust/badge.svg">
     </td>
     </tr>
     </tbody>
