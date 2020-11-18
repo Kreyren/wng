@@ -1,8 +1,6 @@
 use std::env;
 use std::io::{self, Write};
 use std::path::Path;
-#[allow(unused_imports)]
-use std::process::exit;
 use std::str;
 
 mod build;

@@ -13,6 +13,7 @@ fn mkdir(name: &str, errmess: &str, number: u8) {
     }
 }
 
+#[allow(unused_assignments)]
 pub fn create(name: &str) -> std::io::Result<()> {
     let errmess: &str = "Error in process. Please retry later";
     let mut src = String::new();

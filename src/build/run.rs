@@ -4,6 +4,7 @@ use std::io::{Error, ErrorKind};
 use std::path::Path;
 use std::process::Command;
 
+#[allow(unused_assignments)]
 pub fn run(args: Vec<&str>) -> std::io::Result<()> {
     let mut debug = "";
     let mut release = "";
