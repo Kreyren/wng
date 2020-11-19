@@ -21,11 +21,8 @@
 <br>
 <br>
 <div align="center">
-
-Continuous integration
-----------------------
-![travis](https://travis-ci.com/Wmanage/wng.svg?branch=dev)
-
+| CI | ![travis](https://travis-ci.com/Wmanage/wng.svg?branch=dev) |
+|----|-------------------------------------------------------------|
 </div>
 
 <br>
