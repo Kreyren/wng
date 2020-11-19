@@ -19,7 +19,7 @@ else
 	OUTPUT=$(cargo install wng)
 
 	if [[ $? == 0 ]];then
-			echo "Successfully download latest version"
+		echo "Successfully downloaded latest version"
 	else
 		echo "Error in process. Please retry later"
 	fi
