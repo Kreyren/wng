@@ -102,17 +102,22 @@ _NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -
 
 ### Custom build
 
-To build with a custom build, you have to create a `build.py` file with your code to build.
+To build with a custom build, you have to create a `build.py` or `build.rb` file with your code to build.
 
-If you want to specify a special python interpreter path, add the section `"pyinterpreter" : "path2python"` to your project.json.
+If you want to specify a special python / ruby interpreter path, add the section `"pyinterpreter" : "path2python"` or `"rbinterpreter" : "path2ruby"` to your project.json.
 
 Minimal python version required : 3.5
+Minimal ruby version required : 2.3
 
 Then run your script with `wng build --custom`
 
 ### Use WNG api !
 
-Wng API provides some useful things to compile your project as you want to.
+Wng api provides some useful features to compile your project
+
+It is available in Ruby and Python
+
+*Note : If both build.rb & build.py files exists, build.py will be used*
 
 ```py
 from wngbuild import * # Import all from wngbuild module
@@ -123,6 +128,16 @@ build.flags = "-W -Wall -Werror -Wextra" # Setup the flags that the command will
 
 build.run() # Run the compilation command
 build.runOutput() # Run the binary produced by the compilation command (Will raise an error if the compilation command fails)
+```
+
+```rb
+require 'wngbuild'
+
+build=BuildProfile.new("src/*.c", "build/custom/prog") * Setup a build profile
+builc.cc="C:\\Program Files\\clang\\bin\\clang.exe"
+
+build.run() * Run compilation
+build.runOutput() * Run produced file (Will raise an error if compilation failed)
 ```
 
 <br>
