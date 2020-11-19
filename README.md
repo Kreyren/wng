@@ -20,20 +20,13 @@
 
 <br>
 <br>
-<h1 align="center">Continuous Integration</h1>
-<table border="1" align="center">
-    <tbody>
-    <tr>
-    <th align="center" width="100">
-    Build & Test
-    </th>
-    <td align="center">
-        <img src="https://github.com/Wmanage/wng/workflows/Rust/badge.svg">
-    </td>
-    </tr>
-    </tbody>
+<div align="center">
+Continuous integration
+----------------------
 
-</table>
+![Rust](https://github.com/Wmanage/wng/workflows/Rust/badge.svg)
+
+</div>
 
 <br>
 <br>
