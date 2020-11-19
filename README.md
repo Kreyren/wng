@@ -21,8 +21,10 @@
 <br>
 <br>
 <div align="center">
+	
 | CI | ![travis](https://travis-ci.com/Wmanage/wng.svg?branch=dev) |
 |----|-------------------------------------------------------------|
+
 </div>
 
 <br>
