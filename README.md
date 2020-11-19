@@ -22,8 +22,8 @@
 <br>
 <div align="center">
 	
-| CI | ![travis](https://travis-ci.com/Wmanage/wng.svg?branch=dev) |
-|----|-------------------------------------------------------------|
+| CI | [![Build Status](https://travis-ci.com/Wmanage/wng.svg?branch=dev)](https://travis-ci.com/Wmanage/wng) |
+|----|--------------------------------------------------------------------------------------------------------|
 
 </div>
 
