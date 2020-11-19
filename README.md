@@ -176,7 +176,7 @@ $ cat foo.h
 
 Tests have to be in tests/tests.c
 
-To use functions that are in src/ files, just include the header with `#include "../src/<header>.h`"
+To use functions that are in src/ files, just include the header with `#include "../src/<header>.h"`
 
 Then you can run them with `wng test`
 
