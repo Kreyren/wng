@@ -24,8 +24,7 @@
 
 Continuous integration
 ----------------------
-
-![Rust](https://github.com/Wmanage/wng/workflows/Rust/badge.svg)
+![travis](https://travis-ci.com/Wmanage/wng.svg?branch=dev)
 
 </div>
 
