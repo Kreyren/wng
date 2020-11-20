@@ -196,6 +196,11 @@ _NOTE : Repository has to have a `lib/` folder inside or wng will refuse to inst
 
 Create a repository on GitHub, BitBucket or GitLab with your project, library files have to be in a `lib/` folder
 
+## Contributors
+<a href="https://github.com/wmanage/wng/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=wmanage/wng" />
+</a>
+
 ## Contributing
 
 See our [contribution guidelines](https://github.com/wmanage/wng/blob/master/CONTRIBUTING.md).
