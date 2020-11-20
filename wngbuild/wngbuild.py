@@ -1,6 +1,5 @@
 import subprocess as sp
 
-
 class BuildProfile:
     def __init__(self, files, output):
         self.files = files

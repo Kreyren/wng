@@ -3,6 +3,7 @@ use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+#[allow(unused_assignments)]
 pub fn test<'a>() -> Result<(), &'a str> {
     if cfg!(windows) {
         if !Path::new("tests\\tests.c").exists() {

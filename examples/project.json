@@ -2,6 +2,5 @@
     "name" : "examples",
     "version" : "0.1.0",
     "standard" : "C99",
-    "author" : "Wafelack <wafelack@protonmail.com>",
-    "dependencies" : [  ]
+    "author" : "Example <example@example.com>"
 }

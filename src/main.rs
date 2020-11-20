@@ -1,8 +1,6 @@
 use std::env;
 use std::io::{self, Write};
 use std::path::Path;
-#[allow(unused_imports)]
-use std::process::exit;
 use std::str;
 
 mod build;
@@ -18,51 +16,6 @@ use project::header::header;
 use project::reinit::reinit;
 use project::testing::test;
 
-#[cfg(test)]
-mod test {
-    use super::*;
-    #[test]
-    fn creation() -> std::io::Result<()> {
-        create("test")?;
-        let dir = &env::current_dir()
-            .unwrap()
-            .into_os_string()
-            .into_string()
-            .unwrap();
-        assert!(Path::new(dir).exists());
-        assert!(Path::new(&format!("{}\\project.json", dir)).exists());
-        assert!(Path::new(&format!("{}\\deps.dat", dir)).exists());
-        assert!(Path::new(&format!("{}\\src\\main.c", dir)).exists());
-
-        Ok(())
-    }
-    #[test]
-    fn building() -> std::io::Result<()> {
-        env::set_current_dir("test")?;
-        build();
-        assert!(Path::new(".\\build\\debug\\debug.exe").exists());
-        Ok(())
-    }
-    #[test]
-    fn running() -> std::io::Result<()> {
-        env::set_current_dir("test")?;
-        run(vec![])?;
-        Ok(())
-    }
-    #[test]
-    fn archiving() -> std::io::Result<()> {
-        env::set_current_dir("test")?;
-        archive();
-        let dir = &env::current_dir()
-            .unwrap()
-            .into_os_string()
-            .into_string()
-            .unwrap();
-        println!("{}", format!("{}\\project.tar.gz", dir).as_str());
-        assert!(Path::new(format!("{}\\project.tar.gz", dir).as_str()).exists());
-        Ok(())
-    }
-}
 
 fn main() {
     let ver = env!("CARGO_PKG_VERSION");

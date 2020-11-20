@@ -20,20 +20,12 @@
 
 <br>
 <br>
-<h1 align="center">Continuous Integration</h1>
-<table border="1" align="center">
-    <tbody>
-    <tr>
-    <th align="center" width="100">
-    Build & Test
-    </th>
-    <td align="center">
-        <img src="https://img.shields.io/github/workflow/status/Wmanage/wng/Rust?label=Status&style=flat-square&color=success">
-    </td>
-    </tr>
-    </tbody>
+<div align="center">
+	
+| CI | [![Build Status](https://travis-ci.com/Wmanage/wng.svg?branch=dev)](https://travis-ci.com/Wmanage/wng) |
+|----|--------------------------------------------------------------------------------------------------------|
 
-</table>
+</div>
 
 <br>
 <br>
@@ -110,17 +102,22 @@ _NOTE : `wng build` will build a debug executable, with flags -W -Wall -Werror -
 
 ### Custom build
 
-To build with a custom build, you have to create a `build.py` file with your code to build.
+To build with a custom build, you have to create a `build.py` or `build.rb` file with your code to build.
 
-If you want to specify a special python interpreter path, add the section `"pyinterpreter" : "path2python"` to your project.json.
+If you want to specify a special python / ruby interpreter path, add the section `"pyinterpreter" : "path2python"` or `"rbinterpreter" : "path2ruby"` to your project.json.
 
 Minimal python version required : 3.5
+Minimal ruby version required : 2.3
 
 Then run your script with `wng build --custom`
 
 ### Use WNG api !
 
-Wng API provides some useful things to compile your project as you want to.
+Wng api provides some useful features to compile your project
+
+It is available in Ruby and Python
+
+*Note : If both build.rb & build.py files exists, build.py will be used*
 
 ```py
 from wngbuild import * # Import all from wngbuild module
@@ -131,6 +128,16 @@ build.flags = "-W -Wall -Werror -Wextra" # Setup the flags that the command will
 
 build.run() # Run the compilation command
 build.runOutput() # Run the binary produced by the compilation command (Will raise an error if the compilation command fails)
+```
+
+```rb
+require 'wngbuild'
+
+build=BuildProfile.new("src/*.c", "build/custom/prog") * Setup a build profile
+builc.cc="C:\\Program Files\\clang\\bin\\clang.exe"
+
+build.run() * Run compilation
+build.runOutput() * Run produced file (Will raise an error if compilation failed)
 ```
 
 <br>
@@ -169,7 +176,7 @@ $ cat foo.h
 
 Tests have to be in tests/tests.c
 
-To use functions that are in src/ files, just include the header with `#include "../src/<header>.h`"
+To use functions that are in src/ files, just include the header with `#include "../src/<header>.h"`
 
 Then you can run them with `wng test`
 

@@ -10,10 +10,10 @@ fn see_dir(dir: PathBuf) -> Vec<PathBuf> {
     let mut list: Vec<PathBuf> = Vec::new();
     for entry in match std::fs::read_dir(dir.clone()) {
         Ok(e) => e,
-        Err(_s) => {
-            eprintln!("Failed to read src/");
-            std::process::exit(66);
-        }
+            Err(_s) => {
+                eprintln!("Failed to read src/");
+                std::process::exit(66);
+            }
     } {
         let entry = match entry {
             Ok(e) => e,
@@ -89,56 +89,101 @@ pub fn buildhard() {
     }
 }
 pub fn buildcustom() {
-    if !Path::new("build.py").exists() {
-        eprintln!("Build script not found");
-        std::process::exit(64);
-    }
-    let content = lines_from_file("project.json").join("\n");
-    let json: Value = match serde_json::from_str(&content) {
-        Ok(j) => j,
-        Err(_e) => {
-            eprintln!("Failed to parse project.json");
-            std::process::exit(66);
-        }
-    };
-
-    if json["pyinterpreter"] == Value::Null {
-        let ver = Command::new("python")
-            .arg("--version")
-            .output()
-            .expect("Failed to get python version");
-        let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
-
-        if messagechars[7] < '3' && messagechars[9] < '5' {
-            eprintln!("Python version has to be 3.5 or newer");
-            std::process::exit(65);
-        }
-        Command::new("python")
-            .arg("build.py")
-            .status()
-            .expect("Failed to run build script");
-    } else {
-        let pypath = match &json["pyinterpreter"] {
-            Value::String(s) => s,
-            _ => {
-                eprintln!("Pyinterpreter has to be a valid string");
-                std::process::exit(67);
+    if Path::new("build.py").exists() {
+        let content = lines_from_file("project.json").join("\n");
+        let json: Value = match serde_json::from_str(&content) {
+            Ok(j) => j,
+            Err(_e) => {
+                eprintln!("Failed to parse project.json");
+                std::process::exit(66);
             }
         };
 
-        let ver = Command::new(pypath)
-            .arg("--version")
-            .output()
-            .expect("Failed to get python version");
-        let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+        if json["pyinterpreter"] == Value::Null {
+            let ver = Command::new("python")
+                .arg("--version")
+                .output()
+                .expect("Failed to get python version");
+            let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
 
-        if messagechars[7] < '3' && messagechars[9] < '5' {
-            eprintln!("Python version has to be 3.5 or newer");
-            std::process::exit(65);
+            if messagechars[7] < '3' && messagechars[9] < '5' {
+                eprintln!("Python version has to be 3.5 or newer");
+                std::process::exit(65);
+            }
+            Command::new("python")
+                .arg("build.py")
+                .status()
+                .expect("Failed to run build script");
+        } else {
+            let pypath = match &json["pyinterpreter"] {
+                Value::String(s) => s,
+                _ => {
+                    eprintln!("Pyinterpreter has to be a valid string");
+                    std::process::exit(67);
+                }
+            };
+
+            let ver = Command::new(pypath)
+                .arg("--version")
+                .output()
+                .expect("Failed to get python version");
+            let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+
+            if messagechars[7] < '3' && messagechars[9] < '5' {
+                eprintln!("Python version has to be 3.5 or newer");
+                std::process::exit(65);
+            }
+            Command::new(pypath)
+                .arg("build.py")
+                .status()
+                .expect("Failed to run build script");
         }
-        Command::new(pypath)
-            .arg("build.py")
-            .status()
-            .expect("Failed to run build script");
+    }else if Path::new("build.rb").exists() {
+        let content = lines_from_file("project.json").join("\n");
+        let json: Value = match serde_json::from_str(&content) {
+            Ok(j) => j,
+            Err(_e) => {
+                eprintln!("Failed to parse project.json");
+                std::process::exit(66);
+            }
+        };
+
+        if json["rbinterpreter"] == Value::Null {
+            let ver = Command::new("ruby")
+                .arg("--version")
+                .output()
+                .expect("Failed to get ruby version");
+
+            let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+
+            if messagechars[5] < '2' || (messagechars[5] < '2' && messagechars[7] < '3') {
+                eprintln!("Ruby version has to be 2.3 or newer");
+                std::process::exit(65);
+            }
+            Command::new("ruby").arg("build.rb").status().expect("failed to run build script");
+        } else {
+            let rbpath = match &json["rbinterpreter"] {
+                Value::String(s) => s,
+               _ => {
+                    eprintln!("rbinterpretrer has to be a valid string");
+                   std::process::exit(67);
+                }
+            };
+            let ver = Command::new(rbpath)
+                .arg("--version")
+                .output()
+                .expect("Failed to get ruby version");
+
+            let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+
+            if messagechars[5] < '2' || (messagechars[5] < '2' && messagechars[7] < '3') {
+                eprintln!("Ruby version has to be 2.3 or newer");
+                std::process::exit(65);
+            }
+            Command::new(rbpath).arg("build.rb").status().expect("failed to run build script");
+        }
+    } else {
+        eprintln!("Error: build script not found");
+        std::process::exit(-65);
     }
 }
