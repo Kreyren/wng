@@ -8,10 +8,10 @@ on:
     schedule:
         - cron: "1 * * * *"
 
-    env:
-        CARGO_TERM_COLOR: always
+env:
+    CARGO_TERM_COLOR: always
 
-    jobs:
+jobs:
         build:
             runs-on: ${{ matrix.os }}
 
@@ -22,6 +22,6 @@ on:
             steps:
                 - uses: actions/checkout@v2
                 - name: Build
-                    run: cargo build --verbose
+                  run: cargo build --verbose
                 - name: Test
-                    run: cargo test --verbose]]
+                  run: cargo test --verbose
