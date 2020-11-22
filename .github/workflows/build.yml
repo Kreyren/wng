@@ -8,10 +8,10 @@ on:
     schedule:
         - cron: "1 * * * *"
 
-    env:
-        CARGO_TERM_COLOR: always
+env:
+    CARGO_TERM_COLOR: always
 
-    jobs:
+jobs:
         build:
             runs-on: ${{ matrix.os }}
 
