@@ -29,7 +29,6 @@
 | Windows   | ![Windows](https://github.com/Wmanage/wng/workflows/Windows/badge.svg)     |
 | GNU/Linux | ![GNU/Linux](https://github.com/Wmanage/wng/workflows/GNU/Linux/badge.svg) |
 |   MacOS   |     ![MacOS](https://github.com/Wmanage/wng/workflows/MacOS/badge.svg)     |
-|-----------|----------------------------------------------------------------------------|
 
 </div>
 
