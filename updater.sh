@@ -14,16 +14,13 @@ if [[ ${CRATES_IO_VERSION} == ${CURRENT_VERSION} ]];then
 	echo "Already up to date"
 else
 	echo "Updating..."
-	WD=$(pwd)
 	cd /bin/
 	echo "Downloading version ${CRATES_IO_VERSION} from crates.io..."
-
-	OUTPUT=$(cargo install wng)
 
 	if [[ $? == 0 ]];then
 		echo "Successfully downloaded latest version"
 	else
 		echo "Error in process. Please retry later"
 	fi
-	cd ${WD}
+	cd -
 fi
