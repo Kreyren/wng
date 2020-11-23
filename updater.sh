@@ -3,7 +3,9 @@
 # Script to install or update wng
 
 VERSION_REGEX="\"(.*?)\"" # Regex to get version on crates.io
-TEMP_VERSION=$(cargo search wng | egrep -o ${VERSION_REGEX}) # Get wng version on crates.io and apply regex on it
+RAW_VERSION=$(cargo search wng) # Raw version to split
+readarray -t VERSION <<<"$RAW_VERSION"
+TEMP_VERSION=$(echo ${VERSION[0]} | egrep -o ${VERSION_REGEX}) # Get wng version on crates.io and apply regex on it
 CURRENT_VERSION=$(wng -v) # Get the version of wng installed on the computer
 CRATES_IO_VERSION="${TEMP_VERSION%\"}" # Removing quotes at the beggining of the version name
 CRATES_IO_VERSION="${CRATES_IO_VERSION#\"}" # Removing quotes at the end of the version name
