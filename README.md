@@ -114,9 +114,9 @@ Minimal ruby version required : 2.3
 
 Then run your script with `wng build --custom`
 
-### Use WNG api !
+### Wngbuild library
 
-Wng api provides some useful features to compile your project
+Wngbuild library provides some useful features to compile your project
 
 It is available in Ruby and Python
 
@@ -134,7 +134,7 @@ build.runOutput() # Run the binary produced by the compilation command (Will rai
 ```
 
 ```rb
-require 'wngbuild'
+require_relative "wngbuild"
 
 build=BuildProfile.new("src/*.c", "build/custom/prog") * Setup a build profile
 builc.cc="C:\\Program Files\\clang\\bin\\clang.exe"
