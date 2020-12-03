@@ -28,6 +28,22 @@
 |-------|----------------------------------------------------------------------------|
 | Build |   ![Windows](https://github.com/Wmanage/wng/workflows/Build/badge.svg)     |
 
+## Dependencies
+
+serde_json = "1.0"
+lines_from_file = "0.1.1"
+see_directory = "0.2.1"
+fs_extra = "1.2.0"
+colored = "2"
+tar = "0.4.30"
+
+|    serde_json   |  1.0.X |
+| lines_from_file |  0.1.1 |
+|  see_directory  |  0.2.1 |
+|     fs_extra    |  1.2.0 |
+|     colored     |  2.X.X |
+|       tar       | 0.4.30 |
+
 </div>
 
 <br>
@@ -36,7 +52,7 @@
 
 ---
 
-**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C programming language written in [Rust](https://rust-lang.org). It allow you to create projects, headers, to install libraries & to compile and run fast and easily. It is different from CMake by its hability to manage libraries, packages and projects. The objective of this tool is to definitely give up Makefiles.
+**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C programming language written in [Rust](https://rust-lang.org). It allow you to create projects, headers, to install libraries & to compile and run fast and easily.
 
 <br>
 
@@ -65,7 +81,7 @@
 
 ### Prerequisties
 
-Make sure to have [Git](https://git-scm.com), [tar](https://www.gnu.org/software/tar/) & [gcc](https://gcc.gnu.org/) installed on your computer.
+Make sure to have [Git](https://git-scm.com) & [gcc](https://gcc.gnu.org/) installed on your computer.
 
 ### Installation
 
