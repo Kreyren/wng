@@ -10,10 +10,10 @@ fn see_dir(dir: PathBuf) -> Vec<PathBuf> {
     let mut list: Vec<PathBuf> = Vec::new();
     for entry in match std::fs::read_dir(dir.clone()) {
         Ok(e) => e,
-            Err(_s) => {
-                eprintln!("Failed to read src/");
-                std::process::exit(66);
-            }
+        Err(_s) => {
+            eprintln!("Failed to read src/");
+            std::process::exit(66);
+        }
     } {
         let entry = match entry {
             Ok(e) => e,
@@ -81,6 +81,11 @@ pub fn buildhard() {
         .args(files)
         .arg("-o")
         .arg("build/release/release.exe")
+        .arg("-W")
+        .arg("-Wall")
+        .arg("-Werror")
+        .arg("-Wextra")
+        .arg("-O3")
         .status()
         .expect("Error while running compilation command.");
 
@@ -104,7 +109,8 @@ pub fn buildcustom() {
                 .arg("--version")
                 .output()
                 .expect("Failed to get python version");
-            let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+            let messagechars: Vec<char> =
+                std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
 
             if messagechars[7] < '3' && messagechars[9] < '5' {
                 eprintln!("Python version has to be 3.5 or newer");
@@ -127,7 +133,8 @@ pub fn buildcustom() {
                 .arg("--version")
                 .output()
                 .expect("Failed to get python version");
-            let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+            let messagechars: Vec<char> =
+                std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
 
             if messagechars[7] < '3' && messagechars[9] < '5' {
                 eprintln!("Python version has to be 3.5 or newer");
@@ -138,7 +145,7 @@ pub fn buildcustom() {
                 .status()
                 .expect("Failed to run build script");
         }
-    }else if Path::new("build.rb").exists() {
+    } else if Path::new("build.rb").exists() {
         let content = lines_from_file("project.json").join("\n");
         let json: Value = match serde_json::from_str(&content) {
             Ok(j) => j,
@@ -154,19 +161,23 @@ pub fn buildcustom() {
                 .output()
                 .expect("Failed to get ruby version");
 
-            let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+            let messagechars: Vec<char> =
+                std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
 
             if messagechars[5] < '2' || (messagechars[5] < '2' && messagechars[7] < '3') {
                 eprintln!("Ruby version has to be 2.3 or newer");
                 std::process::exit(65);
             }
-            Command::new("ruby").arg("build.rb").status().expect("failed to run build script");
+            Command::new("ruby")
+                .arg("build.rb")
+                .status()
+                .expect("failed to run build script");
         } else {
             let rbpath = match &json["rbinterpreter"] {
                 Value::String(s) => s,
-               _ => {
+                _ => {
                     eprintln!("rbinterpretrer has to be a valid string");
-                   std::process::exit(67);
+                    std::process::exit(67);
                 }
             };
             let ver = Command::new(rbpath)
@@ -174,13 +185,17 @@ pub fn buildcustom() {
                 .output()
                 .expect("Failed to get ruby version");
 
-            let messagechars: Vec<char> = std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+            let messagechars: Vec<char> =
+                std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
 
             if messagechars[5] < '2' || (messagechars[5] < '2' && messagechars[7] < '3') {
                 eprintln!("Ruby version has to be 2.3 or newer");
                 std::process::exit(65);
             }
-            Command::new(rbpath).arg("build.rb").status().expect("failed to run build script");
+            Command::new(rbpath)
+                .arg("build.rb")
+                .status()
+                .expect("failed to run build script");
         }
     } else {
         eprintln!("Error: build script not found");
