@@ -16,38 +16,43 @@ use project::header::header;
 use project::reinit::reinit;
 use project::testing::test;
 
+fn displayhelp() {
+    println!(
+        "Wanager by {} version {}\n",
+        env!("CARGO_PKG_AUTHORS"),
+        env!("CARGO_PKG_VERSION")
+    );
+    println!("usage: wng <options> [flags]");
+    println!("\nOPTIONS:");
+    println!("\tarchive       : creates an archive with your projects file");
+    println!("\tnew <name>    : creates a new project");
+    println!("\treinit        : reinitializes the project");
+    println!("\theader <name> : creates a header file");
+    println!("\ttest          : runs tests contained in tests/tests.c");
+    println!("\tbuild         : compiles the project");
+    println!("\trun           : runs the compiled project");
+    println!(
+        "\tinstall <source>:<username>/<repo> : installs the content of lib/ folder of the repo"
+    );
+    println!("\nOPTIONS:");
+    println!("\t--help | -h    : displays help");
+    println!("\t--version | -v : displays version info");
+    println!("\t--force | -f   : force reinitialization");
+    println!("\t--release      : builds the project in release mode (high optimization level)");
+    println!("\t--custom       : builds the project following a custom script");
+}
 
 fn main() {
-    let ver = env!("CARGO_PKG_VERSION");
-
     let argv: Vec<String> = env::args().collect();
     let argc = argv.len();
     if argc < 2 {
-        println!("Usage: wng <command> [OPTIONS]");
+        displayhelp();
         std::process::exit(1);
     }
 
-    let displayhelp = || {
-        println!("{}", ver);
-        println!("\n--help | -h : displays this message");
-        println!("--version | -v : displays version info");
-        println!("\narchive : creates an archive with you project files");
-        println!("new <name> : creates a new wanager project");
-        println!("reinit [--force | -f] : reinitializes the project");
-        println!("header <name> : creates a header file with basic header stuff");
-        println!("test : runs tests contained in tests/tests.c");
-        println!("\nbuild [--release | --custom] : compiles the project");
-        println!("run : runs the compiled project");
-        println!("\ninstall <source>:<username>/<repo> : installs the content of lib/ folder of the repo");
-    };
-
     match argv[1].as_str() {
-        "--version" => println!("{}", ver),
-        "-v" => println!("{}", ver),
-        "--help" => {
-            displayhelp();
-        }
-        "-h" => {
+        "--version" | "-v" => println!("{}", env!("CARGO_PKG_VERSION")),
+        "--help" | "-h" => {
             displayhelp();
         }
         "archive" => {

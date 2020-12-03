@@ -12,7 +12,9 @@
 ![GitHub stars](https://img.shields.io/github/stars/Wmanage/wng?color=%23aa1111&label=Stars&style=flat-square)
 ![GitHub](https://img.shields.io/github/license/Wmanage/wng?color=%23ffaa00&label=License&style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Wmanage/wng?color=%23888800&label=Latest%20release&style=flat-square)
-![Github All Releases](https://img.shields.io/github/downloads/Wmanage/wng/total?color=%2300aa00&label=Downloads&style=flat-square)
+
+![Github All Releases](https://img.shields.io/github/downloads/Wmanage/wng/total?color=sucess&label=Downloads%20%28GitHub%29&style=flat-square)
+![Crates.io](https://img.shields.io/crates/d/wng?color=sucess&label=Downloads%20%28crates.io%29&style=flat-square)
 
 </div>
 
@@ -22,8 +24,20 @@
 <br>
 <div align="center">
 	
-| CI | [![Build Status](https://travis-ci.com/Wmanage/wng.svg?branch=dev)](https://travis-ci.com/Wmanage/wng) |
-|----|--------------------------------------------------------------------------------------------------------|
+|       |                                   CI                                       |
+|-------|----------------------------------------------------------------------------|
+| Build |   ![Windows](https://github.com/Wmanage/wng/workflows/Build/badge.svg)     |
+
+## Dependencies
+
+|                 |        |
+|-----------------|--------|
+|    serde_json   |  1.0.X |
+| lines_from_file |  0.1.1 |
+|  see_directory  |  0.2.1 |
+|     fs_extra    |  1.2.0 |
+|     colored     |  2.X.X |
+|       tar       | 0.4.30 |
 
 </div>
 
@@ -33,7 +47,7 @@
 
 ---
 
-**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C programming language written in [Rust](https://rust-lang.org). It allow you to create projects, headers, to install libraries & to compile and run fast and easily. It is different from CMake by its hability to manage libraries, packages and projects. The objective of this tool is to definitely give up Makefiles.
+**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C programming language written in [Rust](https://rust-lang.org). It allow you to create projects, headers, to install libraries & to compile and run fast and easily.
 
 <br>
 
@@ -62,7 +76,7 @@
 
 ### Prerequisties
 
-Make sure to have [Git](https://git-scm.com), [tar](https://www.gnu.org/software/tar/) & [gcc](https://gcc.gnu.org/) installed on your computer.
+Make sure to have [Git](https://git-scm.com) & [gcc](https://gcc.gnu.org/) installed on your computer.
 
 ### Installation
 
@@ -111,9 +125,9 @@ Minimal ruby version required : 2.3
 
 Then run your script with `wng build --custom`
 
-### Use WNG api !
+### Wngbuild library
 
-Wng api provides some useful features to compile your project
+Wngbuild library provides some useful features to compile your project
 
 It is available in Ruby and Python
 
@@ -131,7 +145,7 @@ build.runOutput() # Run the binary produced by the compilation command (Will rai
 ```
 
 ```rb
-require 'wngbuild'
+require_relative "wngbuild"
 
 build=BuildProfile.new("src/*.c", "build/custom/prog") * Setup a build profile
 builc.cc="C:\\Program Files\\clang\\bin\\clang.exe"
@@ -195,6 +209,11 @@ _NOTE : Repository has to have a `lib/` folder inside or wng will refuse to inst
 ### Publish your library
 
 Create a repository on GitHub, BitBucket or GitLab with your project, library files have to be in a `lib/` folder
+
+## Contributors
+<a href="https://github.com/wmanage/wng/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=wmanage/wng" />
+</a>
 
 ## Contributing
 
