@@ -30,13 +30,8 @@
 
 ## Dependencies
 
-serde_json = "1.0"
-lines_from_file = "0.1.1"
-see_directory = "0.2.1"
-fs_extra = "1.2.0"
-colored = "2"
-tar = "0.4.30"
-
+|                 |        |
+|-----------------|--------|
 |    serde_json   |  1.0.X |
 | lines_from_file |  0.1.1 |
 |  see_directory  |  0.2.1 |
