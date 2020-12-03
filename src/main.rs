@@ -46,7 +46,7 @@ fn main() {
     let argv: Vec<String> = env::args().collect();
     let argc = argv.len();
     if argc < 2 {
-        println!("Usage: wng <command> [OPTIONS]");
+        displayhelp();
         std::process::exit(1);
     }
 

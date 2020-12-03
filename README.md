@@ -30,6 +30,7 @@
 
 ## Dependencies
 
+|                 |        |
 |-----------------|--------|
 |    serde_json   |  1.0.X |
 | lines_from_file |  0.1.1 |
