@@ -42,13 +42,13 @@ To install wng you can either :
 Open the command prompt and run :
 
 ```
-$ wng new <project_name>
+$ wng new <project_name> [-cpp]
 $ cd project_name/
 ```
 
 Three folders have been created, `tests/`, `src/` and `build/`
 
-In `src/`, you'll find file `main.c` that contains a basic hello world program.
+In `src/`, you'll find file `main.c[pp]` that contains a basic hello world program.
 
 <br>
 

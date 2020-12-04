@@ -6,7 +6,7 @@ use std::path::Path;
 use std::path::PathBuf;
 use std::process::Command;
 
-fn see_dir(dir: PathBuf) -> Vec<PathBuf> {
+fn see_dir(dir: PathBuf, cpp: bool) -> Vec<PathBuf> {
     let mut list: Vec<PathBuf> = Vec::new();
     for entry in match std::fs::read_dir(dir.clone()) {
         Ok(e) => e,
@@ -23,11 +23,17 @@ fn see_dir(dir: PathBuf) -> Vec<PathBuf> {
             }
         };
         if entry.path().is_dir() {
-            let sub: Vec<PathBuf> = see_dir(entry.path());
+            let sub: Vec<PathBuf> = see_dir(entry.path(), cpp);
             list.extend(sub);
         } else {
+            if !cpp {
             if entry.path().extension().unwrap() == "c" {
                 list.push(entry.path().to_owned());
+            }
+            } else {
+                if entry.path().extension().unwrap() == "cpp" {
+                    list.push(entry.path().to_owned());
+                }
             }
         }
     }
@@ -48,14 +54,20 @@ pub fn removebinary() {
     };
 }
 
-pub fn build() {
+pub fn build(cpp: bool) {
     if !Path::new("src").exists() {
         eprintln!("src/ folder not found. Make sure to be in a valid project");
         std::process::exit(36);
     }
-    let files: Vec<PathBuf> = see_dir(PathBuf::from("src"));
+    let files: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp);
 
-    let status = Command::new("gcc")
+    let compiler = if cpp {
+        "g++"
+    } else {
+        "gcc"
+    };
+
+    let status = Command::new(compiler)
         .args(files)
         .arg("-o")
         .arg("build/debug/debug.exe")
@@ -70,14 +82,20 @@ pub fn build() {
         println!("{}", "Compiled project successfully !".green())
     }
 }
-pub fn buildhard() {
+pub fn buildhard(cpp: bool) {
     if !Path::new("src").exists() {
         eprintln!("src/ folder not found. Make sure to be in a valid project");
         std::process::exit(36);
     }
-    let files: Vec<PathBuf> = see_dir(PathBuf::from("src"));
+    let files: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp);
 
-    let status = Command::new("gcc")
+    let compiler = if cpp {
+        "g++"
+    } else {
+        "gcc"
+    };
+
+    let status = Command::new(compiler)
         .args(files)
         .arg("-o")
         .arg("build/release/release.exe")

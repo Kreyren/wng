@@ -47,7 +47,7 @@
 
 ---
 
-**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C programming language written in [Rust](https://rust-lang.org). It allow you to create projects, headers, to install libraries & to compile and run fast and easily.
+**Wanager** (aka wng) is a package manager & build tool (like [cargo](https://doc.rust-lang.org/cargo/) for Rustlang) for the C & C++ programming languages written in [Rust](https://rust-lang.org). It allow you to create projects, headers, to install libraries & to compile and run fast and easily.
 
 <br>
 
@@ -93,13 +93,13 @@ To install wng you can either :
 Open the command prompt and run :
 
 ```
-$ wng new <project_name>
+$ wng new <project_name> [--cpp]
 $ cd project_name/
 ```
 
 Three folders have been created, `tests/`, `src/` and `build/`
 
-In `src/`, you'll find file `main.c` that contains a basic hello world program.
+In `src/`, you'll find file `main.c[pp]` that contains a basic hello world program.
 
 <br>
 
