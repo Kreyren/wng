@@ -42,6 +42,7 @@ fn displayhelp() {
     println!("\t--force | -f   : force reinitialization");
     println!("\t--release      : builds the project in release mode (high optimization level)");
     println!("\t--custom       : builds the project following a custom script");
+    println!("\t--cpp          : creates a new C++ project");
 }
 
 fn is_cpp() -> bool {
