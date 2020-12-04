@@ -101,7 +101,7 @@ fn main() {
             }
         }
         "check" => {
-            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
+            if !Path::new("project.json").exists()  {
                 std::process::exit(-1);
             }
 
@@ -132,7 +132,7 @@ fn main() {
             }
         }
         "reinit" => {
-            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
+            if !Path::new("project.json").exists()  {
                 std::process::exit(-1);
             }
             if argc == 3 && argv[2].as_str() == "--force" || argc == 3 && argv[2].as_str() == "-f" {
@@ -167,7 +167,7 @@ fn main() {
             }
         }
         "install" => {
-            if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
+            if !Path::new("project.json").exists()  {
                 std::process::exit(-1);
             }
             if argc != 3 {
@@ -176,15 +176,16 @@ fn main() {
             install(&argv[2]);
         }
         "test" => {
-            if !Path::new("tests/tests.c").exists() {
-                println!("Create file `tests/tests.c` before testing");
-                std::process::exit(-2);
+            if !Path::new("project.json").exists() {
+                eprintln!("Not in a wanager project");
+                std::process::exit(-1);
             }
-            match test() {
+
+            match test(is_cpp()) {
                 Ok(()) => (),
                 Err(s) => println!("{}", s),
             }
         }
-        _ => println!("Usage: wng <command> [OPTIONS]"),
+        _ => displayhelp(),
     }
 }
