@@ -14,7 +14,7 @@ fn mkdir(name: &str, errmess: &str, number: u8) {
 }
 
 #[allow(unused_assignments)]
-pub fn create(name: &str) -> std::io::Result<()> {
+pub fn create(name: &str, cpp: bool) -> std::io::Result<()> {
     let errmess: &str = "Error in process. Please retry later";
     let mut src = String::new();
     let mut tests = String::new();
@@ -36,10 +36,17 @@ pub fn create(name: &str) -> std::io::Result<()> {
         debug = build.clone();
         debug.push_str("\\debug");
         main = src.clone();
-        main.push_str("\\main.c");
+        if cpp {
+        main.push_str("\\main.cpp");
+        testfile = tests.clone();
+
+        testfile.push_str("\\tests.cpp");
+        } else {
+            main.push_str("\\main.c");
         testfile = tests.clone();
 
         testfile.push_str("\\tests.c");
+        }
     } else {
         src = name.into();
         src.push_str("/src");
@@ -52,9 +59,17 @@ pub fn create(name: &str) -> std::io::Result<()> {
         debug = build.clone();
         debug.push_str("/debug");
         main = src.clone();
-        main.push_str("/main.c");
-        testfile = tests.clone();
-        testfile.push_str("/tests.c");
+        if cpp {
+            main.push_str("/main.cpp");
+            testfile = tests.clone();
+    
+            testfile.push_str("/tests.cpp");
+            } else {
+                main.push_str("/main.c");
+            testfile = tests.clone();
+    
+            testfile.push_str("/tests.c");
+            }
     }
 
     mkdir(name, errmess, 1);
@@ -64,21 +79,38 @@ pub fn create(name: &str) -> std::io::Result<()> {
     mkdir(&release, errmess, 5);
     mkdir(&debug, errmess, 6);
 
-    let mut mf = File::create(main)?;
-    mf.write_all(b"#include <stdio.h>\n")?;
-    mf.write_all(b"#include <stdlib.h>\n")?;
-    mf.write_all(b"int main(void) {\n")?;
-    mf.write_all(b"    puts(\"Hello, World !\");\n")?;
-    mf.write_all(b"    return EXIT_SUCCESS;\n")?;
-    mf.write_all(b"}")?;
+    if !cpp {
 
-    let mut tf = File::create(testfile)?;
-    tf.write_all(b"#include <stdio.h>\n")?;
-    tf.write_all(b"#include <stdlib.h>\n")?;
-    tf.write_all(b"int main(void) {\n")?;
-    tf.write_all(b"    puts(\"Hello, World !\");\n")?;
-    tf.write_all(b"    return EXIT_SUCCESS;\n")?;
-    tf.write_all(b"}")?;
+        let mut mf = File::create(main)?;
+        mf.write_all(b"#include <stdio.h>\n")?;
+        mf.write_all(b"#include <stdlib.h>\n")?;
+        mf.write_all(b"int main(void) {\n")?;
+        mf.write_all(b"    puts(\"Hello, World !\");\n")?;
+        mf.write_all(b"    return EXIT_SUCCESS;\n")?;
+        mf.write_all(b"}")?;
+
+        let mut tf = File::create(testfile)?;
+        tf.write_all(b"#include <stdio.h>\n")?;
+        tf.write_all(b"#include <stdlib.h>\n")?;
+        tf.write_all(b"int main(void) {\n")?;
+        tf.write_all(b"    puts(\"Hello, World !\");\n")?;
+        tf.write_all(b"    return EXIT_SUCCESS;\n")?;
+        tf.write_all(b"}")?;
+    } else {
+        let mut mf = File::create(main)?;
+        mf.write_all(b"#include <iostream>\n\n")?;
+        mf.write_all(b"int main() {\n")?;
+        mf.write_all(b"    std::cout << \"Hello, World! \" << std::endl;\n")?;
+        mf.write_all(b"    return 0;\n")?;
+        mf.write_all(b"}")?;
+
+        let mut tf = File::create(testfile)?;
+        tf.write_all(b"#include <iostream>\n\n")?;
+        tf.write_all(b"int main() {\n")?;
+        tf.write_all(b"    std::cout << \"Hello, World! \" << std::endl;\n")?;
+        tf.write_all(b"    return 0;\n")?;
+        tf.write_all(b"}")?;
+    }
 
     let mut gitignore: String = name.clone().into();
     if cfg!(windows) {
@@ -107,7 +139,11 @@ pub fn create(name: &str) -> std::io::Result<()> {
     json.write_all(b"{\n")?;
     json.write_all(format!("    \"name\" : \"{}\",\n", name).as_bytes())?;
     json.write_all(b"    \"version\" : \"0.1.0\",\n")?;
-    json.write_all(b"    \"standard\" : \"C99\",\n")?;
+    if !cpp {
+        json.write_all(b"    \"standard\" : \"C99\",\n")?;
+    } else {
+        json.write_all(b"    \"standard\" : \"C++14\",\n")?;
+    }
     json.write_all(b"    \"author\" : \"Example <example@example.com>\"\n")?;
     json.write_all(b"}")?;
 

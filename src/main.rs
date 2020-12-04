@@ -2,6 +2,8 @@ use std::env;
 use std::io::{self, Write};
 use std::path::Path;
 use std::str;
+use serde_json::*;
+use lines_from_file::lines_from_file;
 
 mod build;
 mod install;
@@ -42,6 +44,28 @@ fn displayhelp() {
     println!("\t--custom       : builds the project following a custom script");
 }
 
+fn is_cpp() -> bool {
+    let json: Value = match serde_json::from_str(&lines_from_file("project.json").join("\n")) {
+        Ok(j) => j,
+        Err(e) => {
+            eprintln!("Failed to parse project.json");
+            eprintln!("Debug info : {}", e);
+            std::process::exit(67);
+        }
+    };
+    let cpp = if let Value::String(s) = &json["standard"] {
+        let cpp = if s.starts_with("C++") {
+            true
+        } else {
+            false
+        };
+        cpp
+    } else {
+        false
+    };
+    cpp
+}
+
 fn main() {
     let argv: Vec<String> = env::args().collect();
     let argc = argv.len();
@@ -62,10 +86,15 @@ fn main() {
             archive();
         }
         "new" => {
-            if argc != 3 {
+            if argc < 3 {
                 return;
             }
-            match create(&argv[2]) {
+            let cpp = if argc == 4 {
+                &argv[3] == "--cpp"
+            } else {
+                false
+            };
+            match create(&argv[2],cpp) {
                 Ok(()) => (),
                 Err(_e) => println!("An error occured. Please retry later"),
             }
@@ -74,7 +103,8 @@ fn main() {
             if !Path::new("project.json").exists() || !Path::new("deps.dat").exists() {
                 std::process::exit(-1);
             }
-            build();
+
+            build(is_cpp());
             removebinary();
         }
         "build" => {
@@ -82,9 +112,9 @@ fn main() {
                 std::process::exit(-1);
             }
             if argc == 2 {
-                build();
+                build(is_cpp());
             } else if argc == 3 && argv[2].as_str() == "--release" {
-                buildhard();
+                buildhard(is_cpp());
             } else if argc == 3 && argv[2].as_str() == "--custom" {
                 buildcustom();
             }
