@@ -38,6 +38,18 @@ mod test {
 
         Ok(())
     }
+
+    #[test]
+    fn header_creation() -> std::io::Result<()> {
+        header("foo")?;
+        let content = fs::read_to_string("foo.h")?;
+        assert_eq!(
+            content.trim(),
+            "#ifndef _FOO_H_\n#define _FOO_H_\n\n\n\n#endif /* _FOO_H_ */"
+        );
+        fs::remove_file("foo.h");
+        Ok(())
+    }
 }
 
 fn displayhelp() {
