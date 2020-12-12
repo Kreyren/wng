@@ -18,6 +18,28 @@ use project::header::header;
 use project::reinit::reinit;
 use project::testing::test;
 
+#[cfg(test)]
+mod test {
+    use super::*;
+    use std::fs;
+    use std::process::Command;
+
+    #[test]
+    fn creation() -> std::io::Result<()> {
+        let twd = env::current_dir()?;
+        let wd = twd.as_path().to_str().unwrap();
+
+        create("foo", false)?;
+        assert!(Path::new(&format!("{}/foo/project.json", wd)).exists());
+        assert!(Path::new(&format!("{}/foo/src", wd)).exists());
+        assert!(Path::new(&format!("{}/foo/tests", wd)).exists());
+        assert!(Path::new(&format!("{}/foo/build", wd)).exists());
+        fs::remove_dir_all(&format!("{}/foo", wd))?;
+
+        Ok(())
+    }
+}
+
 fn displayhelp() {
     println!(
         "Wanager by {} version {}\n",
