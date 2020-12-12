@@ -22,6 +22,6 @@ pub fn install(lib: &str) {
         _ => identify(lib),
     };
 
-    w.install(source.clone());
+    w.install(&source);
     println!("Library `{}` was succesfully installed !", source.unwrap());
 }

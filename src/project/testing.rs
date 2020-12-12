@@ -1,6 +1,9 @@
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+/// Reads a dir recursively
+/// 
+/// Used to get all src/ files to add them to the compilation command
 fn see_dir(dir: PathBuf, cpp: bool) -> Vec<PathBuf> {
     let mut list: Vec<PathBuf> = Vec::new();
     for entry in match std::fs::read_dir(dir.clone()) {
@@ -35,7 +38,8 @@ fn see_dir(dir: PathBuf, cpp: bool) -> Vec<PathBuf> {
     list
 }
 
-
+/// Compiles src/ (without main.rs) and tests/tests.c to run tests
+/// 
 #[allow(unused_assignments)]
 pub fn test<'a>(cpp: bool) -> Result<(), &'a str> {
     if cfg!(windows) {

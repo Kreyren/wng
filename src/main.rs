@@ -45,6 +45,9 @@ fn displayhelp() {
     println!("\t--cpp          : creates a new C++ project");
 }
 
+/// Tests if the project is a C++ project
+/// 
+/// It reads project.json content and checks the "standard" key
 fn is_cpp() -> bool {
     let json: Value = match serde_json::from_str(&lines_from_file("project.json").join("\n")) {
         Ok(j) => j,
