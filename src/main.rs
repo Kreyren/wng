@@ -1,9 +1,9 @@
+use lines_from_file::lines_from_file;
+use serde_json::*;
 use std::env;
 use std::io::{self, Write};
 use std::path::Path;
 use std::str;
-use serde_json::*;
-use lines_from_file::lines_from_file;
 
 mod build;
 mod install;
@@ -46,7 +46,7 @@ fn displayhelp() {
 }
 
 /// Tests if the project is a C++ project
-/// 
+///
 /// It reads project.json content and checks the "standard" key
 fn is_cpp() -> bool {
     let json: Value = match serde_json::from_str(&lines_from_file("project.json").join("\n")) {
@@ -58,11 +58,7 @@ fn is_cpp() -> bool {
         }
     };
     let cpp = if let Value::String(s) = &json["standard"] {
-        let cpp = if s.starts_with("C++") {
-            true
-        } else {
-            false
-        };
+        let cpp = if s.starts_with("C++") { true } else { false };
         cpp
     } else {
         false
@@ -98,13 +94,13 @@ fn main() {
             } else {
                 false
             };
-            match create(&argv[2],cpp) {
+            match create(&argv[2], cpp) {
                 Ok(()) => (),
                 Err(_e) => println!("An error occured. Please retry later"),
             }
         }
         "check" => {
-            if !Path::new("project.json").exists()  {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
 
@@ -135,7 +131,7 @@ fn main() {
             }
         }
         "reinit" => {
-            if !Path::new("project.json").exists()  {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc == 3 && argv[2].as_str() == "--force" || argc == 3 && argv[2].as_str() == "-f" {
@@ -170,7 +166,7 @@ fn main() {
             }
         }
         "install" => {
-            if !Path::new("project.json").exists()  {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc != 3 {

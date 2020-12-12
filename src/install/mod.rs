@@ -1,1 +1,2 @@
-pub mod install;pub mod wanager;
+pub mod install;
+pub mod wanager;

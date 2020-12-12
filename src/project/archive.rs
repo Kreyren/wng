@@ -10,7 +10,7 @@ pub fn archive() {
             std::process::exit(66);
         }
     };
-    let mut builder = Builder::new(file); // Creates a new archive builder to put the files in 
+    let mut builder = Builder::new(file); // Creates a new archive builder to put the files in
     match builder.append_dir_all("src", "src") {
         Ok(()) => {}
         Err(e) => {

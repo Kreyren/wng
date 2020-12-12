@@ -1,8 +1,8 @@
 use fs_extra;
+use std::io::ErrorKind;
 use std::path::Path;
 use std::process::Command;
 use std::str;
-use std::io::ErrorKind;
 
 pub struct Wanager;
 pub enum Source<'a> {
@@ -38,7 +38,8 @@ fn dl_n_check(link: String, lib: &str) {
         .output()
         .expect("Failed to git clone");
 
-    if cloning.status.code() == Some(128) { // 128 is the Not Found code for Git
+    if cloning.status.code() == Some(128) {
+        // 128 is the Not Found code for Git
         println!("Error, repository not found");
         std::process::exit(-1);
     }

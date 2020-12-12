@@ -27,9 +27,9 @@ fn see_dir(dir: PathBuf, cpp: bool) -> Vec<PathBuf> {
             list.extend(sub);
         } else {
             if !cpp {
-            if entry.path().extension().unwrap() == "c" {
-                list.push(entry.path().to_owned());
-            }
+                if entry.path().extension().unwrap() == "c" {
+                    list.push(entry.path().to_owned());
+                }
             } else {
                 if entry.path().extension().unwrap() == "cpp" {
                     list.push(entry.path().to_owned());
@@ -61,11 +61,7 @@ pub fn build(cpp: bool) {
     }
     let files: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp);
 
-    let compiler = if cpp {
-        "g++"
-    } else {
-        "gcc"
-    };
+    let compiler = if cpp { "g++" } else { "gcc" };
 
     let status = Command::new(compiler)
         .args(files)
@@ -89,11 +85,7 @@ pub fn buildhard(cpp: bool) {
     }
     let files: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp);
 
-    let compiler = if cpp {
-        "g++"
-    } else {
-        "gcc"
-    };
+    let compiler = if cpp { "g++" } else { "gcc" };
 
     let status = Command::new(compiler)
         .args(files)
