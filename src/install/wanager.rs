@@ -21,14 +21,6 @@ impl<'a> Source<'a> {
         };
         val
     }
-    pub fn clone(&self) -> Source {
-        match self {
-            Source::GitLab(repo) => return Source::GitLab(repo),
-            Source::GitHub(repo) => return Source::GitHub(repo),
-            Source::BitBucket(repo) => return Source::BitBucket(repo),
-            Source::Error(e) => return Source::Error(e),
-        }
-    }
 }
 
 fn dl_n_check(link: String, lib: &str) {

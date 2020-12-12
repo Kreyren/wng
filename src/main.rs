@@ -22,7 +22,6 @@ use project::testing::test;
 mod test {
     use super::*;
     use std::fs;
-    use std::process::Command;
 
     #[test]
     fn creation() -> std::io::Result<()> {
@@ -47,7 +46,7 @@ mod test {
             content.trim(),
             "#ifndef _FOO_H_\n#define _FOO_H_\n\n\n\n#endif /* _FOO_H_ */"
         );
-        fs::remove_file("foo.h");
+        fs::remove_file("foo.h")?;
         Ok(())
     }
 }
