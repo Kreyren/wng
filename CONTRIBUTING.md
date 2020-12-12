@@ -1,52 +1,19 @@
-# Commit guideline
+# Contributing
 
-## Keywords
+Thanks you for interesting in Wanager!
 
-`feat` : Feature added
+Here a few rules to respect:
 
-`fix` : Fixed a bug
+## Code
 
-`docs` : Added docs
+- All code has to be formated with `rustfmt`.
+*If you don't have it installed, run `rustup component add rustfmt` and then use `cargo fmt` to format your code.*
 
-`refactor` : Refactored code
+- Provide test for all non trivial code
 
-## Style
+- All code should be warning free
 
-\<type>([scope]): \<message> | [refs] [advanced description]
+## Issues & Prs
 
-### Examples :
+Use the templates provided for more clarity in issues and pull requests.
 
-`docs(lang): Added polish language | #256`
-
-`feat(install): Added an installation system | #22 #23`
-
-`refactor(creation): Optimized project creation`
-
-# Pull requests
-
-## Badges
-
-Your pr has to contain the appropriated badge :
-
-Fix : ![fix](https://img.shields.io/badge/PR_kind-Fix-critical)
-
-Feature : ![feat](https://img.shields.io/badge/PR_kind-Feat-success)
-
-Docs : ![docs](https://img.shields.io/badge/PR_kind-Docs-informational)
-
-Refactor : ![docs](https://img.shields.io/badge/PR_kind-Refactor-important)
-
-## Style
-
-Pull requests have to fit this style :
-
-```
-## Title
-
-![kind](link_for_corresponding_badge)
-
-### Description :
-
-
-### Corresponding issues :
-```
