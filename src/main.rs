@@ -29,11 +29,20 @@ mod test {
         let wd = twd.as_path().to_str().unwrap();
 
         create("foo", false)?;
-        assert!(Path::new(&format!("{}/foo/project.json", wd)).exists());
+
+        if cfg!(windows) {
+            assert!(Path::new(&format!("{}\\foo\\project.json", wd)).exists());
+            assert!(Path::new(&format!("{}\\foo\\src", wd)).exists());
+            assert!(Path::new(&format!("{}\\foo\\tests", wd)).exists());
+            assert!(Path::new(&format!("{}\\foo\\build", wd)).exists());
+            fs::remove_dir_all(&format!("{}\\foo", wd))?;
+        } else {
+            assert!(Path::new(&format!("{}/foo/project.json", wd)).exists());
         assert!(Path::new(&format!("{}/foo/src", wd)).exists());
         assert!(Path::new(&format!("{}/foo/tests", wd)).exists());
         assert!(Path::new(&format!("{}/foo/build", wd)).exists());
         fs::remove_dir_all(&format!("{}/foo", wd))?;
+        }
 
         Ok(())
     }
