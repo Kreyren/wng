@@ -7,13 +7,8 @@
 <br>
 <div align="center">
 
-![GitHub pull requests](https://img.shields.io/github/issues-pr/Wmanage/wng?label=Pull%20requests&style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/Wmanage/wng?label=Issues&style=flat-square)
-![GitHub stars](https://img.shields.io/github/stars/Wmanage/wng?color=%23aa1111&label=Stars&style=flat-square)
-![GitHub](https://img.shields.io/github/license/Wmanage/wng?color=%23ffaa00&label=License&style=flat-square)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/Wmanage/wng?color=%23888800&label=Latest%20release&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Wafelack/wng?color=%23888800&label=Latest%20release&style=flat-square)
 
-![Github All Releases](https://img.shields.io/github/downloads/Wmanage/wng/total?color=sucess&label=Downloads%20%28GitHub%29&style=flat-square)
 ![Crates.io](https://img.shields.io/crates/d/wng?color=sucess&label=Downloads%20%28crates.io%29&style=flat-square)
 
 </div>
@@ -26,7 +21,7 @@
 	
 |       |                                   CI                                       |
 |-------|----------------------------------------------------------------------------|
-| Build |   ![Windows](https://github.com/Wmanage/wng/workflows/Build/badge.svg)     |
+| Build |   ![CI](https://github.com/Wafelack/wng/workflows/Build/badge.svg)     |
 
 ## Dependencies
 
