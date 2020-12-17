@@ -118,9 +118,9 @@ PLUGINS
 FUTURE
 ======
 
+    - Hability to uninstall dependencies.
     - MSVC support.
     - Hability to run tests.
-    - Hability to uninstall dependencies.
     - C++ support.
 
 ACKNOWLEDGEMENTS
