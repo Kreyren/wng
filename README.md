@@ -55,6 +55,7 @@
   - [B - Reinitialisation](#b--to-reinitialize-a-project)
   - [C - Header](#c--to-create-a-header-file)
   - [D - Tests](#d--to-run-tests)
+  - [E - Ignoring files](#e--ignoring-files)
 - [V - Libraries](#v--libraries)
   - [A - Install](#a--to-install-a-library)
   - [B - Publish](#b--publish-your-library)
@@ -182,6 +183,16 @@ Tests have to be in tests/tests.c
 To use functions that are in src/ files, just include the header with `#include "../src/<header>.h"`
 
 Then you can run them with `wng test`
+
+### E / Ignoring files
+
+To ignore files, create `.wngignore` file with the files to ignore at compilation.
+
+E.g. : 
+```
+src/foo/
+src/bar.c
+```
 
 ## V / Libraries
 
