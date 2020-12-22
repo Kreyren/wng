@@ -59,12 +59,29 @@ pub fn build(cpp: bool) {
         eprintln!("src/ folder not found. Make sure to be in a valid project");
         std::process::exit(36);
     }
-    let files: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp);
+    let rawfiles: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp);
+    let mut files: Vec<&PathBuf> = vec![];
+
+    if Path::new(".wngignore").exists() {
+        let to_ignore = lines_from_file(".wngignore");
+
+        'master: for i in 0..rawfiles.len() {
+            let curfile = rawfiles[i].to_str().unwrap();
+            for ign in &to_ignore {
+                if !curfile.starts_with(ign) {
+                    continue;
+                } else {
+                    continue 'master;
+                }
+            }
+            files.push(&rawfiles[i]);
+        }
+    }
 
     let compiler = if cpp { "g++" } else { "gcc" };
 
     let status = Command::new(compiler)
-        .args(files)
+        .args(&files)
         .arg("-o")
         .arg("build/debug/debug.exe")
         .arg("-W")
@@ -83,12 +100,29 @@ pub fn buildhard(cpp: bool) {
         eprintln!("src/ folder not found. Make sure to be in a valid project");
         std::process::exit(36);
     }
-    let files: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp);
+    let rawfiles: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp);
+    let mut files: Vec<&PathBuf> = vec![];
+
+    if Path::new(".wngignore").exists() {
+        let to_ignore = lines_from_file(".wngignore");
+
+        'master: for i in 0..rawfiles.len() {
+            let curfile = rawfiles[i].to_str().unwrap();
+            for ign in &to_ignore {
+                if !curfile.starts_with(ign) {
+                    continue;
+                } else {
+                    continue 'master;
+                }
+            }
+            files.push(&rawfiles[i]);
+        }
+    }
 
     let compiler = if cpp { "g++" } else { "gcc" };
 
     let status = Command::new(compiler)
-        .args(files)
+        .args(&files)
         .arg("-o")
         .arg("build/release/release.exe")
         .arg("-W")
