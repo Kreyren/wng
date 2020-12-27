@@ -23,6 +23,7 @@ mod test {
     use super::*;
     use std::fs;
 
+    #[cfg(unix)]
     #[test]
     fn creation() -> std::io::Result<()> {
         let twd = env::current_dir()?;
@@ -38,15 +39,16 @@ mod test {
             fs::remove_dir_all(&format!("{}\\foo", wd))?;
         } else {
             assert!(Path::new(&format!("{}/foo/project.json", wd)).exists());
-        assert!(Path::new(&format!("{}/foo/src", wd)).exists());
-        assert!(Path::new(&format!("{}/foo/tests", wd)).exists());
-        assert!(Path::new(&format!("{}/foo/build", wd)).exists());
-        fs::remove_dir_all(&format!("{}/foo", wd))?;
+            assert!(Path::new(&format!("{}/foo/src", wd)).exists());
+            assert!(Path::new(&format!("{}/foo/tests", wd)).exists());
+            assert!(Path::new(&format!("{}/foo/build", wd)).exists());
+            fs::remove_dir_all(&format!("{}/foo", wd))?;
         }
 
         Ok(())
     }
 
+    #[cfg(unix)]
     #[test]
     fn header_creation() -> std::io::Result<()> {
         header("foo")?;
