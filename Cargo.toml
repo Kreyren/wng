@@ -1,14 +1,14 @@
 [package]
 name = "wng"
-version = "3.4.2"
+version = "3.5.0"
 authors = ["Wafelack <wafelack@protonmail.com>"]
 edition = "2018"
 description = "wng is a package manager and project manager for the C programming language"
 documentation = "https://github.com/Wmanage/wng/blob/dev/DOCS.md"
 readme = "README.md"
 license = "MPL-2.0"
-homepage = "https://wmanage.github.io"
-repository = "https://github.com/Wmanage/wng"
+homepage = "https://wafelack.fr/wng"
+repository = "https://github.com/Wafelack/wng"
 keywords = ["c", "build", "packages", "projects", "header"]
 categories = ["command-line-utilities", "development-tools"]
 

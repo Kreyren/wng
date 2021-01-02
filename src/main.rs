@@ -32,7 +32,7 @@ mod test {
         };
         let wd = twd.as_path().to_str().unwrap();
 
-        create("foo", false)?;
+        create("foo", false, "foo", "foo@foo.com")?;
 
         if cfg!(windows) {
             assert!(Path::new(&format!("{}\\foo\\project.json", wd)).exists());
@@ -121,8 +121,37 @@ fn is_cpp() -> Result<bool, String> {
     Ok(cpp)
 }
 
-fn init() -> Result<(), String> {
-    Ok(())
+fn init() -> Result<(String, String), String> {
+    let config_path = if cfg!(windows) {
+        "C:/wng_config.json"
+    } else {
+        "/etc/wng_config.json"
+    };
+
+    let (name, email) = if !Path::new(config_path).exists() {
+        ("Example".to_owned(), "example@example.com".to_owned())
+    } else {
+        let content = match std::fs::read_to_string(config_path) {
+            Ok(s) => s,
+            Err(e) => return Err(format!("{}", e)),
+        };
+        let val: Value = match serde_json::from_str(&content) {
+            Ok(v) => v,
+            Err(e) => return Err(format!("{}", e)),
+        };
+
+        let name = match &val["name"] {
+            Value::String(s) => s,
+            _ => "Example",
+        };
+        let email = match &val["email"] {
+            Value::String(s) => s,
+            _ => "example@example.com",
+        };
+
+        (name.to_owned(), email.to_owned())
+    };
+    Ok((name, email))
 }
 
 fn main() -> Result<(), String> {
@@ -132,6 +161,8 @@ fn main() -> Result<(), String> {
         displayhelp();
         std::process::exit(1);
     }
+
+    let (name, email) = init()?;
 
     match argv[1].as_str() {
         "--version" | "-v" => println!("{}", env!("CARGO_PKG_VERSION")),
@@ -153,7 +184,7 @@ fn main() -> Result<(), String> {
             } else {
                 false
             };
-            create(&argv[2], cpp)?;
+            create(&argv[2], cpp, &name, &email)?;
         }
         "check" => {
             if !Path::new("project.json").exists() {

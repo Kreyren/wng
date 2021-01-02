@@ -19,7 +19,7 @@
 <br>
 <div align="center">
 	
-![CI](https://github.com/Wafelack/wng/workflows/Build/badge.svg) 
+![Build & Test](https://github.com/Wafelack/wng/workflows/Build%20&%20Test/badge.svg)
 
 ## Dependencies
 
@@ -46,6 +46,7 @@
 - [I - Setup](#i--setup)
   - [A - Prerequisties](#a--prerequisties)
   - [B - Installation](#b--installation)
+  - [C - Configuration](#c--configuration)
 - [II - Project creation](#ii--create-a-new-project)
 - [III - Compile & Run](#iii--compile-and-run)
   - [A - Custom Build](#a--custom-build)
@@ -77,6 +78,32 @@ Make sure to have [Git](https://git-scm.com) & [gcc](https://gcc.gnu.org/) insta
 To install wng you can either :
 - Download the latest binary in the releases
 - Run `cargo install wng`
+
+### C / Configuration
+
+#### Windows
+
+- Create a file named `wng_config.json` at `C:/`
+- Copy/paste the following text in this file : 
+```json
+{
+  "name": "<your_name>",
+  "email": "<your_email>"
+}
+```
+- Replace the placeholder with your names and emails
+
+#### *Nix
+
+- Create a file named `wng_config.json` in `/etc/`
+- Copy/paste the following text in this file : 
+```json
+{
+  "name": "<your_name>",
+  "email": "<your_email>"
+}
+```
+- Replace the placeholder with your names and emails
 
 ## II / Create a new project
 
