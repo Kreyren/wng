@@ -19,7 +19,7 @@
 <br>
 <div align="center">
 	
-![CI](https://github.com/Wafelack/wng/workflows/Build/badge.svg) 
+![Build & Test](https://github.com/Wafelack/wng/workflows/Build%20&%20Test/badge.svg)
 
 ## Dependencies
 
