@@ -8,7 +8,7 @@ use std::path::Path;
 use crate::project::reinit::mkdir;
 
 #[allow(unused_assignments)]
-pub fn create(name: &str, cpp: bool) -> Result<(), String> {
+pub fn create(name: &str, cpp: bool, username: &str, email: &str) -> Result<(), String> {
     let mut src = String::new();
     let mut tests = String::new();
     let mut build = String::new();
@@ -238,7 +238,7 @@ pub fn create(name: &str, cpp: bool) -> Result<(), String> {
             Err(e) => return Err(format!("{}", e)),
         }
     }
-    match json.write_all(b"    \"author\" : \"Example <example@example.com>\"\n") {
+    match json.write_all(format!("    \"author\" : \"{} <{}>\"\n", username, email).as_bytes()) {
         Ok(()) => {}
         Err(e) => return Err(format!("{}", e)),
     }
