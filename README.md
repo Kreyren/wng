@@ -82,7 +82,7 @@ Make sure to have [Git](https://git-scm.com) & [gcc](https://gcc.gnu.org/) insta
 
 #### With [yarpm](https://github.com/wafelack/yarpm)
 
-- Add `https://github.com/Wafelack/wng/blob/master/wng.tar.gz` to your sources
+- Add `https://github.com/Wafelack/wng/blob/master/` to your sources
 - Run `yarpm install wng`
 
 #### With cargo
