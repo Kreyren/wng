@@ -37,15 +37,15 @@ pub fn create(name: &str, cpp: bool) -> std::io::Result<()> {
         debug.push_str("\\debug");
         main = src.clone();
         if cpp {
-        main.push_str("\\main.cpp");
-        testfile = tests.clone();
+            main.push_str("\\main.cpp");
+            testfile = tests.clone();
 
-        testfile.push_str("\\tests.cpp");
+            testfile.push_str("\\tests.cpp");
         } else {
             main.push_str("\\main.c");
-        testfile = tests.clone();
+            testfile = tests.clone();
 
-        testfile.push_str("\\tests.c");
+            testfile.push_str("\\tests.c");
         }
     } else {
         src = name.into();
@@ -62,14 +62,14 @@ pub fn create(name: &str, cpp: bool) -> std::io::Result<()> {
         if cpp {
             main.push_str("/main.cpp");
             testfile = tests.clone();
-    
+
             testfile.push_str("/tests.cpp");
-            } else {
-                main.push_str("/main.c");
+        } else {
+            main.push_str("/main.c");
             testfile = tests.clone();
-    
+
             testfile.push_str("/tests.c");
-            }
+        }
     }
 
     mkdir(name, errmess, 1);
@@ -80,7 +80,6 @@ pub fn create(name: &str, cpp: bool) -> std::io::Result<()> {
     mkdir(&debug, errmess, 6);
 
     if !cpp {
-
         let mut mf = File::create(main)?;
         mf.write_all(b"#include <stdio.h>\n")?;
         mf.write_all(b"#include <stdlib.h>\n")?;

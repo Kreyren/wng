@@ -1,9 +1,9 @@
+use lines_from_file::lines_from_file;
+use serde_json::*;
 use std::env;
 use std::io::{self, Write};
 use std::path::Path;
 use std::str;
-use serde_json::*;
-use lines_from_file::lines_from_file;
 
 mod build;
 mod install;
@@ -17,6 +17,50 @@ use project::create::create;
 use project::header::header;
 use project::reinit::reinit;
 use project::testing::test;
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use std::fs;
+
+    #[cfg(unix)]
+    #[test]
+    fn creation() -> std::io::Result<()> {
+        let twd = env::current_dir()?;
+        let wd = twd.as_path().to_str().unwrap();
+
+        create("foo", false)?;
+
+        if cfg!(windows) {
+            assert!(Path::new(&format!("{}\\foo\\project.json", wd)).exists());
+            assert!(Path::new(&format!("{}\\foo\\src", wd)).exists());
+            assert!(Path::new(&format!("{}\\foo\\tests", wd)).exists());
+            assert!(Path::new(&format!("{}\\foo\\build", wd)).exists());
+            fs::remove_dir_all(&format!("{}\\foo", wd))?;
+        } else {
+            assert!(Path::new(&format!("{}/foo/project.json", wd)).exists());
+            assert!(Path::new(&format!("{}/foo/src", wd)).exists());
+            assert!(Path::new(&format!("{}/foo/tests", wd)).exists());
+            assert!(Path::new(&format!("{}/foo/build", wd)).exists());
+            fs::remove_dir_all(&format!("{}/foo", wd))?;
+        }
+
+        Ok(())
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn header_creation() -> std::io::Result<()> {
+        header("foo")?;
+        let content = fs::read_to_string("foo.h")?;
+        assert_eq!(
+            content.trim(),
+            "#ifndef _FOO_H_\n#define _FOO_H_\n\n\n\n#endif /* _FOO_H_ */"
+        );
+        fs::remove_file("foo.h")?;
+        Ok(())
+    }
+}
 
 fn displayhelp() {
     println!(
@@ -45,6 +89,9 @@ fn displayhelp() {
     println!("\t--cpp          : creates a new C++ project");
 }
 
+/// Tests if the project is a C++ project
+///
+/// It reads project.json content and checks the "standard" key
 fn is_cpp() -> bool {
     let json: Value = match serde_json::from_str(&lines_from_file("project.json").join("\n")) {
         Ok(j) => j,
@@ -55,11 +102,7 @@ fn is_cpp() -> bool {
         }
     };
     let cpp = if let Value::String(s) = &json["standard"] {
-        let cpp = if s.starts_with("C++") {
-            true
-        } else {
-            false
-        };
+        let cpp = if s.starts_with("C++") { true } else { false };
         cpp
     } else {
         false
@@ -95,13 +138,13 @@ fn main() {
             } else {
                 false
             };
-            match create(&argv[2],cpp) {
+            match create(&argv[2], cpp) {
                 Ok(()) => (),
                 Err(_e) => println!("An error occured. Please retry later"),
             }
         }
         "check" => {
-            if !Path::new("project.json").exists()  {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
 
@@ -132,7 +175,7 @@ fn main() {
             }
         }
         "reinit" => {
-            if !Path::new("project.json").exists()  {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc == 3 && argv[2].as_str() == "--force" || argc == 3 && argv[2].as_str() == "-f" {
@@ -167,7 +210,7 @@ fn main() {
             }
         }
         "install" => {
-            if !Path::new("project.json").exists()  {
+            if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc != 3 {

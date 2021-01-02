@@ -1,6 +1,9 @@
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+/// Reads a dir recursively
+///
+/// Used to get all src/ files to add them to the compilation command
 fn see_dir(dir: PathBuf, cpp: bool) -> Vec<PathBuf> {
     let mut list: Vec<PathBuf> = Vec::new();
     for entry in match std::fs::read_dir(dir.clone()) {
@@ -22,9 +25,9 @@ fn see_dir(dir: PathBuf, cpp: bool) -> Vec<PathBuf> {
             list.extend(sub);
         } else {
             if !cpp {
-            if entry.path().extension().unwrap() == "c" {
-                list.push(entry.path().to_owned());
-            }
+                if entry.path().extension().unwrap() == "c" {
+                    list.push(entry.path().to_owned());
+                }
             } else {
                 if entry.path().extension().unwrap() == "cpp" {
                     list.push(entry.path().to_owned());
@@ -35,7 +38,8 @@ fn see_dir(dir: PathBuf, cpp: bool) -> Vec<PathBuf> {
     list
 }
 
-
+/// Compiles src/ (without main.rs) and tests/tests.c to run tests
+///
 #[allow(unused_assignments)]
 pub fn test<'a>(cpp: bool) -> Result<(), &'a str> {
     if cfg!(windows) {
@@ -72,11 +76,11 @@ pub fn test<'a>(cpp: bool) -> Result<(), &'a str> {
         .status()
         .unwrap();
 
-        let (testfile, compiler) = if cpp {
-            ("tests/tests.cpp", "g++")
-        } else {
-            ("tests/tests.c", "gcc")
-        };
+    let (testfile, compiler) = if cpp {
+        ("tests/tests.cpp", "g++")
+    } else {
+        ("tests/tests.c", "gcc")
+    };
 
     if files != String::new() {
         files.pop();

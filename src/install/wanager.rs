@@ -1,8 +1,8 @@
 use fs_extra;
+use std::io::ErrorKind;
 use std::path::Path;
 use std::process::Command;
 use std::str;
-use std::io::ErrorKind;
 
 pub struct Wanager;
 pub enum Source<'a> {
@@ -21,14 +21,6 @@ impl<'a> Source<'a> {
         };
         val
     }
-    pub fn clone(&self) -> Source {
-        match self {
-            Source::GitLab(repo) => return Source::GitLab(repo),
-            Source::GitHub(repo) => return Source::GitHub(repo),
-            Source::BitBucket(repo) => return Source::BitBucket(repo),
-            Source::Error(e) => return Source::Error(e),
-        }
-    }
 }
 
 fn dl_n_check(link: String, lib: &str) {
@@ -39,6 +31,7 @@ fn dl_n_check(link: String, lib: &str) {
         .expect("Failed to git clone");
 
     if cloning.status.code() == Some(128) {
+        // 128 is the Not Found code for Git
         println!("Error, repository not found");
         std::process::exit(-1);
     }
@@ -76,12 +69,14 @@ fn dl_n_check(link: String, lib: &str) {
 }
 
 impl Wanager {
-    pub fn install<'a>(&self, source: Source) {
+    pub fn install<'a>(&self, source: &Source) {
         let splited: Vec<&str> = source.unwrap().split('/').collect();
         if splited.len() != 2 {
             println!("Not a valid repository");
             std::process::exit(-1);
         }
+
+        // preparing link for git clone
         match source {
             Source::GitHub(_repo) => {
                 let link = format!("https://github.com/{}/{}/", splited[0], splited[1]);

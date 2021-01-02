@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::Write;
 
+/// Creates a header file
 pub fn header(name: &str) -> std::io::Result<()> {
     let mut filename = String::from(name);
     filename.push_str(".h");
