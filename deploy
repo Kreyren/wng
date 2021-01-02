@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cargo publish
+if [[ -f wng.tar.gz ]];then
+  rm wng.tar.gz
+fi
+cargo build --release
+tar -czf wng.tar.gz ./target/release/wng
