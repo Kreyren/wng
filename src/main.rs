@@ -1,5 +1,5 @@
 use lines_from_file::lines_from_file;
-use serde_json::*;
+use serde_json::Value;
 use std::env;
 use std::io::{self, Write};
 use std::path::Path;
@@ -9,7 +9,7 @@ mod build;
 mod install;
 mod project;
 
-use build::build::{build, buildcustom, buildhard, removebinary};
+use build::build::{build, build_optimized, buildcustom, removebinary};
 use build::run::run;
 use install::install::install;
 use project::archive::archive;
@@ -25,8 +25,11 @@ mod test {
 
     #[cfg(unix)]
     #[test]
-    fn creation() -> std::io::Result<()> {
-        let twd = env::current_dir()?;
+    fn creation() -> Result<(), String> {
+        let twd = match env::current_dir() {
+            Ok(d) => d,
+            Err(e) => return Err(format!("{}", e)),
+        };
         let wd = twd.as_path().to_str().unwrap();
 
         create("foo", false)?;
@@ -36,13 +39,19 @@ mod test {
             assert!(Path::new(&format!("{}\\foo\\src", wd)).exists());
             assert!(Path::new(&format!("{}\\foo\\tests", wd)).exists());
             assert!(Path::new(&format!("{}\\foo\\build", wd)).exists());
-            fs::remove_dir_all(&format!("{}\\foo", wd))?;
+            match fs::remove_dir_all(&format!("{}\\foo", wd)) {
+                Ok(()) => {}
+                Err(e) => return Err(format!("{}", e)),
+            }
         } else {
             assert!(Path::new(&format!("{}/foo/project.json", wd)).exists());
             assert!(Path::new(&format!("{}/foo/src", wd)).exists());
             assert!(Path::new(&format!("{}/foo/tests", wd)).exists());
             assert!(Path::new(&format!("{}/foo/build", wd)).exists());
-            fs::remove_dir_all(&format!("{}/foo", wd))?;
+            match fs::remove_dir_all(&format!("{}/foo", wd)) {
+                Ok(()) => {}
+                Err(e) => return Err(format!("{}", e)),
+            }
         }
 
         Ok(())
@@ -50,14 +59,20 @@ mod test {
 
     #[cfg(unix)]
     #[test]
-    fn header_creation() -> std::io::Result<()> {
+    fn header_creation() -> Result<(), String> {
         header("foo")?;
-        let content = fs::read_to_string("foo.h")?;
+        let content = match fs::read_to_string("foo.h") {
+            Ok(s) => s,
+            Err(e) => return Err(format!("{}", e)),
+        };
         assert_eq!(
             content.trim(),
             "#ifndef _FOO_H_\n#define _FOO_H_\n\n\n\n#endif /* _FOO_H_ */"
         );
-        fs::remove_file("foo.h")?;
+        match fs::remove_file("foo.h") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
         Ok(())
     }
 }
@@ -92,14 +107,10 @@ fn displayhelp() {
 /// Tests if the project is a C++ project
 ///
 /// It reads project.json content and checks the "standard" key
-fn is_cpp() -> bool {
+fn is_cpp() -> Result<bool, String> {
     let json: Value = match serde_json::from_str(&lines_from_file("project.json").join("\n")) {
         Ok(j) => j,
-        Err(e) => {
-            eprintln!("Failed to parse project.json");
-            eprintln!("Debug info : {}", e);
-            std::process::exit(67);
-        }
+        Err(e) => return Err(format!("{}", e)),
     };
     let cpp = if let Value::String(s) = &json["standard"] {
         let cpp = if s.starts_with("C++") { true } else { false };
@@ -107,10 +118,14 @@ fn is_cpp() -> bool {
     } else {
         false
     };
-    cpp
+    Ok(cpp)
 }
 
-fn main() {
+fn init() -> Result<(), String> {
+    Ok(())
+}
+
+fn main() -> Result<(), String> {
     let argv: Vec<String> = env::args().collect();
     let argc = argv.len();
     if argc < 2 {
@@ -127,40 +142,41 @@ fn main() {
             if !Path::new("src").exists() {
                 std::process::exit(-1);
             }
-            archive();
+            archive()?;
         }
         "new" => {
             if argc < 3 {
-                return;
+                return Err("Fatal: Invalid arguments".to_owned());
             }
             let cpp = if argc == 4 {
                 &argv[3] == "--cpp"
             } else {
                 false
             };
-            match create(&argv[2], cpp) {
-                Ok(()) => (),
-                Err(_e) => println!("An error occured. Please retry later"),
-            }
+            create(&argv[2], cpp)?;
         }
         "check" => {
             if !Path::new("project.json").exists() {
-                std::process::exit(-1);
+                return Err("Missing project.json".to_owned());
             }
-
-            build(is_cpp());
-            removebinary();
+            if argc == 2 {
+                build(is_cpp()?)?;
+                removebinary()?;
+            } else if argc == 3 && argv[2].as_str() == "--custom" {
+                buildcustom()?;
+                eprintln!("Due to custom build, binary produced by your script cannot be removed automatically.");
+            }
         }
         "build" => {
             if !Path::new("project.json").exists() {
-                std::process::exit(-1);
+                return Err("Missing project.json".to_owned());
             }
             if argc == 2 {
-                build(is_cpp());
+                build(is_cpp()?)?;
             } else if argc == 3 && argv[2].as_str() == "--release" {
-                buildhard(is_cpp());
+                build_optimized(is_cpp()?)?;
             } else if argc == 3 && argv[2].as_str() == "--custom" {
-                buildcustom();
+                buildcustom()?;
             }
         }
         "run" => {
@@ -168,20 +184,16 @@ fn main() {
             for i in 2..argc {
                 args.push(&argv[i]);
             }
-            let ret = run(args);
-            match ret {
-                Ok(_) => (),
-                Err(e) => println!("{}", e),
-            }
+            run(args)?;
         }
         "reinit" => {
             if !Path::new("project.json").exists() {
-                std::process::exit(-1);
+                return Err("Missing project.json".to_owned());
             }
             if argc == 3 && argv[2].as_str() == "--force" || argc == 3 && argv[2].as_str() == "-f" {
                 match reinit() {
                     Ok(_) => (),
-                    Err(_e) => println!("Error while reinitializing directory"),
+                    Err(e) => return Err(format!("{}", e)),
                 }
             } else {
                 print!("Really want to reinit ? [y/N] : ");
@@ -191,32 +203,26 @@ fn main() {
                     .read_line(&mut answer)
                     .expect("Error while reading your choice. Please retry later");
                 if answer.trim().to_uppercase().as_str() == "Y" {
-                    match reinit() {
-                        Ok(_) => (),
-                        Err(e) => println!("Error while reinitializing directory : {}", e),
-                    }
+                    reinit()?;
                 } else {
-                    println!("Reinitialisation aborted");
+                    return Err("Reinitialisation aborted".to_owned());
                 }
             }
         }
         "header" => {
             if argc != 3 {
-                return;
+                return Err(format!("Fatal: Invalid arguments"));
             }
-            match header(&argv[2]) {
-                Ok(_) => (),
-                Err(e) => println!("{}", e),
-            }
+            header(&argv[2])?;
         }
         "install" => {
             if !Path::new("project.json").exists() {
                 std::process::exit(-1);
             }
             if argc != 3 {
-                return;
+                return Err(format!("Fatal: Invalid arguments "));
             }
-            install(&argv[2]);
+            install(&argv[2])?;
         }
         "test" => {
             if !Path::new("project.json").exists() {
@@ -224,11 +230,9 @@ fn main() {
                 std::process::exit(-1);
             }
 
-            match test(is_cpp()) {
-                Ok(()) => (),
-                Err(s) => println!("{}", s),
-            }
+            test(is_cpp()?)?;
         }
         _ => displayhelp(),
     }
+    Ok(())
 }

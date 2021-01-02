@@ -1,36 +1,41 @@
 use std::fs;
 use std::fs::File;
-use std::io::{Error, ErrorKind, Write};
+use std::io::Write;
 use std::path::Path;
 
-fn mkdir(name: &str, errmess: &str, number: u8) {
+pub fn mkdir(name: &str) -> Result<(), String> {
     match fs::create_dir(name) {
-        Ok(_) => (),
-        Err(_e) => println!("{} - {}", number, errmess),
+        Ok(_) => Ok(()),
+        Err(e) => return Err(format!("{}", e)),
     }
 }
 
-pub fn reinit() -> std::io::Result<()> {
+pub fn reinit() -> Result<(), String> {
     if !Path::new("project.json").exists() {
-        println!("Error !");
-        return Err(Error::new(ErrorKind::Other, "Not in a wanager project"));
+        return Err("Not in a wanager project".to_owned());
     }
-    fs::remove_dir_all("src")?;
-    fs::remove_dir_all("build")?;
+    match fs::remove_dir_all("src") {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    };
+    match fs::remove_dir_all("build") {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    };
 
-    let errmess: &str = "Error while creating directories";
-    mkdir("src", errmess, 1);
-    mkdir("build", errmess, 2);
-    mkdir("build/release", errmess, 3);
-    mkdir("build/debug", errmess, 4);
+    mkdir("src")?;
+    mkdir("build")?;
+    mkdir("build/release")?;
+    mkdir("build/debug")?;
 
-    let mut mf = File::create("src/main.c")?;
-    mf.write_all(b"#include <stdio.h>\n")?;
-    mf.write_all(b"#include <stdlib.h>\n")?;
-    mf.write_all(b"\nint main(void) {\n")?;
-    mf.write_all(b"    puts(\"Hello, World !\");\n")?;
-    mf.write_all(b"    return EXIT_SUCCESS;\n")?;
-    mf.write_all(b"}")?;
+    let mut mf = match File::create("src/main.c") {
+        Ok(f) => f,
+        Err(e) => return Err(format!("{}", e)),
+    };
+    match mf.write_all(b"#include <stdio.h>\n#include <stdlib.h>\n\nint main(void) {\n\tputs(\"Hello, World !\");\n\treturn EXIT_SUCCESS;\n}") {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    }
 
     println!("Project reinitialized successfully !");
     Ok(())

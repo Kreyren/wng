@@ -1,11 +1,10 @@
 use colored::*;
 use std::fs;
-use std::io::{Error, ErrorKind};
 use std::path::Path;
 use std::process::Command;
 
 #[allow(unused_assignments)]
-pub fn run(args: Vec<&str>) -> std::io::Result<()> {
+pub fn run(args: Vec<&str>) -> Result<(), String> {
     let mut debug = "";
     let mut release = "";
 
@@ -23,29 +22,35 @@ pub fn run(args: Vec<&str>) -> std::io::Result<()> {
             .status()
             .expect("Cannot run binary");
         if status.code() != Some(0) {
-            println!(
+            return Err(format!(
                 "{}{}",
                 "Process didn't exit successfully, exit code : ".red(),
                 status.code().unwrap_or(i32::MAX)
-            );
+            ));
         }
-        fs::remove_file(debug)?;
+        match fs::remove_file(debug) {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
         Ok(())
     } else if Path::new(release).exists() && !Path::new(debug).exists() {
-        let status = Command::new(release)
-            .args(args)
-            .status()
-            .expect("Cannot read binary");
+        let status = match Command::new(release).args(args).status() {
+            Ok(s) => s,
+            Err(e) => return Err(format!("{}", e)),
+        };
         if status.code() != Some(0) {
-            println!(
+            return Err(format!(
                 "{}, exit code : {}",
                 "Process didn't exit successfully".red(),
                 status.code().unwrap_or(i32::MAX)
-            );
+            ));
         }
-        fs::remove_file(release)?;
+        match fs::remove_file(release) {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        };
         Ok(())
     } else {
-        Err(Error::new(ErrorKind::Other, "Cannot find binary"))
+        Err("Cannot find binary".to_owned())
     }
 }

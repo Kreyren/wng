@@ -11,17 +11,15 @@ fn identify(lib: &str) -> Source {
     }
 }
 
-pub fn install(lib: &str) {
+pub fn install(lib: &str) -> Result<(), String> {
     let w = Wanager;
 
     let source = match identify(lib) {
-        Source::Error(e) => {
-            println!("{}", e);
-            std::process::exit(-1);
-        }
+        Source::Error(e) => return Err(format!("{}", e)),
         _ => identify(lib),
     };
 
-    w.install(&source);
+    w.install(&source)?;
     println!("Library `{}` was succesfully installed !", source.unwrap());
+    Ok(())
 }

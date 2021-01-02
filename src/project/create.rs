@@ -1,4 +1,3 @@
-use std::fs;
 use std::fs::File;
 use std::io::Write;
 use std::process::Command;
@@ -6,16 +5,10 @@ use std::process::Command;
 use std::env;
 use std::path::Path;
 
-fn mkdir(name: &str, errmess: &str, number: u8) {
-    match fs::create_dir(name) {
-        Ok(_) => (),
-        Err(_e) => println!("{} - {}", number, errmess),
-    }
-}
+use crate::project::reinit::mkdir;
 
 #[allow(unused_assignments)]
-pub fn create(name: &str, cpp: bool) -> std::io::Result<()> {
-    let errmess: &str = "Error in process. Please retry later";
+pub fn create(name: &str, cpp: bool) -> Result<(), String> {
     let mut src = String::new();
     let mut tests = String::new();
     let mut build = String::new();
@@ -72,43 +65,121 @@ pub fn create(name: &str, cpp: bool) -> std::io::Result<()> {
         }
     }
 
-    mkdir(name, errmess, 1);
-    mkdir(&tests, errmess, 2);
-    mkdir(&src, errmess, 3);
-    mkdir(&build, errmess, 4);
-    mkdir(&release, errmess, 5);
-    mkdir(&debug, errmess, 6);
+    mkdir(name)?;
+    mkdir(&tests)?;
+    mkdir(&src)?;
+    mkdir(&build)?;
+    mkdir(&release)?;
+    mkdir(&debug)?;
 
     if !cpp {
-        let mut mf = File::create(main)?;
-        mf.write_all(b"#include <stdio.h>\n")?;
-        mf.write_all(b"#include <stdlib.h>\n")?;
-        mf.write_all(b"int main(void) {\n")?;
-        mf.write_all(b"    puts(\"Hello, World !\");\n")?;
-        mf.write_all(b"    return EXIT_SUCCESS;\n")?;
-        mf.write_all(b"}")?;
+        let mut mf = match File::create(main) {
+            Ok(f) => f,
+            Err(e) => return Err(format!("{}", e)),
+        };
+        match mf.write_all(b"#include <stdio.h>\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match mf.write_all(b"#include <stdlib.h>\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match mf.write_all(b"int main(void) {\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match mf.write_all(b"    puts(\"Hello, World !\");\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match mf.write_all(b"    return EXIT_SUCCESS;\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match mf.write_all(b"}") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
 
-        let mut tf = File::create(testfile)?;
-        tf.write_all(b"#include <stdio.h>\n")?;
-        tf.write_all(b"#include <stdlib.h>\n")?;
-        tf.write_all(b"int main(void) {\n")?;
-        tf.write_all(b"    puts(\"Hello, World !\");\n")?;
-        tf.write_all(b"    return EXIT_SUCCESS;\n")?;
-        tf.write_all(b"}")?;
+        let mut tf = match File::create(testfile) {
+            Ok(f) => f,
+            Err(e) => return Err(format!("{}", e)),
+        };
+        match tf.write_all(b"#include <stdio.h>\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match tf.write_all(b"#include <stdlib.h>\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match tf.write_all(b"int main(void) {\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match tf.write_all(b"    puts(\"Hello, World !\");\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match tf.write_all(b"    return EXIT_SUCCESS;\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match tf.write_all(b"}") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
     } else {
-        let mut mf = File::create(main)?;
-        mf.write_all(b"#include <iostream>\n\n")?;
-        mf.write_all(b"int main() {\n")?;
-        mf.write_all(b"    std::cout << \"Hello, World! \" << std::endl;\n")?;
-        mf.write_all(b"    return 0;\n")?;
-        mf.write_all(b"}")?;
+        let mut mf = match File::create(main) {
+            Ok(f) => f,
+            Err(e) => return Err(format!("{}", e)),
+        };
+        match mf.write_all(b"#include <iostream>\n\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match mf.write_all(b"int main() {\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match mf.write_all(b"    std::cout << \"Hello, World! \" << std::endl;\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match mf.write_all(b"    return 0;\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match mf.write_all(b"}") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
 
-        let mut tf = File::create(testfile)?;
-        tf.write_all(b"#include <iostream>\n\n")?;
-        tf.write_all(b"int main() {\n")?;
-        tf.write_all(b"    std::cout << \"Hello, World! \" << std::endl;\n")?;
-        tf.write_all(b"    return 0;\n")?;
-        tf.write_all(b"}")?;
+        let mut tf = match File::create(testfile) {
+            Ok(f) => f,
+            Err(e) => return Err(format!("{}", e)),
+        };
+        match tf.write_all(b"#include <iostream>\n\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match tf.write_all(b"int main() {\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match tf.write_all(b"    std::cout << \"Hello, World! \" << std::endl;\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match tf.write_all(b"    return 0;\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match tf.write_all(b"}") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
     }
 
     let mut gitignore: String = name.clone().into();
@@ -118,13 +189,19 @@ pub fn create(name: &str, cpp: bool) -> std::io::Result<()> {
         gitignore.push_str("/.gitignore");
     }
 
-    let mut locker = File::create(gitignore)?;
-    locker.write_all(b"build/")?;
+    let mut locker = match File::create(gitignore) {
+        Ok(f) => f,
+        Err(e) => return Err(format!("{}", e)),
+    };
+    match locker.write_all(b"build/") {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    };
 
     let project = Path::new(name);
     match env::set_current_dir(&project) {
         Ok(_) => (),
-        Err(_e) => println!("Failed to change directory"),
+        Err(e) => return Err(format!("{}", e)),
     }
     /* JSON content
     {
@@ -134,25 +211,55 @@ pub fn create(name: &str, cpp: bool) -> std::io::Result<()> {
         "author" : "Example <example@example.com>"
     }
     */
-    let mut json = File::create("project.json")?;
-    json.write_all(b"{\n")?;
-    json.write_all(format!("    \"name\" : \"{}\",\n", name).as_bytes())?;
-    json.write_all(b"    \"version\" : \"0.1.0\",\n")?;
-    if !cpp {
-        json.write_all(b"    \"standard\" : \"C99\",\n")?;
-    } else {
-        json.write_all(b"    \"standard\" : \"C++14\",\n")?;
+    let mut json = match File::create("project.json") {
+        Ok(f) => f,
+        Err(e) => return Err(format!("{}", e)),
+    };
+    match json.write_all(b"{\n") {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
     }
-    json.write_all(b"    \"author\" : \"Example <example@example.com>\"\n")?;
-    json.write_all(b"}")?;
+    match json.write_all(format!("    \"name\" : \"{}\",\n", name).as_bytes()) {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    }
+    match json.write_all(b"    \"version\" : \"0.1.0\",\n") {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    }
+    if !cpp {
+        match json.write_all(b"    \"standard\" : \"C99\",\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+    } else {
+        match json.write_all(b"    \"standard\" : \"C++14\",\n") {
+            Ok(()) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+    }
+    match json.write_all(b"    \"author\" : \"Example <example@example.com>\"\n") {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    }
+    match json.write_all(b"}") {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    }
 
-    let mut readme = File::create("README.md")?;
-    readme.write_all(format!("# {}", name).as_bytes())?;
+    let mut readme = match File::create("README.md") {
+        Ok(f) => f,
+        Err(e) => return Err(format!("{}", e)),
+    };
+    match readme.write_all(format!("# {}", name).as_bytes()) {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    }
 
-    Command::new("git")
-        .arg("init")
-        .status()
-        .expect("Failed to create git repository");
+    match Command::new("git").arg("init").status() {
+        Ok(_) => {}
+        Err(e) => return Err(format!("{}", e)),
+    }
     println!("Created new project in {}", name);
 
     Ok(())
