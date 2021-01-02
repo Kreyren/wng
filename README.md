@@ -75,8 +75,18 @@ Make sure to have [Git](https://git-scm.com) & [gcc](https://gcc.gnu.org/) insta
 
 ### B / Installation
 
-To install wng you can either :
-- Download the latest binary in the releases
+#### Manually
+
+- Download the latest binary for the releases
+- Put it somewhere in your path
+
+#### With [yarpm](https://github.com/wafelack/yarpm)
+
+- Add `https://github.com/Wafelack/wng/blob/master/wng.tar.gz` to your sources
+- Run `yarpm install wng`
+
+#### With cargo
+
 - Run `cargo install wng`
 
 ### C / Configuration
