@@ -41,25 +41,25 @@ fn see_dir(dir: PathBuf, cpp: bool) -> Vec<PathBuf> {
 /// Compiles src/ (without main.rs) and tests/tests.c to run tests
 ///
 #[allow(unused_assignments)]
-pub fn test<'a>(cpp: bool) -> Result<(), &'a str> {
+pub fn test<'a>(cpp: bool) -> Result<(), String> {
     if cfg!(windows) {
         if !cpp {
             if !Path::new("tests\\tests.c").exists() {
-                return Err("tests/tests.c not found");
+                return Err("tests/tests.c not found".to_owned());
             }
         } else {
             if !Path::new("tests\\tests.cpp").exists() {
-                return Err("tests/tests.cpp not found");
+                return Err("tests/tests.cpp not found".to_owned());
             }
         }
     } else {
         if !cpp {
             if !Path::new("tests/tests.c").exists() {
-                return Err("tests/tests.c not found");
+                return Err("tests/tests.c not found".to_owned());
             }
         } else {
             if !Path::new("tests/tests.cpp").exists() {
-                return Err("tests/tests.cpp not found");
+                return Err("tests/tests.cpp not found".to_owned());
             }
         }
     }
@@ -71,10 +71,10 @@ pub fn test<'a>(cpp: bool) -> Result<(), &'a str> {
         files.push_str(" ");
     }
 
-    let mut status = Command::new("echo")
-        .arg("Started testing ...")
-        .status()
-        .unwrap();
+    let mut status = match Command::new("echo").arg("Started testing ...").status() {
+        Ok(s) => s,
+        Err(e) => return Err(format!("{}", e)),
+    };
 
     let (testfile, compiler) = if cpp {
         ("tests/tests.cpp", "g++")
@@ -85,50 +85,61 @@ pub fn test<'a>(cpp: bool) -> Result<(), &'a str> {
     if files != String::new() {
         files.pop();
         if cfg!(windows) {
-            status = Command::new(compiler)
+            status = match Command::new(compiler)
                 .arg(testfile)
                 .args(files.replace("\\", "/").split(' '))
                 .arg("-o")
                 .arg("tests/tests.exe")
                 .status()
-                .expect("Failed to call gcc");
+            {
+                Ok(s) => s,
+                Err(e) => return Err(format!("{}", e)),
+            }
         } else {
-            status = Command::new(compiler)
+            status = match Command::new(compiler)
                 .arg(testfile)
                 .args(files.split(' '))
                 .arg("-o")
                 .arg("tests/tests.exe")
                 .status()
-                .expect("Failed to call gcc");
+            {
+                Ok(s) => s,
+                Err(e) => return Err(format!("{}", e)),
+            }
         }
     } else {
-        status = Command::new(compiler)
+        status = match Command::new(compiler)
             .arg(testfile)
             .arg("-o")
             .arg("tests/tests.exe")
             .status()
-            .expect("Failed to call gcc");
+        {
+            Ok(s) => s,
+            Err(e) => return Err(format!("{}", e)),
+        }
     }
     if status.code() != Some(0) {
-        return Err("Compilation failed");
+        return Err("Compilation failed".to_owned());
     }
 
     if cfg!(windows) {
-        Command::new(".\\tests\\tests.exe")
-            .status()
-            .expect("Failed to run program");
-        Command::new("del")
-            .arg(".\\tests\\tests.exe")
-            .spawn()
-            .expect("Failed to delete program");
+        match Command::new(".\\tests\\tests.exe").status() {
+            Ok(_) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match Command::new("del").arg(".\\tests\\tests.exe").spawn() {
+            Ok(_) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
     } else {
-        Command::new("./tests/tests.exe")
-            .status()
-            .expect("Failed to run program");
-        Command::new("rm")
-            .arg("./tests/tests.exe")
-            .spawn()
-            .expect("Failed to delete program");
+        match Command::new("./tests/tests.exe").status() {
+            Ok(_) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
+        match Command::new("rm").arg("./tests/tests.exe").spawn() {
+            Ok(_) => {}
+            Err(e) => return Err(format!("{}", e)),
+        }
     }
     Ok(())
 }

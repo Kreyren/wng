@@ -1,29 +1,22 @@
 use colored::*;
 use lines_from_file::lines_from_file;
-use serde_json::*;
-use std::io::ErrorKind;
+use serde_json::Value;
 use std::path::Path;
 use std::path::PathBuf;
 use std::process::Command;
 
-fn see_dir(dir: PathBuf, cpp: bool) -> Vec<PathBuf> {
+fn see_dir(dir: PathBuf, cpp: bool) -> Result<Vec<PathBuf>, String> {
     let mut list: Vec<PathBuf> = Vec::new();
     for entry in match std::fs::read_dir(dir.clone()) {
         Ok(e) => e,
-        Err(_s) => {
-            eprintln!("Failed to read src/");
-            std::process::exit(66);
-        }
+        Err(e) => return Err(format!("{}", e)),
     } {
         let entry = match entry {
             Ok(e) => e,
-            Err(_e) => {
-                eprintln!("Failed to read src/");
-                std::process::exit(69);
-            }
+            Err(e) => return Err(format!("{}", e)),
         };
         if entry.path().is_dir() {
-            let sub: Vec<PathBuf> = see_dir(entry.path(), cpp);
+            let sub: Vec<PathBuf> = see_dir(entry.path(), cpp)?;
             list.extend(sub);
         } else {
             if !cpp {
@@ -37,212 +30,186 @@ fn see_dir(dir: PathBuf, cpp: bool) -> Vec<PathBuf> {
             }
         }
     }
-    list
+    Ok(list)
 }
 
-pub fn removebinary() {
+pub fn removebinary() -> Result<(), String> {
     match std::fs::remove_file("build/debug/debug.exe") {
-        Ok(_) => (),
-        Err(e) => {
-            // Because if it is equal to NotFound that would tell that the file hasn't been compiled
-            if e.kind() == ErrorKind::NotFound {
-                std::process::exit(-1);
+        Ok(_) => Ok(()),
+        Err(e) => Err(format!("{}", e)),
+    }
+}
+
+fn generic_build(cpp: bool, with_opt: bool) -> Result<(), String> {
+    if !Path::new("src").exists() {
+        return Err("src/ folder not found. Make sure to be in a valid project".to_owned());
+    }
+    let rawfiles: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp)?;
+    let mut files: Vec<&PathBuf> = vec![];
+
+    if Path::new(".wngignore").exists() {
+        let to_ignore = lines_from_file(".wngignore");
+
+        'master: for i in 0..rawfiles.len() {
+            let curfile = rawfiles[i].to_str().unwrap();
+            for ign in &to_ignore {
+                if !curfile.starts_with(ign) {
+                    continue;
+                } else {
+                    continue 'master;
+                }
             }
-            eprintln!("{:?}", e.kind());
-            std::process::exit(58);
+            files.push(&rawfiles[i]);
+        }
+    }
+
+    let compiler = if cpp { "g++" } else { "gcc" };
+
+    let status = if with_opt {
+        match Command::new(compiler)
+            .args(&files)
+            .arg("-o")
+            .arg("build/debug/debug.exe")
+            .arg("-W")
+            .arg("-Wall")
+            .arg("-Werror")
+            .arg("-Wextra")
+            .status()
+        {
+            Ok(s) => s,
+            Err(e) => return Err(format!("{}", e)),
+        }
+    } else {
+        match Command::new(compiler)
+            .args(&files)
+            .arg("-o")
+            .arg("build/debug/debug.exe")
+            .arg("-W")
+            .arg("-Wall")
+            .arg("-Werror")
+            .arg("-Wextra")
+            .arg("-O3")
+            .status()
+        {
+            Ok(s) => s,
+            Err(e) => return Err(format!("{}", e)),
         }
     };
-}
-
-pub fn build(cpp: bool) {
-    if !Path::new("src").exists() {
-        eprintln!("src/ folder not found. Make sure to be in a valid project");
-        std::process::exit(36);
-    }
-    let rawfiles: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp);
-    let mut files: Vec<&PathBuf> = vec![];
-
-    if Path::new(".wngignore").exists() {
-        let to_ignore = lines_from_file(".wngignore");
-
-        'master: for i in 0..rawfiles.len() {
-            let curfile = rawfiles[i].to_str().unwrap();
-            for ign in &to_ignore {
-                if !curfile.starts_with(ign) {
-                    continue;
-                } else {
-                    continue 'master;
-                }
-            }
-            files.push(&rawfiles[i]);
-        }
-    }
-
-    let compiler = if cpp { "g++" } else { "gcc" };
-
-    let status = Command::new(compiler)
-        .args(&files)
-        .arg("-o")
-        .arg("build/debug/debug.exe")
-        .arg("-W")
-        .arg("-Wall")
-        .arg("-Werror")
-        .arg("-Wextra")
-        .status()
-        .expect("Error while running compilation command.");
 
     if status.code() == Some(0) {
-        println!("{}", "Compiled project successfully !".green())
+        println!("{}", "Compiled project successfully !".green());
+        return Ok(());
+    } else {
+        return Err(format!("{}", "Error while compiling project !".red()));
     }
 }
-pub fn buildhard(cpp: bool) {
-    if !Path::new("src").exists() {
-        eprintln!("src/ folder not found. Make sure to be in a valid project");
-        std::process::exit(36);
-    }
-    let rawfiles: Vec<PathBuf> = see_dir(PathBuf::from("src"), cpp);
-    let mut files: Vec<&PathBuf> = vec![];
 
-    if Path::new(".wngignore").exists() {
-        let to_ignore = lines_from_file(".wngignore");
-
-        'master: for i in 0..rawfiles.len() {
-            let curfile = rawfiles[i].to_str().unwrap();
-            for ign in &to_ignore {
-                if !curfile.starts_with(ign) {
-                    continue;
-                } else {
-                    continue 'master;
-                }
-            }
-            files.push(&rawfiles[i]);
-        }
-    }
-
-    let compiler = if cpp { "g++" } else { "gcc" };
-
-    let status = Command::new(compiler)
-        .args(&files)
-        .arg("-o")
-        .arg("build/release/release.exe")
-        .arg("-W")
-        .arg("-Wall")
-        .arg("-Werror")
-        .arg("-Wextra")
-        .arg("-O3")
-        .status()
-        .expect("Error while running compilation command.");
-
-    if status.code() == Some(0) {
-        println!("{}", "Compiled project successfully !".green())
-    }
+pub fn build(cpp: bool) -> Result<(), String> {
+    generic_build(cpp, false)
 }
-pub fn buildcustom() {
+pub fn build_optimized(cpp: bool) -> Result<(), String> {
+    generic_build(cpp, true)
+}
+pub fn buildcustom() -> Result<(), String> {
     if Path::new("build.py").exists() {
         let content = lines_from_file("project.json").join("\n");
         let json: Value = match serde_json::from_str(&content) {
             Ok(j) => j,
-            Err(_e) => {
-                eprintln!("Failed to parse project.json");
-                std::process::exit(66);
-            }
+            Err(e) => return Err(format!("{}", e)),
         };
 
         if json["pyinterpreter"] == Value::Null {
-            let ver = Command::new("python")
-                .arg("--version")
-                .output()
-                .expect("Failed to get python version");
-            let messagechars: Vec<char> =
-                std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+            let ver = match Command::new("python").arg("--version").output() {
+                Ok(o) => o,
+                Err(e) => return Err(format!("{}", e)),
+            };
+            let messagechars: Vec<char> = match std::str::from_utf8(&ver.stdout) {
+                Ok(u) => u,
+                Err(e) => return Err(format!("{}", e)),
+            }
+            .chars()
+            .collect();
 
             if messagechars[7] < '3' && messagechars[9] < '5' {
-                eprintln!("Python version has to be 3.5 or newer");
-                std::process::exit(65);
+                return Err("Python version has to be 3.5 or newer".to_owned());
             }
-            Command::new("python")
-                .arg("build.py")
-                .status()
-                .expect("Failed to run build script");
+            match Command::new("python").arg("build.py").status() {
+                Ok(_) => {}
+                Err(e) => return Err(format!("{}", e)),
+            }
         } else {
             let pypath = match &json["pyinterpreter"] {
                 Value::String(s) => s,
-                _ => {
-                    eprintln!("Pyinterpreter has to be a valid string");
-                    std::process::exit(67);
-                }
+                _ => return Err("Pyinterpreter has to be a valid string".to_owned()),
             };
 
-            let ver = Command::new(pypath)
-                .arg("--version")
-                .output()
-                .expect("Failed to get python version");
-            let messagechars: Vec<char> =
-                std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
+            let ver = match Command::new(pypath).arg("--version").output() {
+                Ok(o) => o,
+                Err(e) => return Err(format!("{}", e)),
+            };
+            let messagechars: Vec<char> = match std::str::from_utf8(&ver.stdout) {
+                Ok(u) => u,
+                Err(e) => return Err(format!("{}", e)),
+            }
+            .chars()
+            .collect();
 
             if messagechars[7] < '3' && messagechars[9] < '5' {
-                eprintln!("Python version has to be 3.5 or newer");
-                std::process::exit(65);
+                return Err("Python version has to be 3.5 or newer".to_owned());
             }
-            Command::new(pypath)
-                .arg("build.py")
-                .status()
-                .expect("Failed to run build script");
+            match Command::new(pypath).arg("build.py").status() {
+                Ok(_) => {}
+                Err(e) => return Err(format!("{}", e)),
+            }
         }
     } else if Path::new("build.rb").exists() {
         let content = lines_from_file("project.json").join("\n");
         let json: Value = match serde_json::from_str(&content) {
             Ok(j) => j,
-            Err(_e) => {
-                eprintln!("Failed to parse project.json");
-                std::process::exit(66);
-            }
+            Err(e) => return Err(format!("{}", e)),
         };
 
         if json["rbinterpreter"] == Value::Null {
-            let ver = Command::new("ruby")
-                .arg("--version")
-                .output()
-                .expect("Failed to get ruby version");
+            let ver = match Command::new("ruby").arg("--version").output() {
+                Ok(o) => o,
+                Err(e) => return Err(format!("{}", e)),
+            };
 
             let messagechars: Vec<char> =
                 std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
 
             if messagechars[5] < '2' || (messagechars[5] < '2' && messagechars[7] < '3') {
-                eprintln!("Ruby version has to be 2.3 or newer");
-                std::process::exit(65);
+                return Err("Ruby version has to be 2.3 or newer".to_owned());
             }
-            Command::new("ruby")
-                .arg("build.rb")
-                .status()
-                .expect("failed to run build script");
+            match Command::new("ruby").arg("build.rb").status() {
+                Ok(_) => {}
+                Err(e) => return Err(format!("{}", e)),
+            }
         } else {
             let rbpath = match &json["rbinterpreter"] {
                 Value::String(s) => s,
                 _ => {
-                    eprintln!("rbinterpretrer has to be a valid string");
-                    std::process::exit(67);
+                    return Err("rbinterpretrer has to be a valid string".to_owned());
                 }
             };
-            let ver = Command::new(rbpath)
-                .arg("--version")
-                .output()
-                .expect("Failed to get ruby version");
+            let ver = match Command::new(rbpath).arg("--version").output() {
+                Ok(o) => o,
+                Err(e) => return Err(format!("{}", e)),
+            };
 
             let messagechars: Vec<char> =
                 std::str::from_utf8(&ver.stdout).unwrap().chars().collect();
 
             if messagechars[5] < '2' || (messagechars[5] < '2' && messagechars[7] < '3') {
-                eprintln!("Ruby version has to be 2.3 or newer");
-                std::process::exit(65);
+                return Err("Ruby version has to be 2.3 or newer".to_owned());
             }
-            Command::new(rbpath)
-                .arg("build.rb")
-                .status()
-                .expect("failed to run build script");
+            match Command::new(rbpath).arg("build.rb").status() {
+                Ok(_) => {}
+                Err(e) => return Err(format!("{}", e)),
+            }
         }
     } else {
-        eprintln!("Error: build script not found");
-        std::process::exit(-65);
+        return Err("Build script not found !".to_owned());
     }
+    Ok(())
 }

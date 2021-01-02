@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::Write;
 
 /// Creates a header file
-pub fn header(name: &str) -> std::io::Result<()> {
+pub fn header(name: &str) -> Result<(), String> {
     let mut filename = String::from(name);
     filename.push_str(".h");
 
@@ -18,10 +18,22 @@ pub fn header(name: &str) -> std::io::Result<()> {
     endif.push_str(&name.to_uppercase());
     endif.push_str("_H_ */\n");
 
-    let mut fic = File::create(filename)?;
-    fic.write_all(ifndef.as_bytes())?;
-    fic.write_all(define.as_bytes())?;
-    fic.write_all(endif.as_bytes())?;
+    let mut fic = match File::create(filename) {
+        Ok(f) => f,
+        Err(e) => return Err(format!("{}", e)),
+    };
+    match fic.write_all(ifndef.as_bytes()) {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    }
+    match fic.write_all(define.as_bytes()) {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    }
+    match fic.write_all(endif.as_bytes()) {
+        Ok(()) => {}
+        Err(e) => return Err(format!("{}", e)),
+    }
 
     Ok(())
 }
