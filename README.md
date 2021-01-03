@@ -75,7 +75,13 @@ Make sure to have [Git](https://git-scm.com) & [gcc](https://gcc.gnu.org/) insta
 
 ### B / Installation
 
-#### Manually
+#### From source
+
+- Clone the project `git clone https://github.com/wafelack/wng.git`
+- Run the tests `cargo test`
+- Build `cargo build --release`
+
+#### Downloading a binary
 
 - Download the latest binary for the releases
 - Put it somewhere in your path
