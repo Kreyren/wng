@@ -4,21 +4,37 @@ mod test {
     use std::fs;
     use std::io::Write;
 
-    #[test]
-    fn reinit() -> super::Result<()> {
-        let fname = "test.conf";
-        let mut file = fs::File::create(fname)?;
-        let content = "foo\nbar\nmoo";
-        file.write_all(content.as_bytes())?;
+    use std::path::Path;
 
-        assert_eq!(&fs::read_to_string(fname)?, content);
+    use toml::Value;
+
+    #[test]
+    fn config_reinit() -> super::Result<()> {
+        let fname = "test.conf";
+        if Path::new(fname).exists() {
+            fs::remove_file(fname)?;
+        }
+        let mut file = fs::File::create(fname)?;
+        let content = "cc = \"clang\"\nname = \"Wafelack\"\nemail = \"wafelack@protonmail.com\"";
+        file.write_all(
+            content.as_bytes()
+        )?;
+
+        let mut tomlized = fs::read_to_string(fname)?.parse::<Value>().unwrap();
+
+        assert_eq!(tomlized["cc"].as_str(), Some("clang"));
+
+        super::config::manually::manually(Some(fname), "cc", "gcc")?;
+
+        tomlized = fs::read_to_string(fname)?.parse::<Value>().unwrap();
+
+        assert_eq!(tomlized["cc"].as_str(), Some("gcc"));
 
         super::config::reinit::reinit(Some(fname))?;
 
         assert!(&fs::read_to_string(fname)?.is_empty());
 
         fs::remove_file(fname)?;
-
         Ok(())
 
     }
@@ -57,14 +73,21 @@ impl From<std::io::Error> for WngError {
     }
 }
 
-#[derive(Debug, PartialEq, Eq)]
-struct WngError {
+#[derive(PartialEq, Eq)]
+pub struct WngError {
     line: u32,
     file: String,
     message: String,
 }
 
 impl std::fmt::Display for WngError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Error: {} - {}:{}", self.message, self.file, self.line)
+    }
+}
+
+
+impl std::fmt::Debug for WngError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Error: {} - {}:{}", self.message, self.file, self.line)
     }
