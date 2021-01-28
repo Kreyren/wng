@@ -2,6 +2,7 @@ mod tests;
 mod config;
 mod create;
 mod errors;
+mod deps;
 pub use errors::*;
 
 pub fn get_config_file(path: Option<&str>) -> String {

@@ -42,6 +42,14 @@ impl From<toml::de::Error> for WngError {
     }
 }
 
+
+impl From<toml::ser::Error> for WngError {
+    fn from(error: toml::ser::Error) -> Self {
+        let msg = format!("{}", error);
+        error!(msg)
+    }
+}
+
 #[derive(PartialEq, Eq)]
 pub struct WngError {
     pub line: u32,

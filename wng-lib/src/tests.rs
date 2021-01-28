@@ -10,10 +10,7 @@ mod test {
 
     #[test]
     fn config_reinit() -> crate::Result<()> {
-        let fname = "test.conf";
-        if Path::new(fname).exists() {
-            fs::remove_file(fname)?;
-        }
+        let fname = "./test.conf";
         let mut file = fs::File::create(fname)?;
         let content = "cc = \"clang\"\nname = \"Wafelack\"\nemail = \"wafelack@protonmail.com\"";
         file.write_all(
@@ -26,7 +23,23 @@ mod test {
 
         crate::config::manually::manually(Some(fname), "cc", "gcc")?;
 
+        println!("Current dir: {:?}", std::env::current_dir()?);
+
+        let entries = fs::read_dir(".")?;
+
+        println!("Files in current dir: ");
+
+        for entry in entries {
+            let entry = entry?;
+
+            println!("{:?}", entry.path());
+        }
+
+        println!("File name: {}", fname);
+
         tomlized = fs::read_to_string(fname)?.parse::<Value>().unwrap();
+        
+        unimplemented!();
 
         assert_eq!(tomlized["cc"].as_str(), Some("gcc"));
 
@@ -39,12 +52,11 @@ mod test {
 
     }
 
+
+
     #[test]
-    fn creation() -> Result<()> {
+    fn creation_adding() -> Result<()> {
         let fname = "test_creation.conf";
-        if Path::new(fname).exists() {
-            fs::remove_file(fname)?;
-        }
         let mut file = fs::File::create(fname)?;
         let content = "cc = \"clang\"\nname = \"Wafelack\"\nemail = \"wafelack@protonmail.com\"";
         file.write_all(
@@ -52,6 +64,12 @@ mod test {
         )?;
 
         crate::create::create("test_creation",Some(fname), false)?;
+
+        std::env::set_current_dir("./test_creation")?;
+
+        crate::deps::add::add_dep("wafelack/wng", true)?;
+
+        std::env::set_current_dir("..")?;
 
         fs::remove_file(fname)?;
 
