@@ -1,3 +1,4 @@
+use crate::{error, WngError};
 use std::path::Path;
 use std::{fs, fs::File};
 use std::{io, io::Write};
@@ -45,6 +46,12 @@ pub fn setup(path: Option<&str>, version: &str) -> crate::Result<()> {
     }
 
     let mut file = File::create(&config_file)?;
+
+    let supported_compilers = vec!["clang", "gcc"];
+
+    if !supported_compilers.contains(&cc.as_str()) {
+        return Err(error!("The specified compiler is currently not supported."));
+    }
 
     file.write_all(
         format!(

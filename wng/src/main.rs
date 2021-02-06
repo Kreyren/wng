@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+use build::build;
 use clap::{App, Arg, SubCommand};
 use config::{manually::manually, reinit::reinit, setup::setup};
 use create::create;
@@ -11,6 +12,15 @@ fn main() -> Result<()> {
         .version(env!("CARGO_PKG_VERSION"))
         .author(env!("CARGO_PKG_AUTHORS"))
         .about("Wanager is a package and projects manager for C")
+        .subcommand(
+            SubCommand::with_name("build")
+                .arg(
+                    Arg::with_name("release")
+                        .long("--release")
+                        .help("Specify to build with the O3 flag activated."),
+                )
+                .about("Build the current project."),
+        )
         .subcommand(
             SubCommand::with_name("dependencies")
                 .subcommand(
@@ -90,6 +100,8 @@ fn main() -> Result<()> {
         } else if let Some(matches) = matches.subcommand_matches("remove") {
             remove_dep(matches.value_of("dependency").unwrap(), true)?;
         }
+    } else if let Some(matches) = matches.subcommand_matches("build") {
+        build(None, matches.is_present("release"))?;
     }
 
     Ok(())

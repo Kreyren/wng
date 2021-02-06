@@ -5,6 +5,7 @@ pub mod create;
 pub mod deps;
 mod errors;
 pub use errors::*;
+pub mod build;
 
 pub fn get_config_file(path: Option<&str>) -> String {
     let home_dir = dirs::home_dir().unwrap();

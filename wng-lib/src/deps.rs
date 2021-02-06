@@ -11,9 +11,19 @@ pub fn add_dep(dependency: &str, messages: bool) -> crate::Result<()> {
 
     let mut tomlized: toml::Value = toml::from_str(&fs::read_to_string("project.toml")?)?;
 
-    let deps = match tomlized["project"]["dependencys"].as_array_mut() {
+    if !tomlized.as_table().unwrap().contains_key("project") {
+        return Err(error!("Missing key in project.toml: `project`"));
+    } else if !tomlized["project"]
+        .as_table()
+        .unwrap()
+        .contains_key("dependencies")
+    {
+        return Err(error!("Missing key in wng.config: `project.dependencies`"));
+    }
+
+    let deps = match tomlized["project"]["dependencies"].as_array_mut() {
         Some(array) => array,
-        None => return Err(error!("Cannot find field `dependencys` in `project.toml`")),
+        None => return Err(error!("Cannot find field `dependencies` in `project.toml`")),
     };
 
     let mut already = false;
@@ -53,9 +63,19 @@ pub fn remove_dep(dependency: &str, messages: bool) -> crate::Result<()> {
 
     let mut tomlized: toml::Value = toml::from_str(&fs::read_to_string("project.toml")?)?;
 
-    let deps = match tomlized["project"]["dependencys"].as_array_mut() {
+    if !tomlized.as_table().unwrap().contains_key("project") {
+        return Err(error!("Missing key in project.toml: `project`"));
+    } else if !tomlized["project"]
+        .as_table()
+        .unwrap()
+        .contains_key("dependencies")
+    {
+        return Err(error!("Missing key in wng.config: `project.dependencies`"));
+    }
+
+    let deps = match tomlized["project"]["dependencies"].as_array_mut() {
         Some(array) => array,
-        None => return Err(error!("Cannot find field `dependencys` in `project.toml`")),
+        None => return Err(error!("Cannot find field `dependencies` in `project.toml`")),
     };
 
     for i in 0..deps.len() {

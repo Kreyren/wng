@@ -9,6 +9,12 @@ pub fn create(directory: &str, path: Option<&str>, with_messages: bool) -> crate
     let config_file = crate::get_config_file(path);
     let cfg_toml: toml::Value = toml::from_str(&fs::read_to_string(config_file)?)?;
 
+    if !cfg_toml.as_table().unwrap().contains_key("name") {
+        return Err(error!("Missing key in wng.config: `name`"));
+    } else if !cfg_toml.as_table().unwrap().contains_key("email") {
+        return Err(error!("Missing key in wng.config: `email`"));
+    }
+
     let name = if directory == "." {
         env::current_dir()?.to_str().unwrap().to_owned()
     } else {
@@ -28,13 +34,9 @@ int main(void) {
 }"#;
 
     if !cfg_toml.as_table().unwrap().contains_key("name") {
-        return Err(error!(
-            "Missing key in wng.config: `name`"
-        ))
+        return Err(error!("Missing key in wng.config: `name`"));
     } else if !cfg_toml.as_table().unwrap().contains_key("email") {
-        return Err(error!(
-            "Missing key in wng.config: `email`"
-        ))
+        return Err(error!("Missing key in wng.config: `email`"));
     }
 
     let project = &format!("[project]\nname = \"{}\"\nversion = \"0.1.0\"\nauthors = [\n\t\"{}\"\n]\ndependencies = []", name,
