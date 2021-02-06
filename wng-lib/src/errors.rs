@@ -42,7 +42,6 @@ impl From<toml::de::Error> for WngError {
     }
 }
 
-
 impl From<toml::ser::Error> for WngError {
     fn from(error: toml::ser::Error) -> Self {
         let msg = format!("{}", error);
@@ -62,7 +61,6 @@ impl std::fmt::Display for WngError {
         write!(f, "Error: {} - {}:{}", self.message, self.file, self.line)
     }
 }
-
 
 impl std::fmt::Debug for WngError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {

@@ -1,10 +1,9 @@
-use std::{fs, fs::File};
 use std::env;
-use std::path::Path;
 use std::io::Write;
+use std::path::Path;
+use std::{fs, fs::File};
 
 pub fn create(directory: &str, path: Option<&str>, with_messages: bool) -> crate::Result<()> {
-
     let config_file = crate::get_config_file(path);
     let cfg_toml: toml::Value = toml::from_str(&fs::read_to_string(config_file)?)?;
 
@@ -30,7 +29,13 @@ int main(void) {
         format!("{} <{}>", cfg_toml["name"].as_str().unwrap_or("Unspecified"), cfg_toml["email"].as_str().unwrap_or("un@specified.com"))
     );
 
-    let to_create = vec!["src/", "build/", "build/debug/", "build/silk/", "build/release/"];
+    let to_create = vec![
+        "src/",
+        "build/",
+        "build/debug/",
+        "build/silk/",
+        "build/release/",
+    ];
 
     for folder in to_create {
         fs::create_dir(format!("{}/{}", directory, folder))?;
@@ -50,7 +55,10 @@ int main(void) {
     if with_messages {
         println!("[+] Successfully created `project.toml`");
 
-        println!("[+] Successfully created project `{}` in `{}`", name, directory);
+        println!(
+            "[+] Successfully created project `{}` in `{}`",
+            name, directory
+        );
     }
 
     Ok(())
