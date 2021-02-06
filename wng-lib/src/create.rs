@@ -33,10 +33,8 @@ int main(void) {
         "src/",
         "build/",
         "build/debug/",
-        "build/silk/",
         "build/release/",
         "build/debug/objects/",
-        "build/silk/objects/",
         "build/release/objects/",
     ];
 
