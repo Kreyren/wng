@@ -12,10 +12,7 @@ fn main() -> Result<()> {
         .version(env!("CARGO_PKG_VERSION"))
         .author(env!("CARGO_PKG_AUTHORS"))
         .about("Wanager is a package and projects manager for C")
-        .subcommand(
-            SubCommand::with_name("clean")
-                .about("Cleans the build folder."),
-        )
+        .subcommand(SubCommand::with_name("clean").about("Cleans the build folder."))
         .subcommand(
             SubCommand::with_name("build")
                 .arg(

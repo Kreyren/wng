@@ -31,21 +31,27 @@ fn see_dir(dirname: &PathBuf, o: bool) -> Result<Vec<PathBuf>> {
 }
 
 pub fn run(path: Option<&str>, args: Vec<String>, release: bool) -> Result<()> {
-   let name =  build(path, release)?;
+    let name = build(path, release)?;
 
     if release {
-        let status  = Command::new(&format!("./build/release/{}", name)).args(&args).status()?;
+        let status = Command::new(&format!("./build/release/{}", name))
+            .args(&args)
+            .status()?;
         if !status.success() {
-            return Err(
-                error!("Run failed, exit code:", (status.code().unwrap_or(-1)))
-            )
+            return Err(error!(
+                "Run failed, exit code:",
+                (status.code().unwrap_or(-1))
+            ));
         }
     } else {
-        let status  = Command::new(&format!("./build/debug/{}", name)).args(&args).status()?;
+        let status = Command::new(&format!("./build/debug/{}", name))
+            .args(&args)
+            .status()?;
         if !status.success() {
-            return Err(
-                error!("Run failed, exit code:", (status.code().unwrap_or(-1)))
-            )
+            return Err(error!(
+                "Run failed, exit code:",
+                (status.code().unwrap_or(-1))
+            ));
         }
     }
 
@@ -202,7 +208,10 @@ pub fn build(path: Option<&str>, release: bool) -> Result<String> {
         Command::new(cc)
             .args(objects)
             .arg("-o")
-            .arg(&format!("build/release/{}", prjct_toml["project"]["name"].as_str().unwrap()))
+            .arg(&format!(
+                "build/release/{}",
+                prjct_toml["project"]["name"].as_str().unwrap()
+            ))
             .arg("-O3")
             .arg("-W")
             .arg("-Wall")
@@ -213,7 +222,10 @@ pub fn build(path: Option<&str>, release: bool) -> Result<String> {
         Command::new(cc)
             .args(objects)
             .arg("-o")
-            .arg(&format!("build/debug/{}", prjct_toml["project"]["name"].as_str().unwrap()))
+            .arg(&format!(
+                "build/debug/{}",
+                prjct_toml["project"]["name"].as_str().unwrap()
+            ))
             .arg("-W")
             .arg("-Wall")
             .arg("-Werror")
