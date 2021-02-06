@@ -7,7 +7,7 @@ use std::{
     time::Instant,
 };
 
-fn see_dir(dirname: &PathBuf) -> Result<Vec<PathBuf>> {
+fn see_dir(dirname: &PathBuf, o: bool) -> Result<Vec<PathBuf>> {
     let entries = fs::read_dir(dirname)?;
     let mut toret: Vec<PathBuf> = vec![];
 
@@ -15,9 +15,15 @@ fn see_dir(dirname: &PathBuf) -> Result<Vec<PathBuf>> {
         let entry = entry?;
 
         if entry.path().is_dir() {
-            toret.extend(see_dir(&entry.path().to_owned())?);
-        } else if entry.path().extension().unwrap().to_str().unwrap() == "c" {
-            toret.push(entry.path().to_owned());
+            toret.extend(see_dir(&entry.path().to_owned(), o)?);
+        } else if o {
+            if entry.path().extension().unwrap().to_str().unwrap() == "o" {
+                toret.push(entry.path().to_owned());
+            }
+        } else {
+            if entry.path().extension().unwrap().to_str().unwrap() == "c" {
+                toret.push(entry.path().to_owned());
+            }
         }
     }
 
@@ -74,7 +80,7 @@ pub fn build(path: Option<&str>, release: bool) -> Result<()> {
         }
     }
 
-    let files = see_dir(&PathBuf::from_str("src/").unwrap())?;
+    let files = see_dir(&PathBuf::from_str("src/").unwrap(), false)?;
 
     let cc = cfg_toml["cc"].as_str().unwrap_or("gcc");
 
@@ -144,6 +150,44 @@ pub fn build(path: Option<&str>, release: bool) -> Result<()> {
             });
         }
     }
+
+    let objects = if release {
+        see_dir(&PathBuf::from_str("build/release/objects").unwrap(), true)?
+    } else {
+        see_dir(&PathBuf::from_str("build/debug/objects").unwrap(), true)?
+    };
+
+    let comp_status = if release {
+        Command::new(cc)
+            .args(objects)
+            .arg("-o")
+            .arg(&format!("build/release/{}", prjct_toml["project"]["name"].as_str().unwrap()))
+            .arg("-O3")
+            .arg("-W")
+            .arg("-Wall")
+            .arg("-Werror")
+            .arg("-Wextra")
+            .status()?
+    } else {
+        Command::new(cc)
+            .args(objects)
+            .arg("-o")
+            .arg(&format!("build/debug/{}", prjct_toml["project"]["name"].as_str().unwrap()))
+            .arg("-W")
+            .arg("-Wall")
+            .arg("-Werror")
+            .arg("-Wextra")
+            .status()?
+    };
+
+    if !comp_status.success() {
+        return Err(if cfg!(windows) {
+            error!("Compilation failed")
+        } else {
+            error!("\x1b[0;31mCompilation failed\x1b[0m")
+        });
+    }
+
     let elapsed = start.elapsed();
 
     if release {
