@@ -1,6 +1,6 @@
 #![forbid(unsafe_code)]
 
-use build::{build, run};
+use build::{build, clean, run};
 use clap::{App, Arg, SubCommand};
 use config::{manually::manually, reinit::reinit, setup::setup};
 use create::create;
@@ -12,6 +12,10 @@ fn main() -> Result<()> {
         .version(env!("CARGO_PKG_VERSION"))
         .author(env!("CARGO_PKG_AUTHORS"))
         .about("Wanager is a package and projects manager for C")
+        .subcommand(
+            SubCommand::with_name("clean")
+                .about("Cleans the build folder."),
+        )
         .subcommand(
             SubCommand::with_name("build")
                 .arg(
@@ -113,6 +117,8 @@ fn main() -> Result<()> {
         build(None, matches.is_present("release"))?;
     } else if let Some(matches) = matches.subcommand_matches("run") {
         run(None, vec![], matches.is_present("release"))?;
+    } else if let Some(_) = matches.subcommand_matches("clean") {
+        clean()?;
     }
 
     Ok(())

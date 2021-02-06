@@ -52,6 +52,25 @@ pub fn run(path: Option<&str>, args: Vec<String>, release: bool) -> Result<()> {
     Ok(())
 }
 
+pub fn clean() -> Result<()> {
+    fs::remove_dir_all("build")?;
+    let to_create = vec![
+        "build/",
+        "build/debug/",
+        "build/release/",
+        "build/debug/objects/",
+        "build/release/objects/",
+    ];
+
+    for folder in to_create {
+        if !Path::new(folder).exists() {
+            fs::create_dir(format!("{}", folder))?;
+        }
+    }
+
+    Ok(())
+}
+
 pub fn build(path: Option<&str>, release: bool) -> Result<String> {
     let config_file = crate::get_config_file(path);
     let cfg_toml: toml::Value = toml::from_str(&fs::read_to_string(config_file)?)?;
