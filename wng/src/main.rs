@@ -3,6 +3,7 @@
 use clap::{App, Arg, SubCommand};
 use config::{manually::manually, reinit::reinit, setup::setup};
 use create::create;
+use deps::{add_dep, remove_dep};
 use wng_lib::*;
 
 fn main() -> Result<()> {
@@ -10,6 +11,29 @@ fn main() -> Result<()> {
         .version(env!("CARGO_PKG_VERSION"))
         .author(env!("CARGO_PKG_AUTHORS"))
         .about("Wanager is a package and projects manager for C")
+        .subcommand(
+            SubCommand::with_name("dependencies")
+                .subcommand(
+                    SubCommand::with_name("add")
+                        .arg(
+                            Arg::with_name("dependency")
+                                .required(true)
+                                .index(1)
+                                .help("The dependency to add."),
+                        )
+                        .about("Add a dependency to the current project."),
+                )
+                .subcommand(
+                    SubCommand::with_name("remove")
+                        .arg(
+                            Arg::with_name("dependency")
+                                .required(true)
+                                .index(1)
+                                .help("The dependency to remove."),
+                        )
+                        .about("Remove a dependency from the current project."),
+                ),
+        )
         .subcommand(SubCommand::with_name("setup").about("Setup wanager."))
         .subcommand(
             SubCommand::with_name("config")
@@ -60,6 +84,12 @@ fn main() -> Result<()> {
         }
     } else if let Some(_) = matches.subcommand_matches("setup") {
         setup(None, env!("CARGO_PKG_VERSION"))?;
+    } else if let Some(matches) = matches.subcommand_matches("dependencies") {
+        if let Some(matches) = matches.subcommand_matches("add") {
+            add_dep(matches.value_of("dependency").unwrap(), true)?;
+        } else if let Some(matches) = matches.subcommand_matches("remove") {
+            remove_dep(matches.value_of("dependency").unwrap(), true)?;
+        }
     }
 
     Ok(())

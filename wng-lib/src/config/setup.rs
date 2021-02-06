@@ -46,7 +46,13 @@ pub fn setup(path: Option<&str>, version: &str) -> crate::Result<()> {
 
     let mut file = File::create(&config_file)?;
 
-    file.write_all(format!("cc = \"{}\"\nname = \"{}\"\nemail = \"{}\"", cc, name, email).as_bytes())?;
+    file.write_all(
+        format!(
+            "cc = \"{}\"\nname = \"{}\"\nemail = \"{}\"",
+            cc, name, email
+        )
+        .as_bytes(),
+    )?;
 
     println!("[+] Successfully written new configuration.");
 

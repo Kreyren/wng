@@ -3,6 +3,8 @@ use std::io::Write;
 use std::path::Path;
 use std::{fs, fs::File};
 
+use crate::{error, WngError};
+
 pub fn create(directory: &str, path: Option<&str>, with_messages: bool) -> crate::Result<()> {
     let config_file = crate::get_config_file(path);
     let cfg_toml: toml::Value = toml::from_str(&fs::read_to_string(config_file)?)?;
@@ -24,6 +26,16 @@ int main(void) {
     printf("Hello, World !\n");
     return 0;
 }"#;
+
+    if !cfg_toml.as_table().unwrap().contains_key("name") {
+        return Err(error!(
+            "Missing key in wng.config: `name`"
+        ))
+    } else if !cfg_toml.as_table().unwrap().contains_key("email") {
+        return Err(error!(
+            "Missing key in wng.config: `email`"
+        ))
+    }
 
     let project = &format!("[project]\nname = \"{}\"\nversion = \"0.1.0\"\nauthors = [\n\t\"{}\"\n]\ndependencies = []", name,
         format!("{} <{}>", cfg_toml["name"].as_str().unwrap_or("Unspecified"), cfg_toml["email"].as_str().unwrap_or("un@specified.com"))
