@@ -30,7 +30,29 @@ fn see_dir(dirname: &PathBuf, o: bool) -> Result<Vec<PathBuf>> {
     Ok(toret)
 }
 
-pub fn build(path: Option<&str>, release: bool) -> Result<()> {
+pub fn run(path: Option<&str>, args: Vec<String>, release: bool) -> Result<()> {
+   let name =  build(path, release)?;
+
+    if release {
+        let status  = Command::new(&format!("./build/release/{}", name)).args(&args).status()?;
+        if !status.success() {
+            return Err(
+                error!("Run failed, exit code:", (status.code().unwrap_or(-1)))
+            )
+        }
+    } else {
+        let status  = Command::new(&format!("./build/debug/{}", name)).args(&args).status()?;
+        if !status.success() {
+            return Err(
+                error!("Run failed, exit code:", (status.code().unwrap_or(-1)))
+            )
+        }
+    }
+
+    Ok(())
+}
+
+pub fn build(path: Option<&str>, release: bool) -> Result<String> {
     let config_file = crate::get_config_file(path);
     let cfg_toml: toml::Value = toml::from_str(&fs::read_to_string(config_file)?)?;
 
@@ -216,5 +238,5 @@ pub fn build(path: Option<&str>, release: bool) -> Result<()> {
         }
     }
 
-    Ok(())
+    Ok(prjct_toml["project"]["name"].as_str().unwrap().to_owned())
 }

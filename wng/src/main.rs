@@ -1,6 +1,6 @@
 #![forbid(unsafe_code)]
 
-use build::build;
+use build::{build, run};
 use clap::{App, Arg, SubCommand};
 use config::{manually::manually, reinit::reinit, setup::setup};
 use create::create;
@@ -17,9 +17,18 @@ fn main() -> Result<()> {
                 .arg(
                     Arg::with_name("release")
                         .long("--release")
-                        .help("Specify to build with the O3 flag activated."),
+                        .help("Specifies to build with the O3 flag activated."),
                 )
-                .about("Build the current project."),
+                .about("Builds the current project."),
+        )
+        .subcommand(
+            SubCommand::with_name("run")
+                .arg(
+                    Arg::with_name("release")
+                        .long("--release")
+                        .help("Specifies to run with the O3 flag activated."),
+                )
+                .about("Runs the current project."),
         )
         .subcommand(
             SubCommand::with_name("dependencies")
@@ -102,6 +111,8 @@ fn main() -> Result<()> {
         }
     } else if let Some(matches) = matches.subcommand_matches("build") {
         build(None, matches.is_present("release"))?;
+    } else if let Some(matches) = matches.subcommand_matches("run") {
+        run(None, vec![], matches.is_present("release"))?;
     }
 
     Ok(())
