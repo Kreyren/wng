@@ -107,6 +107,13 @@ INSTALL
 * Use `wng install` to install the project dependencies in the `src/` 
   folder.
 
+PLUGINS
+-------
+
+* Wanager plugins have to be placed in `$HOME/.wng/` with a name starting by `wng-`.
+
+* A wanager plugin can be called with: `wng -p <plugin_name_without_the_wng->`.
+
 
 FUTURE
 ======
