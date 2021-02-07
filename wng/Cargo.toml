@@ -1,0 +1,12 @@
+[package]
+name = "wng"
+version = "0.1.0"
+authors = ["Wafelack <wafelack@protonmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+wng-lib = {path="../wng-lib"}
+clap = "2.33.3"
+is_executable = "1.0.0"
