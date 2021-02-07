@@ -12,10 +12,10 @@ use is_executable::IsExecutable;
 use wng_lib::*;
 
 fn main() -> Result<()> {
-    let matches = App::new("Wanager")
+    let matches = App::new("WNG")
         .version(env!("CARGO_PKG_VERSION"))
         .author(env!("CARGO_PKG_AUTHORS"))
-        .about("Wanager is a package and projects manager for C")
+        .about("WNG is the W package manager, a package and projects manager for the C programming language.")
         .subcommand(SubCommand::with_name("install").about("Installs the project dependencies."))
         .subcommand(SubCommand::with_name("clean").about("Cleans the build folder."))
         .subcommand(
