@@ -1,11 +1,14 @@
 #![forbid(unsafe_code)]
 
+use std::{path::Path, process::Command};
+
 use build::{build, clean, run};
 use clap::{App, Arg, SubCommand};
 use config::{manually::manually, reinit::reinit, setup::setup};
 use create::create;
 use deps::{add_dep, remove_dep};
 use install::install;
+use is_executable::IsExecutable;
 use wng_lib::*;
 
 fn main() -> Result<()> {
@@ -90,6 +93,11 @@ fn main() -> Result<()> {
                 )
                 .about("Creates a new wanager project."),
         )
+        .arg(Arg::with_name("plugin")
+                .short("-p")
+                .long("--plugin")
+                .takes_value(true)
+                .help("The plugin to run (optional)."))
         .get_matches();
 
     if let Some(matches) = matches.subcommand_matches("new") {
@@ -120,6 +128,21 @@ fn main() -> Result<()> {
         clean()?;
     } else if let Some(_) = matches.subcommand_matches("install") {
         install()?;
+    } else if matches.value_of("plugin").is_some() {
+
+            let plugin_path =
+                &format!("{}/.wng/wng-{}", home_dir().unwrap().to_str().unwrap(), matches.value_of("plugin").unwrap());
+            let pathed = Path::new(plugin_path);
+            if !pathed.exists() {
+                return Err(error!("No files found matching `", plugin_path, "`"));
+            }
+
+            if !pathed.is_executable() {
+                return Err(error!("The plugin is not an executable file !"));
+            }
+
+            Command::new(plugin_path)
+                .status()?;
     }
 
     Ok(())

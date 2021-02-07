@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 pub mod config;
+pub use dirs::home_dir;
 pub mod create;
 pub mod deps;
 mod errors;

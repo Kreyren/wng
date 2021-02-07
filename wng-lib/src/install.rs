@@ -50,7 +50,6 @@ pub fn install() -> Result<()> {
     );
 
     for dep in &deps {
-
         let splited = dep.split("/").collect::<Vec<&str>>();
 
         if splited.len() != 5 {
@@ -66,8 +65,6 @@ pub fn install() -> Result<()> {
             if cfg!(windows) { "" } else { "\x1b[0m" },
             &format!("{}/{}", user, repo),
         );
-
-
 
         Repository::clone(dep, &format!("{}-{}", user, repo))?;
 

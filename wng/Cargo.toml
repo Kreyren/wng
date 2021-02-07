@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 wng-lib = {path="../wng-lib"}
 clap = "2.33.3"
+is_executable = "1.0.0"

@@ -61,6 +61,8 @@ pub fn setup(path: Option<&str>, version: &str) -> crate::Result<()> {
         .as_bytes(),
     )?;
 
+    fs::create_dir_all(&format!("{}/.wng", home_dir.to_str().unwrap()))?;
+
     println!("[+] Successfully written new configuration.");
 
     Ok(())
