@@ -82,7 +82,7 @@ pub fn build(path: Option<&str>, release: bool) -> Result<String> {
     let cfg_toml: toml::Value = toml::from_str(&fs::read_to_string(config_file)?)?;
 
     if !cfg_toml.as_table().unwrap().contains_key("cc") {
-        return Err(error!("Missing key in wng.config: `name`"));
+        return Err(error!("Missing key in .wng.config: `name`"));
     }
 
     if !Path::new("project.toml").exists() {

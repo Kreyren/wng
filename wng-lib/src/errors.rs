@@ -49,6 +49,18 @@ impl From<toml::ser::Error> for WngError {
     }
 }
 
+impl From<git2::Error> for WngError {
+    fn from(error: git2::Error) -> Self {
+        error!((error.message()))
+    }
+}
+
+impl From<fs_extra::error::Error> for WngError {
+    fn from(error: fs_extra::error::Error) -> Self {
+        error!((format!("{}", error)))
+    }
+}
+
 #[derive(PartialEq, Eq)]
 pub struct WngError {
     pub line: u32,

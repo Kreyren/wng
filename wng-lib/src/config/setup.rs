@@ -24,7 +24,7 @@ pub fn setup(path: Option<&str>, version: &str) -> crate::Result<()> {
     io::stdin().read_line(&mut email).unwrap();
 
     let home_dir = dirs::home_dir().unwrap();
-    let fpath = format!("{}/wng.config", home_dir.to_str().unwrap());
+    let fpath = format!("{}/.wng.config", home_dir.to_str().unwrap());
 
     let config_file = path.map(|x| x.to_owned()).unwrap_or(fpath);
 

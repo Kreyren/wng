@@ -18,7 +18,7 @@ pub fn add_dep(dependency: &str, messages: bool) -> crate::Result<()> {
         .unwrap()
         .contains_key("dependencies")
     {
-        return Err(error!("Missing key in wng.config: `project.dependencies`"));
+        return Err(error!("Missing key in .wng.config: `project.dependencies`"));
     }
 
     let deps = match tomlized["project"]["dependencies"].as_array_mut() {
@@ -70,7 +70,7 @@ pub fn remove_dep(dependency: &str, messages: bool) -> crate::Result<()> {
         .unwrap()
         .contains_key("dependencies")
     {
-        return Err(error!("Missing key in wng.config: `project.dependencies`"));
+        return Err(error!("Missing key in .wng.config: `project.dependencies`"));
     }
 
     let deps = match tomlized["project"]["dependencies"].as_array_mut() {

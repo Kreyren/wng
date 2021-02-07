@@ -9,3 +9,5 @@ edition = "2018"
 [dependencies]
 dirs = "3.0.1"
 toml = "0.5.8"
+git2 = "0.13.17"
+fs_extra = "1.2.0"
