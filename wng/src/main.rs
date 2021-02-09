@@ -7,7 +7,7 @@ use clap::{App, Arg, SubCommand};
 use config::{manually::manually, reinit::reinit, setup::setup};
 use create::create;
 use deps::{add_dep, remove_dep};
-use install::install;
+use install::{install, uninstall};
 use is_executable::IsExecutable;
 use wng_lib::*;
 
@@ -17,6 +17,7 @@ fn main() -> Result<()> {
         .author(env!("CARGO_PKG_AUTHORS"))
         .about("WNG is the W package manager, a package and projects manager for the C programming language.")
         .subcommand(SubCommand::with_name("install").about("Installs the project dependencies."))
+        .subcommand(SubCommand::with_name("uninstall").about("Uninstalls the project dependencies."))
         .subcommand(SubCommand::with_name("clean").about("Cleans the build folder."))
         .subcommand(
             SubCommand::with_name("build")
@@ -128,6 +129,8 @@ fn main() -> Result<()> {
         clean()?;
     } else if let Some(_) = matches.subcommand_matches("install") {
         install()?;
+    } else if let Some(_) = matches.subcommand_matches("uninstall") {
+        uninstall()?;
     } else if matches.value_of("plugin").is_some() {
 
             let plugin_path =
