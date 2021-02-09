@@ -6,6 +6,10 @@ use crate::{error, WngError};
 use std::fs;
 use std::path::Path;
 
+pub fn uninstall() -> Result<()> {
+
+}
+
 pub fn install() -> Result<()> {
     if !Path::new("project.toml").exists() {
         return Err(error!(
@@ -20,15 +24,9 @@ pub fn install() -> Result<()> {
     } else if !prjct_toml["project"]
         .as_table()
         .unwrap()
-        .contains_key("version")
+        .contains_key("dependencies")
     {
-        return Err(error!("Missing key in project.toml: `project.version`"));
-    } else if !prjct_toml["project"]
-        .as_table()
-        .unwrap()
-        .contains_key("name")
-    {
-        return Err(error!("Missing key in project.toml: `project.name`"));
+        return Err(error!("Missing key in project.toml: `project.dependencies`"));
     }
 
     if !Path::new("src").exists() {
