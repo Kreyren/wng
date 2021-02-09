@@ -110,9 +110,9 @@ INSTALL
 PLUGINS
 -------
 
-* Wanager plugins have to be placed in `$HOME/.wng/` with a name starting by `wng-`.
+* WNG plugins have to be placed in `$HOME/.wng/` with a name starting by `wng-`.
 
-* A wanager plugin can be called with: `wng -p <plugin_name_without_the_wng->`.
+* A WNG plugin can be called with: `wng -p <plugin_name_without_the_wng->`.
 
 
 FUTURE
