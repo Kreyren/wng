@@ -5,13 +5,13 @@ use std::{io, io::Write};
 
 /// Warning: this function needs user input
 pub fn setup(path: Option<&str>, version: &str) -> crate::Result<()> {
-    println!("Welcome on wanager (v{}) setup", version);
+    println!("Welcome on WNG (v{}) setup", version);
 
     let mut cc = String::new();
     let mut name = String::new();
     let mut email = String::new();
 
-    print!("Write the compiler that will be used by wanager: ");
+    print!("Write the compiler that will be used by WNG: ");
     io::stdout().flush().unwrap();
     io::stdin().read_line(&mut cc).unwrap();
 
@@ -61,7 +61,11 @@ pub fn setup(path: Option<&str>, version: &str) -> crate::Result<()> {
         .as_bytes(),
     )?;
 
-    fs::create_dir_all(&format!("{}/.wng", home_dir.to_str().unwrap()))?;
+    let wng_folder = &format!("{}/.wng", home_dir.to_str().unwrap());
+
+    if !Path::new(wng_folder).exists() {
+        fs::create_dir_all(wng_folder)?;
+    }
 
     println!("[+] Successfully written new configuration.");
 
