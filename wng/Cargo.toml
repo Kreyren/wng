@@ -1,6 +1,6 @@
 [package]
 name = "wng"
-version = "4.0.0"
+version = "4.0.1"
 authors = ["Wafelack <wafelack@protonmail.com>"]
 edition = "2018"
 description = "The W package manager | WNG is a C package and projects manager written in Rust."
