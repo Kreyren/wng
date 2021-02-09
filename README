@@ -38,17 +38,27 @@ DISCLAIMER
 INSTALLATION
 ============
 
+- Installing directly
+
 WNG is available on:
 - cargo `cargo install wng`
-- werb `werb install wng`
 - the releases page
 
-Building from source:
+- Building from source:
 
 Prerequisties: The latest stable rust toolchain
 
+* First method (all systems)
+
 1. Clone the project `git clone git@github.com:wngland/wng`
 2. Build it `cargo build --release`
+
+* Second method (*Nix only)
+
+1. Download the wng-userbuild.tar.gz archive from the releases
+2. Extract it
+3. cd in the produced folder
+3. Run `bash install`
 
 DOCUMENTATION
 =============
