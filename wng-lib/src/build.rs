@@ -1,4 +1,4 @@
-use crate::{error, Result, WngError};
+use crate::{error, see_dir, Result, WngError};
 use std::{
     fs,
     path::{Path, PathBuf},
@@ -6,29 +6,6 @@ use std::{
     str::FromStr,
     time::Instant,
 };
-
-fn see_dir(dirname: &PathBuf, o: bool) -> Result<Vec<PathBuf>> {
-    let entries = fs::read_dir(dirname)?;
-    let mut toret: Vec<PathBuf> = vec![];
-
-    for entry in entries {
-        let entry = entry?;
-
-        if entry.path().is_dir() {
-            toret.extend(see_dir(&entry.path().to_owned(), o)?);
-        } else if o {
-            if entry.path().extension().unwrap().to_str().unwrap() == "o" {
-                toret.push(entry.path().to_owned());
-            }
-        } else {
-            if entry.path().extension().unwrap().to_str().unwrap() == "c" {
-                toret.push(entry.path().to_owned());
-            }
-        }
-    }
-
-    Ok(toret)
-}
 
 pub fn run(path: Option<&str>, args: Vec<String>, release: bool) -> Result<()> {
     let name = build(path, release)?;
@@ -127,7 +104,7 @@ pub fn build(path: Option<&str>, release: bool) -> Result<String> {
         }
     }
 
-    let files = see_dir(&PathBuf::from_str("src/").unwrap(), false)?;
+    let files = see_dir(&PathBuf::from_str("src/").unwrap(), false, false)?;
 
     let cc = cfg_toml["cc"].as_str().unwrap_or("gcc");
 
@@ -199,9 +176,9 @@ pub fn build(path: Option<&str>, release: bool) -> Result<String> {
     }
 
     let objects = if release {
-        see_dir(&PathBuf::from_str("build/release/objects").unwrap(), true)?
+        see_dir(&PathBuf::from_str("build/release/objects").unwrap(), true, false)?
     } else {
-        see_dir(&PathBuf::from_str("build/debug/objects").unwrap(), true)?
+        see_dir(&PathBuf::from_str("build/debug/objects").unwrap(), true, false)?
     };
 
     let comp_status = if release {
