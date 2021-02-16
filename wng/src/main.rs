@@ -16,85 +16,75 @@ fn main() -> Result<()> {
         .version(env!("CARGO_PKG_VERSION"))
         .author(env!("CARGO_PKG_AUTHORS"))
         .about("WNG is the W package manager, a package and projects manager for the C programming language.")
-        .subcommand(SubCommand::with_name("install").about("Installs the project dependencies."))
-        .subcommand(SubCommand::with_name("uninstall").about("Uninstalls the project dependencies."))
-        .subcommand(SubCommand::with_name("clean").about("Cleans the build folder."))
-        .subcommand(
+        .subcommand(&[
+            SubCommand::with_name("install")
+                .about("Installs the project dependencies.")
+
+            SubCommand::with_name("uninstall")
+                .about("Uninstalls the project dependencies.")
+
+            SubCommand::with_name("clean")
+                .about("Cleans the build folder.")
+
             SubCommand::with_name("build")
                 .arg(
                     Arg::with_name("release")
-                        .long("--release")
-                        .help("Specifies to build with the O3 flag activated."),
-                )
-                .about("Builds the current project."),
-        )
-        .subcommand(
+                    .long("--release")
+                    .help("Specifies to build with the O3 flag activated."))
+                .about("Builds the current project.")
+
             SubCommand::with_name("run")
-                .arg(
-                    Arg::with_name("release")
-                        .long("--release")
-                        .help("Specifies to run with the O3 flag activated."),
-                )
-                .about("Runs the current project."),
-        )
-        .subcommand(
+                .arg(Arg::with_name("release")
+                    .long("--release")
+                    .help("Specifies to run with the O3 flag activated."))
+                .about("Runs the current project.")
+
             SubCommand::with_name("dependencies")
-                .subcommand(
+                .subcommand(&[
                     SubCommand::with_name("add")
-                        .arg(
-                            Arg::with_name("dependency")
-                                .required(true)
-                                .index(1)
-                                .help("The dependency to add."),
-                        )
-                        .about("Add a dependency to the current project."),
-                )
-                .subcommand(
+                        .arg(Arg::with_name("dependency")
+                            .required(true)
+                            .index(1)
+                            .help("The dependency to add."))
+                        .about("Add a dependency to the current project.")
+
                     SubCommand::with_name("remove")
-                        .arg(
-                            Arg::with_name("dependency")
-                                .required(true)
-                                .index(1)
-                                .help("The dependency to remove."),
-                        )
-                        .about("Remove a dependency from the current project."),
-                ),
-        )
-        .subcommand(SubCommand::with_name("setup").about("Setup wanager."))
-        .subcommand(
+                        .arg(Arg::with_name("dependency")
+                            .required(true)
+                            .index(1)
+                            .help("The dependency to remove."))
+                        .about("Remove a dependency from the current project.")
+                ]),
+
+            SubCommand::with_name("setup").about("Setup wanager.")
+
             SubCommand::with_name("config")
-                .subcommand(
-                    SubCommand::with_name("reinit").about("Reinitializes wanager configuration."),
-                )
-                .subcommand(
+                .subcommand(&[
+                    SubCommand::with_name("reinit").about("Reinitializes wanager configuration.")
+                    
                     SubCommand::with_name("edit")
-                        .arg(
+                        .arg(&[
                             Arg::with_name("key")
                                 .required(true)
                                 .index(1)
-                                .help("The key to edit."),
-                        )
-                        .arg(
+                                .help("The key to edit.")
                             Arg::with_name("value")
                                 .required(true)
                                 .index(2)
-                                .help("The value to assign to the key."),
-                        )
-                        .about("Edits wanager configuration."),
-                )
-                .about("Configures wanager."),
-        )
-        .subcommand(
+                                .help("The value to assign to the key.")
+                        ])
+                        .about("Edits wanager configuration."))
+                .about("Configures wanager.")
+            
             SubCommand::with_name("new")
-                .arg(
-                    Arg::with_name("path")
-                        .required(true)
-                        .index(1)
-                        .help("The directory where the project will be created"),
-                )
-                .about("Creates a new wanager project."),
-        )
-        .arg(Arg::with_name("plugin")
+                .arg(Arg::with_name("path")
+                    .required(true)
+                    .index(1)
+                    .help("The directory where the project will be created"))
+                .about("Creates a new wanager project.")
+        ])
+        .arg(
+            Arg::with_name("plugin")
                 .short("-p")
                 .long("--plugin")
                 .takes_value(true)
